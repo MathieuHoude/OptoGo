@@ -1,0 +1,11 @@
+CREATE TABLE cliniques (
+    ID SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    NEQ VARCHAR(25),
+    street_address VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    province VARCHAR(20) NOT NULL,
+    postal_code CHAR(6) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
