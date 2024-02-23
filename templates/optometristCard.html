@@ -33,7 +33,8 @@
                 <div>
                     <label for="optoNumberInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero
                         de pratique</label>
-                    <input readonly type="number" id="optoNumberInput" aria-describedby="helper-text-explanation" placeholder="{{PracticeNumber}}"
+                    <input readonly type="number" id="optoNumberInput" aria-describedby="helper-text-explanation"
+                           placeholder="{{PracticeNumber}}"
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            required/>
                 </div>
@@ -42,7 +43,7 @@
                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Adresse</label>
                     <textarea readonly id="adresseInput" rows="4"
                               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              >{{Adresse}}</textarea>
+                    >{{Adresse}}</textarea>
                 </div>
                 <div>
 
@@ -78,66 +79,64 @@ Le bouton "Éditer" permet de modifier les champs de saisie en retirant l'attrib
 Le bouton "Enregistrer" permet de sauvegarder les modifications et de restaurer les champs en mode lecture seule.-->
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const editButton = document.getElementById('editButton');
-        const saveButton = document.getElementById('saveButton');
-        const numberInput = document.getElementById('optoNumberInput');
-        const adresseInput = document.getElementById('adresseInput');
-        const phoneInput = document.getElementById('phoneInput');
+    const editButton = document.getElementById('editButton');
+    const saveButton = document.getElementById('saveButton');
+    const numberInput = document.getElementById('optoNumberInput');
+    const adresseInput = document.getElementById('adresseInput');
+    const phoneInput = document.getElementById('phoneInput');
 
 
-        editButton.addEventListener('click', function () {
-            if (saveButton.classList.contains('hidden')) {
-                saveButton.classList.remove('hidden');
+    editButton.addEventListener('click', function () {
+        if (saveButton.classList.contains('hidden')) {
+            saveButton.classList.remove('hidden');
 
-                numberInput.removeAttribute('readonly');
-                adresseInput.removeAttribute('readonly');
-                phoneInput.removeAttribute('readonly');
-            } else {
-                saveButton.classList.add('hidden');
-            }
-        });
-
-        saveButton.addEventListener('click', function () {
+            numberInput.removeAttribute('readonly');
+            adresseInput.removeAttribute('readonly');
+            phoneInput.removeAttribute('readonly');
+        } else {
             saveButton.classList.add('hidden');
+        }
+    });
 
-            let newPracticeNumber = numberInput.value;
-            let newAdresse = adresseInput.value;
-            let newPhoneNumber = phoneInput.value;
+    saveButton.addEventListener('click', function () {
+        saveButton.classList.add('hidden');
 
-            numberInput.placeholder = newPracticeNumber;
-            adresseInput.placeholder = newAdresse;
-            phoneInput.placeholder = newPhoneNumber;
+        let newPracticeNumber = numberInput.value;
+        let newAdresse = adresseInput.value;
+        let newPhoneNumber = phoneInput.value;
 
-
-<!--MAJ de la variable globale OptoInfoGLobal du fichier app.py concernant les informations de l'optometriste -->
-            fetch("update_opto?selected_option=" + newPracticeNumber + newAdresse + newPhoneNumber )
-                .then(response => {
-                    if (!response.ok) {
-                        console.log("Les informations de l'optométriste ne peuvent-elles pas être mises à jour")
-                    }
-                    if (response.status === 304) {
-                        numberInput.placeholder = "{{ PracticeNumber }}";
-                        adresseInput.placeholder = "{{ Adresse }}";
-                        phoneInput.placeholder = "{{ Phone }}";
-                    }
-                    return response.json()
-                })
-                .then(response => {
-                    console.log(response)
-
-                })
-                .catch(error => {
-                    console.log("MAJ impossible des infos de l'optometriste :", error)
-                })
+        numberInput.placeholder = newPracticeNumber;
+        adresseInput.placeholder = newAdresse;
+        phoneInput.placeholder = newPhoneNumber;
 
 
-            numberInput.setAttribute('readonly', 'readonly');
-            adresseInput.setAttribute('readonly', 'readonly');
-            phoneInput.setAttribute('readonly', 'readonly');
-        });
+        <!--MAJ de la variable globale OptoInfoGLobal du fichier app.py concernant les informations de l'optometriste -->
+        fetch("update_opto?selected_option=" + newPracticeNumber + newAdresse + newPhoneNumber)
+            .then(response => {
+                if (!response.ok) {
+                    console.log("Les informations de l'optométriste ne peuvent-elles pas être mises à jour")
+                }
+                if (response.status === 304) {
+                    numberInput.placeholder = "{{ PracticeNumber }}";
+                    adresseInput.placeholder = "{{ Adresse }}";
+                    phoneInput.placeholder = "{{ Phone }}";
+                }
+                return response.json()
+            })
+            .then(response => {
+                console.log(response)
+
+            })
+            .catch(error => {
+                console.log("MAJ impossible des infos de l'optometriste :", error)
+            })
+
+
+        numberInput.setAttribute('readonly', 'readonly');
+        adresseInput.setAttribute('readonly', 'readonly');
+        phoneInput.setAttribute('readonly', 'readonly');
     });
 </script>
 
-  <!-- JS pour faire fonctionner Flowbite -->
+<!-- JS pour faire fonctionner Flowbite -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>

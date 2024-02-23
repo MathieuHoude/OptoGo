@@ -10,6 +10,16 @@ OptoInfoGLobal = {
     "Phone": '4508480147'
 }
 
+PatientSelect = {
+    "first_name": 'Jeremy',
+    "last_name": 'Maitre',
+    "email": 'ggmaitre@gmail.com',
+    "phone": '4508480147',
+    "gender": 'Homme',
+    "birthDate": '02/07/1991',
+    "ramq": "JEMAI XXXX XXXX XXXX"
+}
+
 
 @app.route("/")
 @app.route("/index")
@@ -27,7 +37,26 @@ def index():
 @app.route("/patients")
 def patients():
     index = 2
-    return render_template("patientPage.html", index=index, ClinicGlobal=ClinicGlobal["clinique"])
+    return render_template("patientPage.html",
+                           index=index,
+                           ClinicGlobal=ClinicGlobal["clinique"],
+                           Patient=PatientSelect)
+@app.route("/choice")
+def choice():
+    index = 3
+    return render_template("choicePage.html",
+                           index=index,
+                           ClinicGlobal=ClinicGlobal["clinique"],
+                           Patient=PatientSelect)
+
+@app.route("/patient-information")
+def patient_information():
+    index = 4
+    return render_template("patientInformationPage.html",
+                           index=index,
+                           ClinicGlobal=ClinicGlobal["clinique"],
+                           Patient=PatientSelect
+                           )
 
 
 @app.route("/update_clinic", methods=["GET"])
@@ -49,6 +78,13 @@ def update_opto():
     response_data = {"message": "Informations de l'optométriste mises à jour avec succès"}
     return jsonify(response_data)
 
+
+@app.route("/update_patient", methods=["GET"])
+def update_patient():
+    selected_option = request.args.get("selected_patient")
+    PatientSelect["name"] = selected_option
+    response_data = {"message": "Option sélectionnée : " + selected_option}
+    return jsonify(response_data)
 
 
 if __name__ == '__main__':
