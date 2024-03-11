@@ -1,11 +1,16 @@
-
-<a href="#" class="w-full flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+<!--
+Card de selection pour un nouvel examen
+-->
+<a href="#" id="patient_exam" class="w-full flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
     <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="static/assets/examen.png">
     <div class="flex flex-col justify-between p-4 leading-normal ">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Nouvel Examen</h5>
     </div>
 </a>
 
+<!--
+Card de selection pour Historique des examens
+-->
 <a href="#" class="w-full flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
     <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="static/assets/historical.png" alt="">
     <div class="flex flex-col justify-between p-4 leading-normal">
@@ -14,6 +19,9 @@
     </div>
 </a>
 
+<!--
+Card de selection pour Informations du Patient
+-->
 <a href="#" id="patient_information" class="w-full flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
     <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="static/assets/personal-information.png" alt="">
     <div class="flex flex-col justify-between p-4 leading-normal">
@@ -22,6 +30,9 @@
     </div>
 </a>
 
+<!--
+Card de selection pour un Accueil
+-->
 <a href="#" id="index" class="w-full flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
     <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="static/assets/back-button.png" alt="">
     <div class="flex flex-col justify-between p-4 leading-normal">
@@ -31,14 +42,22 @@
 </a>
 
 <script>
+    // Script de redirection vers la route index
     const index = document.getElementById("index")
     index.addEventListener("click", function () {
         window.location.href = "index";
     })
-
+    // Script de redirection vers la route patient_information
     const patientInformation = document.getElementById("patient_information")
     patientInformation.addEventListener("click", function () {
         window.location.href = "patient-information";
     })
+    // Script de redirection vers la route patient_exam
+    const patientExam = document.getElementById("patient_exam")
+    patientExam.addEventListener("click", function () {
+        window.location.href = "patient-exam";
+    })
+
+
 
 </script>

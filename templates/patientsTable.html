@@ -52,7 +52,7 @@
     patientSelect.addEventListener("click", function () {
         let selectedPatient = patientName.textContent
 
-        fetch("update_patient?selected_patient=" + selectedPatient)
+        fetch("select_patient?selected_patient=" + selectedPatient)
             .then(response => {
                 if (!response.ok) {
                         console.log("Un probleme dans le choix de votre patient")

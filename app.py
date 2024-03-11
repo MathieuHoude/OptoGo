@@ -4,12 +4,16 @@ app = Flask(__name__)
 
 ClinicGlobal = {"clinique": ""}
 
+
+# Dico en exemple d'infos opto
 OptoInfoGLobal = {
     "PracticeNumber": '123456',
     "Adresse": '2250 rue Sicard',
     "Phone": '4508480147'
 }
 
+
+# Dico en exemple de patient
 PatientSelect = {
     "first_name": 'Jeremy',
     "last_name": 'Maitre',
@@ -33,7 +37,7 @@ def index():
         Phone=OptoInfoGLobal["Phone"]
     )
 
-
+# route pour la page du patient
 @app.route("/patients")
 def patients():
     index = 2
@@ -41,6 +45,8 @@ def patients():
                            index=index,
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect)
+
+# route pour la page des cards de choix
 @app.route("/choice")
 def choice():
     index = 3
@@ -49,6 +55,7 @@ def choice():
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect)
 
+# route pour la page des informations du patient
 @app.route("/patient-information")
 def patient_information():
     index = 4
@@ -57,8 +64,18 @@ def patient_information():
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect
                            )
+# route pour la page d'un nouvel examen
+@app.route("/patient-exam")
+def patient_exam():
+    index = 5
+    return render_template("newExamPage.html",
+                           index=index,
+                           ClinicGlobal=ClinicGlobal["clinique"],
+                           Patient=PatientSelect
+                           )
 
 
+# gestion de la requete HTTP pour mettre a jour la clinique
 @app.route("/update_clinic", methods=["GET"])
 def update_clinic():
     selected_option = request.args.get("selected_option")
@@ -67,6 +84,7 @@ def update_clinic():
     return jsonify(response_data)
 
 
+# gestion de la requete HTTP pour mettre a jour les infos de l'opto
 @app.route("/update_opto", methods=["GET"])
 def update_opto():
     new_practice_number = request.args.get("practice_number")
@@ -79,8 +97,9 @@ def update_opto():
     return jsonify(response_data)
 
 
-@app.route("/update_patient", methods=["GET"])
-def update_patient():
+# gestion de la requete HTTP pour selectionner le patient depuis la page patientsTable.html
+@app.route("/select_patient", methods=["GET"])
+def select_patient():
     selected_option = request.args.get("selected_patient")
     PatientSelect["name"] = selected_option
     response_data = {"message": "Option sélectionnée : " + selected_option}
