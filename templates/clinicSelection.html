@@ -1,0 +1,59 @@
+<form class="max-w-sm mx-auto mr-3">
+    <label for="clinicSelect" class="sr-only">Underline select</label>
+    <select id="clinicSelect"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>Choisissez</option>
+        <option>Vizu-L</option>
+        <option>Voskins</option>
+        <option>New-Look St-Denis</option>
+    </select>
+</form>
+
+<div>
+    <button type="button"
+            id="patientPage"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        Liste des Patients
+    </button>
+</div>
+
+
+<!-- JS pour faire fonctionner Flowbite -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
+<!-- Logique de requete HTTP vers le serveur Flask afin de mettre a jour la variable globale de la clinique active  -->
+<script>
+
+    let cliniqueSelection = document.getElementById("clinicSelect")
+    let clickToPatientPage = document.getElementById("patientPage")
+    let selectedClinic = ""
+
+    clickToPatientPage.addEventListener("click", function (event) {
+        selectedClinic = cliniqueSelection.value;
+        console.log(selectedClinic)
+        // Snack-back avec la librairie Sweet-Alert
+        if (selectedClinic === "Choisissez")  {
+            Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Veuillez sélectionner une clinique.'
+        });
+        } else {
+            fetch("update_clinic?selected_option=" + selectedClinic)
+                .then(response => {
+                    if (!response.ok) {
+                        console.log("Un probleme dans votre choix de clinique")
+                    }
+                    return response.json()
+                })
+                .then(() => {
+                    window.location.href = "patients";
+                })
+                .catch(error => {
+                    console.error("Une erreur s'est produite lors de la mise à jour de la clinique :", error);
+                });
+
+        }
+    })
+
+</script>

@@ -1,0 +1,70 @@
+
+<!-- Table avec des donnees random qu'on pourra populer avec les donnees de la BD -->
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Nom du patient
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Numero d'assurance maladie
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Date du dernier examen
+                </th>
+                <td class="px-6 py-4 text-right">
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" id="patientName" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ Patient['first_name'] }}
+                </th>
+                <td class="px-6 py-4">
+                    MAIJ XXXX XXXX XXXX
+                </td>
+                <td class="px-6 py-4">
+                    02/02/2024
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <a href="#" id="patientSelect" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Selectionner</a>
+                   /
+                    <a href="#" id="patientEdit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
+                </td>
+
+        </tbody>
+    </table>
+</div>
+
+
+  <!-- JS pour faire fonctionner Flowbite -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
+<script>
+
+    const patientSelect = document.getElementById("patientSelect")
+    const patientEdit = document.getElementById("patientEdit")
+    let patientName = document.getElementById("patientName")
+
+
+    patientSelect.addEventListener("click", function () {
+        let selectedPatient = patientName.textContent
+
+        fetch("select_patient?selected_patient=" + selectedPatient)
+            .then(response => {
+                if (!response.ok) {
+                        console.log("Un probleme dans le choix de votre patient")
+                    }
+                    return response.json()
+                })
+            .then(() => {
+                    window.location.href = "choice";
+                })
+                .catch(error => {
+                    console.error("Une erreur s'est produite lors de la mise à jour de la clinique :", error);
+                });
+    })
+
+</script>
