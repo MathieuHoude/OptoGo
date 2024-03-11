@@ -13,11 +13,7 @@ ClinicGlobal = {"clinique": ""}
 
 
 # Dico en exemple d'infos opto
-OptoInfoGLobal = {
-    "PracticeNumber": '123456',
-    "Adresse": '2250 rue Sicard',
-    "Phone": '4508480147'
-}
+OptoInfoGLobal = {}
 
 
 # Dico en exemple de patient
@@ -56,12 +52,16 @@ def get_db_connection():
 @app.route("/index")
 def index():
     index = 1
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = 1;')
+    OptoInfoGLobal = cursor.fetchone()
+    print(OptoInfoGLobal)
+    conn.close()
     return render_template(
         "index.html",
         index=index,
-        PracticeNumber=OptoInfoGLobal["PracticeNumber"],
-        Adresse=OptoInfoGLobal["Adresse"],
-        Phone=OptoInfoGLobal["Phone"]
+        Optometriste=OptoInfoGLobal
     )
 
 # route pour la page du patient

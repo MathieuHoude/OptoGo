@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS optometristes (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(50) UNIQUE,
+    phone_number VARCHAR(20) NOT NULL,
     birth_date DATE NOT NULL,
     exercise_number VARCHAR(10),
     address_ID INT,
