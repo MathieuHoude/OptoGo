@@ -57,7 +57,7 @@ def main():
             csv_files.sort()  # Sort the files to execute them in order
 
             for csv_file in csv_files:
-                table_name = csv_file.split('_')[1].split('.')[0]
+                table_name = csv_file.split('-')[1].split('.')[0]
                 csv_file_path = os.path.join(csv_folder_path, csv_file)
                 seed_table_from_csv(connection, table_name, csv_file_path)
 

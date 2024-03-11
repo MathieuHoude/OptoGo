@@ -11,10 +11,8 @@ load_dotenv()
 
 ClinicGlobal = {"clinique": ""}
 
-
 # Dico en exemple d'infos opto
 OptoInfoGLobal = {}
-
 
 # Dico en exemple de patient
 PatientSelect = {
@@ -56,13 +54,27 @@ def index():
     cursor = conn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = 1;')
     OptoInfoGLobal = cursor.fetchone()
-    print(OptoInfoGLobal)
     conn.close()
     return render_template(
         "index.html",
         index=index,
         Optometriste=OptoInfoGLobal
     )
+
+# route pour la page du patient
+@app.route("/cliniques/<clinique_id>")
+def clinique(clinique_id):
+    index = 2
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT p.* FROM cliniques c JOIN patients_cliniques pc ON c.ID = pc.clinique_ID JOIN patients p ON pc.patient_ID = p.ID WHERE c.ID = {clinique_id};')
+    Patients = cursor.fetchall()
+    print(Patients)
+    conn.close()
+    return render_template("patientPage.html",
+                           index=index,
+                           ClinicGlobal=ClinicGlobal["clinique"],
+                           Patients=Patients)
 
 # route pour la page du patient
 @app.route("/patients")
@@ -112,7 +124,12 @@ def patient_exam():
 def update_clinic():
     selected_option = request.args.get("selected_option")
     ClinicGlobal["clinique"] = selected_option
-    response_data = {"message": "Option sélectionnée : " + selected_option}
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT ID FROM cliniques WHERE name = "{selected_option}";')
+    clinique = cursor.fetchone()
+    conn.close()
+    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": clinique}
     return jsonify(response_data)
 
 

@@ -46,8 +46,9 @@
                     }
                     return response.json()
                 })
-                .then(() => {
-                    window.location.href = "patients";
+                .then((data) => {
+                    console.log(data)
+                    window.location.href = "cliniques/" + data.clinique.ID;
                 })
                 .catch(error => {
                     console.error("Une erreur s'est produite lors de la mise à jour de la clinique :", error);
