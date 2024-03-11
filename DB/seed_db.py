@@ -10,15 +10,15 @@ load_dotenv()
 def seed_table_from_csv(connection, table_name, csv_file_path):
     try:
         with open(csv_file_path, 'r', newline='', encoding='utf-8') as csv_file:
-            csv_reader = csv.DictReader(csv_file)
+            cursor = connection.cursor()
 
-            # Assuming the CSV header matches the table columns
+            cursor.execute(f"TRUNCATE TABLE {table_name};")
+
+            csv_reader = csv.DictReader(csv_file)
             columns = ', '.join(csv_reader.fieldnames)
             placeholders = ', '.join(['%s' for _ in csv_reader.fieldnames])
             
             insert_query = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
-            
-            cursor = connection.cursor()
 
             for row in csv_reader:
                 values = [row[column] for column in csv_reader.fieldnames]
@@ -41,12 +41,10 @@ def main():
         'password': os.getenv('PASSWORD'),
         'database': os.getenv('DBNAME')
     }
-
         
     # Replace 'your_table_name' with the actual table name
     table_name = 'patients'
 
-    # Replace 'path/to/your/data.csv' with the path to your CSV file
     csv_file_path = './DB/seeds/patients.csv'
 
     # Connect to the MySQL server
@@ -55,9 +53,15 @@ def main():
 
         if connection.is_connected():
             print("Connected to MySQL database")
+            csv_folder_path = './DB/seeds'
 
-            # Seed data into the specified table from the CSV file
-            seed_table_from_csv(connection, table_name, csv_file_path)
+            csv_files = [f for f in os.listdir(csv_folder_path) if f.endswith(".csv")]
+            csv_files.sort()  # Sort the files to execute them in order
+
+            for csv_file in csv_files:
+                table_name = csv_file.split('_')[1].split('.')[0]
+                csv_file_path = os.path.join(csv_folder_path, csv_file)
+                seed_table_from_csv(connection, table_name, csv_file_path)
 
     except Error as e:
         print(f"Error connecting to MySQL: {e}")

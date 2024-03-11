@@ -6,6 +6,9 @@ from mysql.connector import Error
 
 app = Flask(__name__)
 
+# Load environment variables from .env file
+load_dotenv()
+
 ClinicGlobal = {"clinique": ""}
 
 
@@ -65,10 +68,15 @@ def index():
 @app.route("/patients")
 def patients():
     index = 2
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM patients LIMIT 100')
+    Patients = cursor.fetchall() 
+    conn.close()
     return render_template("patientPage.html",
                            index=index,
                            ClinicGlobal=ClinicGlobal["clinique"],
-                           Patient=PatientSelect)
+                           Patients=Patients)
 
 # route pour la page des cards de choix
 @app.route("/choice")

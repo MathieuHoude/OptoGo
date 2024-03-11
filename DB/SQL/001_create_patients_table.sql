@@ -1,4 +1,4 @@
-CREATE TABLE patients (
+CREATE TABLE IF NOT EXISTS patients (
     ID SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
