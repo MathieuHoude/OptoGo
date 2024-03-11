@@ -1,51 +1,51 @@
-id,name,NEQ,street_address,city,province,postal_code
-1,Lind Inc,0936617244,946 Gina Center,Thetford-Mines,QC,G6G
-2,Kunde Inc,4413348336,8 Marquette Street,Les Cèdres,QC,J6S
-3,Weimann-Botsford,2615742182,08 Judy Pass,Mont-Tremblant,QC,J8E
-4,"VonRueden, Oberbrunner and Schroeder",5206154096,7175 Harper Plaza,Drummondville,QC,J2E
-5,"Carter, Moen and Hansen",0200706533,27 Jackson Crossing,Dollard-Des Ormeaux,QC,H9P
-6,Maggio-Hickle,8403529137,24761 Roxbury Court,Port-Cartier,QC,G5B
-7,Wolff LLC,9009908864,0 Annamark Alley,Mont-Laurier,QC,J9L
-8,Price-Fisher,9343419271,8 Merchant Pass,Lac-Brome,QC,L9G
-9,Ward-Feest,4108979861,6 Sachtjen Trail,Sherbrooke,QC,J1K
-10,Jakubowski-Ledner,1834619756,01117 Parkside Lane,La Sarre,QC,J9Z
-11,Larkin-Wintheiser,3247042460,86 Kropf Place,Kingsey Falls,QC,T8H
-12,Emmerich Inc,0443311732,891 La Follette Pass,Sainte-Thérèse,QC,J7G
-13,"Fritsch, McKenzie and Dach",4367103284,893 Katie Crossing,Lavaltrie,QC,J5T
-14,"Smitham, Lubowitz and Abshire",9924438005,4 Utah Drive,Mont-Tremblant,QC,J8E
-15,Marvin Inc,9686757867,16 Sutherland Center,Mont-Joli,QC,G5H
-16,"Jenkins, Stracke and O'Kon",5529626968,64 Vermont Avenue,Sainte-Sophie,QC,J5J
-17,"Hickle, Johnston and Denesik",3499115622,68 Clyde Gallagher Circle,Roberval,QC,G8H
-18,Cremin and Sons,1139680914,4247 Dovetail Hill,Cap-Santé,QC,N0H
-19,"McGlynn, Heathcote and Fadel",7352610876,05 Stang Plaza,Sutton,QC,J5B
-20,Johns Inc,7781044939,1104 Meadow Ridge Trail,Otterburn Park,QC,L6G
-21,Stiedemann Group,0867596097,105 Hovde Place,Lac-Brome,QC,L9G
-22,Brakus Group,8446489998,575 Troy Alley,Pont-Rouge,QC,G3H
-23,Brown and Sons,8699647068,6 Meadow Ridge Plaza,Kirkland,QC,H9J
-24,Cormier-Quigley,0320106114,5881 Mitchell Trail,Maniwaki,QC,J9E
-25,Lakin-Keebler,6642865858,19 West Pass,Richmond,QC,V6Z
-26,Grant-Wunsch,4209398116,258 Eagan Street,Sainte-Adèle,QC,J8B
-27,"Glover, Turner and Walter",5382093306,25 Express Place,Saint-Félicien,QC,G8K
-28,"Hudson, O'Connell and McLaughlin",9845807523,44096 East Parkway,Senneterre,QC,L0P
-29,"Hane, Kertzmann and Jones",8656072969,190 Florence Terrace,Sainte-Agathe-des-Monts,QC,J8C
-30,"Heathcote, Towne and MacGyver",8044261934,7 Washington Drive,Danville,QC,J0A
-31,Bartoletti LLC,7055979333,9 Calypso Parkway,Beauceville,QC,G5X
-32,O'Kon Group,8630763817,5 Hagan Avenue,Barraute,QC,P0M
-33,"Howe, Brekke and Daugherty",6423004513,467 Norway Maple Street,Montréal-Ouest,QC,H5B
-34,"Considine, Considine and Vandervort",2214400341,9728 Kings Park,Repentigny,QC,J6V
-35,"Lehner, Johnston and Barton",3159828647,0010 Utah Court,Forestville,QC,G2B
-36,Hoeger Inc,2449784961,508 Stoughton Avenue,Macamic,QC,V6N
-37,Carter-Bogisich,6517898107,7338 Prairie Rose Street,Ormstown,QC,J0S
-38,"Pollich, Waelchi and Berge",9717203737,2055 Farragut Alley,Hudson,QC,J0N
-39,Gulgowski-Morar,9069319154,46 Corben Point,Mont-Tremblant,QC,J8E
-40,Harvey-Donnelly,6287807789,48279 Prentice Court,Sainte-Anne-des-Plaines,QC,J4X
-41,Legros Inc,8611545119,69 Raven Trail,Baie-Comeau,QC,K1M
-42,"Feil, Larson and Treutel",5072879705,70431 Spenser Pass,Adstock,QC,G0N
-43,Parker-Brekke,7779318016,85629 Reindahl Court,Saint-Ambroise,QC,G7P
-44,"Brown, Jakubowski and Barton",3081701296,7105 Golf Course Point,Louiseville,QC,J5V
-45,Kuhic-Oberbrunner,7133229345,0 Toban Terrace,Cabano,QC,T9H
-46,Dare-Maggio,6194349149,47 Northport Drive,Lachute,QC,J8H
-47,"Robel, Bayer and Bosco",0543309298,307 Sachs Court,Havre-Saint-Pierre,QC,H4R
-48,Leannon LLC,8918837363,9963 Dorton Hill,Sherbrooke,QC,J1K
-49,Bechtelar-Moen,1173410115,3021 Dovetail Hill,Baie-Saint-Paul,QC,G3Z
-50,"Murphy, Aufderhar and Koelpin",4530967255,29 Vera Hill,Bromont,QC,J2L
+id,name,NEQ,address_id
+1,"Hills, Kertzmann and Bogan",5689562285,400
+2,Bergnaum Group,9920810282,374
+3,"Muller, Farrell and Cummings",6740747553,456
+4,"Douglas, Heidenreich and Jacobs",3581755687,285
+5,"Robel, Mraz and Glover",1685233462,150
+6,Hills-Schiller,5339329412,378
+7,"Rodriguez, Sporer and Toy",5609328845,460
+8,Berge Group,7317226645,281
+9,"Zemlak, Rohan and Miller",1912449690,224
+10,"Spinka, Upton and Nolan",6373476884,325
+11,"Lehner, Christiansen and Cummings",2014035189,16
+12,Keeling-Kassulke,9083343826,96
+13,Glover LLC,9870916109,232
+14,"Balistreri, McKenzie and Buckridge",9011064601,322
+15,Gislason and Sons,3743879045,331
+16,Brakus-Towne,6083398585,418
+17,Bauch-Homenick,4739979572,15
+18,Stamm Inc,4136814201,495
+19,"Gutkowski, Steuber and Labadie",7759672743,230
+20,"Terry, Kozey and Murray",6867188183,143
+21,Feeney and Sons,3012411249,166
+22,Luettgen-McClure,1428895390,232
+23,Bechtelar LLC,5076173643,126
+24,"Daniel, Carroll and Langworth",3208602697,319
+25,Bartell-Kunze,6725685346,232
+26,Ryan Inc,7079261704,246
+27,Johns-Kuphal,6270972854,164
+28,O'Hara Group,4569193914,493
+29,Medhurst and Sons,7741060360,358
+30,"Schoen, Koch and Lindgren",5947342877,420
+31,"Greenholt, Lowe and Shanahan",2111623605,18
+32,"Kub, Kunze and Yost",7439225299,487
+33,Conroy-Gottlieb,2682824306,188
+34,Harber LLC,0570762481,98
+35,"Ritchie, Swift and Lesch",0138599185,204
+36,Anderson LLC,9876955737,14
+37,Reichel and Sons,9797026467,332
+38,Blick LLC,1930482819,110
+39,Johns-Luettgen,3072818321,45
+40,Kunde Group,2323872033,479
+41,Williamson Group,2351084538,258
+42,Koss-Gleason,9615774748,354
+43,"Erdman, Kunze and Kling",8553158757,351
+44,Graham-Fahey,7207862473,20
+45,Kertzmann LLC,1363071696,122
+46,Carter and Sons,1366055971,166
+47,Bechtelar-Blick,8588392901,498
+48,Heller-Kessler,0892944569,335
+49,"Torphy, Bins and Sauer",5281103392,302
+50,Murazik Inc,6039029932,89

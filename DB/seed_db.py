@@ -12,8 +12,6 @@ def seed_table_from_csv(connection, table_name, csv_file_path):
         with open(csv_file_path, 'r', newline='', encoding='utf-8') as csv_file:
             cursor = connection.cursor()
 
-            cursor.execute(f"TRUNCATE TABLE {table_name};")
-
             csv_reader = csv.DictReader(csv_file)
             columns = ', '.join(csv_reader.fieldnames)
             placeholders = ', '.join(['%s' for _ in csv_reader.fieldnames])
