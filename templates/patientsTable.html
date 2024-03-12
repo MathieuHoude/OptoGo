@@ -18,21 +18,21 @@
             </tr>
         </thead>
         <tbody>
-            {% for patient in Patients %}
+            {% for patient in patients %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ patient.last_name }}, {{ patient.first_name }}
                     </th>
                     <td class="px-6 py-4">
-                        {{ patient.RAMQ_ID }}
+                        {{ patient.RAMQ_number }}
                     </td>
                     <td class="px-6 py-4">
                         {{ patient.birth_date }}
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Selectionner</a>
+                        <a href="{{clinique.ID}}/patients/{{patient.ID}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Selectionner</a>
                     /
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
+                        <a href="/patients/{{patient.ID}}/details" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
                     </td>
                 </tr>
             {% endfor %}

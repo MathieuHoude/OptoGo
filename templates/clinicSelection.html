@@ -1,11 +1,10 @@
 <form class="max-w-sm mx-auto mr-3">
     <label for="clinicSelect" class="sr-only">Underline select</label>
-    <select id="clinicSelect"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option selected>Choisissez</option>
-        <option>Vizu-L</option>
-        <option>Voskins</option>
-        <option>New-Look St-Denis</option>
+    <select id="clinicSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected disabled>Choisissez</option>
+        {% for clinique in cliniques %}
+            <option id="{{clinique.ID}}">{{clinique.name}}</option>
+        {% endfor %}
     </select>
 </form>
 
