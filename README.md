@@ -9,7 +9,7 @@
 - Dans un 2e terminal: ``flask run``
 
 ### Pour initialiser la base de données
- - Créer la base de données ``optogo`` dans MySQL
+ - Créer la base de données : ``python DB/create_db.py``
  - Lancer le script de migrations: ``python DB/migrations.py``
  - Lancer le script d'insertion de données: ``python DB/seed_db.py``
 
