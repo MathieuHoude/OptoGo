@@ -162,7 +162,8 @@ def login():
         else:
             session["login_error"] = {'title': 'Erreur authentification', 'text': 'Veuillez vérifier votre email ou mot de passe'}
             return redirect(url_for("login"))
-    return render_template("loginPage.html")
+    else :
+        return render_template("loginPage.html")
 
 @app.route('/logout')
 def logout():

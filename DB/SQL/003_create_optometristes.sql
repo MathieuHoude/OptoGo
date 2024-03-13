@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS optometristes (
     phone_number VARCHAR(20) NOT NULL,
     birth_date DATE NOT NULL,
     exercise_number VARCHAR(10),
+    avatar_image_link VARCHAR(100),
     address_ID INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
