@@ -4,14 +4,12 @@ app = Flask(__name__)
 
 ClinicGlobal = {"clinique": ""}
 
-
 # Dico en exemple d'infos opto
 OptoInfoGLobal = {
     "PracticeNumber": '123456',
     "Adresse": '2250 rue Sicard',
     "Phone": '4508480147'
 }
-
 
 # Dico en exemple de patient
 PatientSelect = {
@@ -37,6 +35,7 @@ def index():
         Phone=OptoInfoGLobal["Phone"]
     )
 
+
 # route pour la page du patient
 @app.route("/patients")
 def patients():
@@ -45,6 +44,7 @@ def patients():
                            index=index,
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect)
+
 
 # route pour la page des cards de choix
 @app.route("/choice")
@@ -55,6 +55,7 @@ def choice():
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect)
 
+
 # route pour la page des informations du patient
 @app.route("/patient-information")
 def patient_information():
@@ -64,6 +65,8 @@ def patient_information():
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect
                            )
+
+
 # route pour la page d'un nouvel examen
 @app.route("/patient-exam")
 def patient_exam():
@@ -73,6 +76,12 @@ def patient_exam():
                            ClinicGlobal=ClinicGlobal["clinique"],
                            Patient=PatientSelect
                            )
+
+
+# route pour la page d'un nouvel examen
+@app.route("/login")
+def login():
+    return render_template("loginPage.html")
 
 
 # gestion de la requete HTTP pour mettre a jour la clinique
