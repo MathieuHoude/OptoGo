@@ -31,7 +31,6 @@ def get_db_connection():
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
 
-
 @app.route("/")
 @app.route("/index")
 def index():
@@ -49,6 +48,7 @@ def index():
         optometriste=OptoInfoGLobal,
         cliniques=cliniques
     )
+
 
 # route pour la page du patient
 @app.route("/cliniques/<clinique_id>")
@@ -80,6 +80,7 @@ def patients():
                            ClinicGlobal=ClinicGlobal,
                            Patients=Patients)
 
+
 # route pour la page des cards de choix
 @app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>")
 def choice(clinique_id, patient_id):
@@ -96,6 +97,7 @@ def choice(clinique_id, patient_id):
                            clinique=ClinicGlobal,
                            patient=PatientSelect)
 
+
 # route pour la page des informations du patient
 @app.route("/patients/<int:patient_id>")
 def patient_details(patient_id):
@@ -109,6 +111,8 @@ def patient_details(patient_id):
                            clinique=ClinicGlobal,
                            patient=PatientSelect
                            )
+
+
 # route pour la page d'un nouvel examen
 @app.route("/examens/new")
 def patient_exam():
@@ -130,6 +134,12 @@ def patient_exam():
                             )
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
+
+
+# route pour la page d'un nouvel examen
+@app.route("/login")
+def login():
+    return render_template("loginPage.html")
 
 
 # gestion de la requete HTTP pour mettre a jour la clinique
