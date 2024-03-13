@@ -1,11 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from dotenv import load_dotenv
 import os
 import mysql.connector
 from mysql.connector import Error
+import bcrypt
 
 app = Flask(__name__)
-
+app.secret_key = 'optogo' #TODO CHANGER!!
 # Load environment variables from .env file
 load_dotenv()
 
@@ -37,7 +38,7 @@ def index():
     index = 1
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT o.*, a.street_number, a.street_name, a.city, a.province, a.postal_code FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = 2;')
+    cursor.execute(f'SELECT o.*, a.street_number, a.street_name, a.city, a.province, a.postal_code FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = {session["user"]["ID"]};')
     OptoInfoGLobal = cursor.fetchone()
     cursor.execute(f'SELECT DISTINCT c.* FROM optometristes o JOIN optometristes_cliniques oc ON o.ID = oc.optometriste_ID JOIN cliniques c ON oc.clinique_ID = c.ID  WHERE o.ID = "{OptoInfoGLobal["ID"]}";')
     cliniques = cursor.fetchall()
@@ -136,11 +137,37 @@ def patient_exam():
         print(f"Error connecting to MySQL: {e}")
 
 
-# route pour la page d'un nouvel examen
-@app.route("/login")
+# route pour la page d'authentification
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f'SELECT * FROM optometristes WHERE email = "{email}"')
+        optometriste = cursor.fetchone()
+        conn.close()
+        
+        if(optometriste is None):
+            session["login_error"] = {'title': 'Erreur authentification', 'text': 'Veuillez vérifier votre email ou mot de passe'}
+            return redirect(url_for("login"))
+        
+        # Check if the provided password matches the stored hashed password
+        if bcrypt.checkpw(password.encode('utf-8'), optometriste['password'].encode()):
+            session.pop('login_error', None)
+            session["user"] = optometriste
+            return redirect(url_for("index"))
+        else:
+            session["login_error"] = {'title': 'Erreur authentification', 'text': 'Veuillez vérifier votre email ou mot de passe'}
+            return redirect(url_for("login"))
     return render_template("loginPage.html")
 
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for("login"))
 
 # gestion de la requete HTTP pour mettre a jour la clinique
 @app.route("/update_clinic", methods=["GET"])
