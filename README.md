@@ -4,7 +4,7 @@
 - Installer les packages Python: ``pip install -r requirements.txt``
 - Installer les packages Node: ``npm i``
 - Démarrer le serveur MySQL
-- Créer le fichier ``.env`` contenant les variables nécessaires à la connection à MySQL (USERNAME, PASSWORD, DBNAME)
+- Créer le fichier ``.env`` contenant les variables nécessaires à la connection à MySQL (HOST, USERNAME, PASSWORD, DBNAME)
 - Pour que Tailwind recompile le CSS lors de modifications: ``npx tailwindcss -i ./static/src/input.css -o ./static/dist/css/output.css --watch``
 - Dans un 2e terminal: ``flask run``
 
