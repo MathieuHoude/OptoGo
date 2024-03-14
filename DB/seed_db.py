@@ -34,7 +34,7 @@ def main():
     # Replace these with your actual database connection details
     # MySQL configuration
     mysql_config = {
-        'host': 'localhost',
+        'host': os.getenv('HOST'),
         'user': os.getenv('USERNAME'),
         'password': os.getenv('PASSWORD'),
         'database': os.getenv('DBNAME')
