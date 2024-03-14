@@ -45,30 +45,3 @@
 
   <!-- JS pour faire fonctionner Flowbite -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
-
-<script>
-
-    const patientSelect = document.getElementById("patientSelect")
-    const patientEdit = document.getElementById("patientEdit")
-    let patientName = document.getElementById("patientName")
-
-
-    patientSelect.addEventListener("click", function () {
-        let selectedPatient = patientName.textContent
-
-        fetch("select_patient?selected_patient=" + selectedPatient)
-            .then(response => {
-                if (!response.ok) {
-                        console.log("Un probleme dans le choix de votre patient")
-                    }
-                    return response.json()
-                })
-            .then(() => {
-                    window.location.href = "choice";
-                })
-                .catch(error => {
-                    console.error("Une erreur s'est produite lors de la mise à jour de la clinique :", error);
-                });
-    })
-
-</script>

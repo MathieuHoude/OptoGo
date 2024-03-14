@@ -10,8 +10,6 @@ app.secret_key = 'optogo' #TODO CHANGER!!
 # Load environment variables from .env file
 load_dotenv()
 
-PatientSelect, OptoInfoGLobal, ClinicGlobal = {}, {}, {}
-
 # Define a list of routes that should not require authentication
 ROUTES_NOT_REQUIRING_AUTH = ['login']
 
@@ -49,15 +47,20 @@ def index():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT o.*, a.street_number, a.street_name, a.city, a.province, a.postal_code FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = {session["user"]["ID"]};')
-    OptoInfoGLobal = cursor.fetchone()
-    cursor.execute(f'SELECT DISTINCT c.* FROM optometristes o JOIN optometristes_cliniques oc ON o.ID = oc.optometriste_ID JOIN cliniques c ON oc.clinique_ID = c.ID  WHERE o.ID = "{OptoInfoGLobal["ID"]}";')
+    session["user"] = cursor.fetchone()
+    cursor.execute(f'SELECT DISTINCT c.* FROM optometristes o JOIN optometristes_cliniques oc ON o.ID = oc.optometriste_ID JOIN cliniques c ON oc.clinique_ID = c.ID  WHERE o.ID = "{session["user"]["ID"]}";')
     cliniques = cursor.fetchall()
     conn.close()
+
+    clinique_choisie = None
+    if 'clinique_choisie' in session:
+        clinique_choisie = session['clinique_choisie']
     return render_template(
         "index.html",
         index=index,
-        optometriste=OptoInfoGLobal,
-        cliniques=cliniques
+        optometriste=session["user"],
+        cliniques=cliniques,
+        clinique_choisie=clinique_choisie
     )
 
 # route pour la page d'authentification
@@ -86,11 +89,14 @@ def login():
             session["login_error"] = {'title': 'Erreur authentification', 'text': 'Veuillez vérifier votre email ou mot de passe'}
             return redirect(url_for("login"))
     else :
-        return render_template("loginPage.html")
+        if 'user' in session:
+            return redirect(url_for("index"))
+        else:
+            return render_template("loginPage.html")
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
+    session.clear()
     return redirect(url_for("login"))
 
 # route pour la page du patient
@@ -100,13 +106,13 @@ def clinique(clinique_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id};')
-    ClinicGlobal = cursor.fetchone()
+    session["clinique_choisie"] = cursor.fetchone()
     cursor.execute(f'SELECT p.* FROM cliniques c JOIN patients_cliniques pc ON c.ID = pc.clinique_ID JOIN patients p ON pc.patient_ID = p.ID WHERE c.ID = {clinique_id} ORDER BY p.last_name;')
     patients = cursor.fetchall()
     conn.close()
     return render_template("patientPage.html",
                            index=index,
-                           clinique=ClinicGlobal,
+                           clinique=session["clinique_choisie"],
                            patients=patients)
 
 # route pour la page du patient
@@ -131,14 +137,14 @@ def choice(clinique_id, patient_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
-    ClinicGlobal = cursor.fetchone()
+    session["clinique_choisie"] = cursor.fetchone()
     cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
-    PatientSelect = cursor.fetchone()
+    session["patient_choisi"] = cursor.fetchone()
     conn.close()
     return render_template("choicePage.html",
                            index=index,
-                           clinique=ClinicGlobal,
-                           patient=PatientSelect)
+                           clinique=session["clinique_choisie"],
+                           patient=session["patient_choisi"])
 
 
 # route pour la page des informations du patient
@@ -148,12 +154,11 @@ def patient_details(patient_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
-    PatientSelect = cursor.fetchone()
+    session["patient_choisi"] = cursor.fetchone()
     return render_template("patientInformationPage.html",
                            index=index,
-                           clinique=ClinicGlobal,
-                           patient=PatientSelect
-                           )
+                           clinique=session["clinique_choisie"],
+                           patient=session["patient_choisi"])
 
 
 # route pour la page d'un nouvel examen
@@ -185,9 +190,9 @@ def update_clinic():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT ID FROM cliniques WHERE name = "{selected_option}";')
-    ClinicGlobal = cursor.fetchone()
+    session['clinique_choisie'] = cursor.fetchone()
     conn.close()
-    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": ClinicGlobal}
+    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique_choisie']}
     return jsonify(response_data)
 
 
@@ -197,19 +202,10 @@ def update_opto():
     new_practice_number = request.args.get("practice_number")
     new_adresse = request.args.get("adresse")
     new_phone_number = request.args.get("phone_number")
-    OptoInfoGLobal["PracticeNumber"] = new_practice_number
-    OptoInfoGLobal["Adresse"] = new_adresse
-    OptoInfoGLobal["Phone"] = new_phone_number
+    session['user']["PracticeNumber"] = new_practice_number
+    session['user']["Adresse"] = new_adresse
+    session['user']["Phone"] = new_phone_number
     response_data = {"message": "Informations de l'optométriste mises à jour avec succès"}
-    return jsonify(response_data)
-
-
-# gestion de la requete HTTP pour selectionner le patient depuis la page patientsTable.html
-@app.route("/select_patient", methods=["GET"])
-def select_patient():
-    selected_option = request.args.get("selected_patient")
-    PatientSelect["name"] = selected_option
-    response_data = {"message": "Option sélectionnée : " + selected_option}
     return jsonify(response_data)
 
 
