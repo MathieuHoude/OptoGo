@@ -113,10 +113,11 @@ def clinique(clinique_id):
     return render_template("patientPage.html",
                            index=index,
                            clinique=session["clinique_choisie"],
+                           optometriste=session["user"],
                            patients=patients)
 
 # route pour la page du patient
-@app.route("/patients")
+@app.route("/patients") #TODO voir si c'est nécessaire
 def patients():
     index = 2
     conn = get_db_connection()
@@ -144,6 +145,7 @@ def choice(clinique_id, patient_id):
     return render_template("choicePage.html",
                            index=index,
                            clinique=session["clinique_choisie"],
+                           optometriste=session["user"],
                            patient=session["patient_choisi"])
 
 
@@ -158,6 +160,7 @@ def patient_details(patient_id):
     return render_template("patientInformationPage.html",
                            index=index,
                            clinique=session["clinique_choisie"],
+                           optometriste=session["user"],
                            patient=session["patient_choisi"])
 
 
@@ -178,6 +181,7 @@ def patient_exam():
         return render_template("newExamPage.html",
                             index=index,
                             clinique=ClinicGlobal,
+                            optometriste=session["user"],
                             patient=PatientSelect
                             )
     except Error as e:
