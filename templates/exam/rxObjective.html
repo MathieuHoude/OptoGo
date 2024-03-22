@@ -1,0 +1,65 @@
+<!--
+RX_Objective
+-->
+<div class="flex flex-col">
+<label for="hdc" class="block mb-2 mt-5 text-sm font-medium text-gray-900 dark:text-white">RX_Objective</label>
+<div class=" mt-2">
+    <div class=" gap-2 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <form class="flex gap-2 mx-auto">
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sphere</label>
+                <div class="flex flex-col">
+                    <input type="number" id="sphere_od" class="prescription-input" placeholder="OD" required/>
+                    <input type="number" id="sphere_og" class="prescription-input" placeholder="OG" required/>
+                </div>
+            </div>
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ast</label>
+                <div class="flex flex-col">
+                    <input type="number" id="ast_od" class="prescription-input" required/>
+                    <input type="number" id="ast_og" class="prescription-input" required/>
+                </div>
+            </div>
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Axe</label>
+                <div class="flex flex-col">
+                    <input type="number" id="axe_od" class="prescription-input" required/>
+                    <input type="number" id="axe_og" class="prescription-input" required/>
+                </div>
+            </div>
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add</label>
+                <div class="flex flex-col">
+                    <input type="number" id="add_od" class="prescription-input" required/>
+                    <input type="number" id="add_og" class="prescription-input" required/>
+                </div>
+            </div>
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Acuite</label>
+                <div class="flex flex-col">
+                    <select name="acuity_od" id="acuity-select_od" class="prescription-input" required>
+                        <option value="">A/V</option>
+                        <option value="1/6">1/6</option>
+                        <option value="2/6">2/6</option>
+                        <option value="3/6">3/6</option>
+                        <option value="4/6">4/6</option>
+                        <option value="5/6">5/6</option>
+                        <option value="6/6">6/6</option>
+                    </select>
+                </div>
+                <div class="flex flex-col">
+                    <select name="acuity_og" id="acuity-select_og" class="prescription-input" required>
+                        <option value="">A/V</option>
+                        <option value="1/6">1/6</option>
+                        <option value="2/6">2/6</option>
+                        <option value="3/6">3/6</option>
+                        <option value="4/6">4/6</option>
+                        <option value="5/6">5/6</option>
+                        <option value="6/6">6/6</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>

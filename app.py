@@ -1,13 +1,217 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from dotenv import load_dotenv
+import os
+import mysql.connector
+from mysql.connector import Error
+import bcrypt
 
 app = Flask(__name__)
+app.secret_key = 'optogo' #TODO CHANGER!!
+# Load environment variables from .env file
+load_dotenv()
 
+# Define a list of routes that should not require authentication
+ROUTES_NOT_REQUIRING_AUTH = ['login']
+
+def get_db_connection():
+    # Replace these with your actual database connection details
+    # MySQL configuration
+    mysql_config = {
+        'host': os.getenv('HOST'),
+        'user': os.getenv('USERNAME'),
+        'password': os.getenv('PASSWORD'),
+        'database': os.getenv('DBNAME')
+    }
+
+    # Connect to the MySQL server
+    try:
+        connection = mysql.connector.connect(**mysql_config)
+
+        if connection.is_connected():
+            return connection
+
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
+
+# Middleware to check if user is logged in before serving any route
+@app.before_request
+def require_login():
+    if request.endpoint and request.endpoint not in ROUTES_NOT_REQUIRING_AUTH and not 'user' in session:
+        if not request.path.startswith(app.static_url_path):
+            return redirect(url_for('login'))
 
 @app.route("/")
 @app.route("/index")
 def index():
-	return render_template("index.html")
+    index = 1
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT o.*, a.street_number, a.street_name, a.city, a.province, a.postal_code FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = {session["user"]["ID"]};')
+    session["user"] = cursor.fetchone()
+    cursor.execute(f'SELECT DISTINCT c.* FROM optometristes o JOIN optometristes_cliniques oc ON o.ID = oc.optometriste_ID JOIN cliniques c ON oc.clinique_ID = c.ID  WHERE o.ID = "{session["user"]["ID"]}";')
+    cliniques = cursor.fetchall()
+    conn.close()
+
+    clinique_choisie = None
+    if 'clinique_choisie' in session:
+        clinique_choisie = session['clinique_choisie']
+    return render_template(
+        "index.html",
+        index=index,
+        optometriste=session["user"],
+        cliniques=cliniques,
+        clinique_choisie=clinique_choisie
+    )
+
+# route pour la page d'authentification
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f'SELECT * FROM optometristes WHERE email = "{email}"')
+        optometriste = cursor.fetchone()
+        conn.close()
+        
+        if(optometriste is None):
+            session["login_error"] = {'title': 'Erreur authentification', 'text': 'Veuillez vérifier votre email ou mot de passe'}
+            return redirect(url_for("login"))
+        
+        # Check if the provided password matches the stored hashed password
+        if bcrypt.checkpw(password.encode('utf-8'), optometriste['password'].encode()):
+            session.pop('login_error', None)
+            session["user"] = optometriste
+            return redirect(url_for("index"))
+        else:
+            session["login_error"] = {'title': 'Erreur authentification', 'text': 'Veuillez vérifier votre email ou mot de passe'}
+            return redirect(url_for("login"))
+    else :
+        if 'user' in session:
+            return redirect(url_for("index"))
+        else:
+            return render_template("loginPage.html")
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+# route pour la page du patient
+@app.route("/cliniques/<clinique_id>")
+def clinique(clinique_id):
+    index = 2
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id};')
+    session["clinique_choisie"] = cursor.fetchone()
+    cursor.execute(f'SELECT p.* FROM cliniques c JOIN patients_cliniques pc ON c.ID = pc.clinique_ID JOIN patients p ON pc.patient_ID = p.ID WHERE c.ID = {clinique_id} ORDER BY p.last_name;')
+    patients = cursor.fetchall()
+    conn.close()
+    return render_template("patientPage.html",
+                           index=index,
+                           clinique=session["clinique_choisie"],
+                           optometriste=session["user"],
+                           patients=patients)
+
+# route pour la page du patient
+@app.route("/patients") #TODO voir si c'est nécessaire
+def patients():
+    index = 2
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM patients ORDER BY last_name LIMIT 100')
+    Patients = cursor.fetchall() 
+    conn.close()
+    return render_template("patientPage.html",
+                           index=index,
+                           ClinicGlobal=ClinicGlobal,
+                           Patients=Patients)
+
+
+# route pour la page des cards de choix
+@app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>")
+def choice(clinique_id, patient_id):
+    index = 3
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
+    session["clinique_choisie"] = cursor.fetchone()
+    cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
+    session["patient_choisi"] = cursor.fetchone()
+    conn.close()
+    return render_template("choicePage.html",
+                           index=index,
+                           clinique=session["clinique_choisie"],
+                           optometriste=session["user"],
+                           patient=session["patient_choisi"])
+
+
+# route pour la page des informations du patient
+@app.route("/patients/<int:patient_id>")
+def patient_details(patient_id):
+    index = 4
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
+    session["patient_choisi"] = cursor.fetchone()
+    return render_template("patientInformationPage.html",
+                           index=index,
+                           clinique=session["clinique_choisie"],
+                           optometriste=session["user"],
+                           patient=session["patient_choisi"])
+
+
+# route pour la page d'un nouvel examen
+@app.route("/examens/new")
+def patient_exam():
+    try:
+        clinique_id = request.args.get('clinique_id')
+        patient_id = request.args.get('patient_id')
+        index = 5
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
+        ClinicGlobal = cursor.fetchone()
+        cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
+        PatientSelect = cursor.fetchone()
+        conn.close()
+        return render_template("newExamPage.html",
+                            index=index,
+                            clinique=ClinicGlobal,
+                            optometriste=session["user"],
+                            patient=PatientSelect
+                            )
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
+
+# gestion de la requete HTTP pour mettre a jour la clinique
+@app.route("/update_clinic", methods=["GET"])
+def update_clinic():
+    selected_option = request.args.get("selected_option")
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT ID FROM cliniques WHERE name = "{selected_option}";')
+    session['clinique_choisie'] = cursor.fetchone()
+    conn.close()
+    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique_choisie']}
+    return jsonify(response_data)
+
+
+# gestion de la requete HTTP pour mettre a jour les infos de l'opto
+@app.route("/update_opto", methods=["GET"])
+def update_opto():
+    new_practice_number = request.args.get("practice_number")
+    new_adresse = request.args.get("adresse")
+    new_phone_number = request.args.get("phone_number")
+    session['user']["PracticeNumber"] = new_practice_number
+    session['user']["Adresse"] = new_adresse
+    session['user']["Phone"] = new_phone_number
+    response_data = {"message": "Informations de l'optométriste mises à jour avec succès"}
+    return jsonify(response_data)
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)

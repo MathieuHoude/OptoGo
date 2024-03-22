@@ -1,14 +1,14 @@
-CREATE TABLE examens (
-    ID SERIAL PRIMARY KEY,
-    RX_objective VARCHAR(50) NOT NULL,
-    RX_subjective VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS examens (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    RX_objective JSON NOT NULL,
+    RX_subjective JSON NOT NULL,
     acuite INTEGER NOT NULL,
     adjustment VARCHAR(50) NOT NULL,
     lens_type VARCHAR(50) NOT NULL,
-    effectue INTEGER NOT NULL, --participation unaire avec patients
-    realise INTEGER NOT NULL, --participation unaire avec optometristes
-    FOREIGN KEY (effectue) REFERENCES patients(ID) ON DELETE NO ACTION,
-    FOREIGN KEY (realise) REFERENCES optometristes(ID) ON DELETE NO ACTION,
+    patient_ID INTEGER NOT NULL,
+    optometriste_ID INTEGER NOT NULL REFERENCES optometristes(ID) ON DELETE NO ACTION,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_ID) REFERENCES patients(ID) ON DELETE NO ACTION,
+    FOREIGN KEY (optometriste_ID) REFERENCES optometristes(ID) ON DELETE NO ACTION
 );

@@ -1,0 +1,47 @@
+
+<!-- Table avec des donnees random qu'on pourra populer avec les donnees de la BD -->
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Nom du patient
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Numero d'assurance maladie
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Date de naissance
+                </th>
+                <td class="px-6 py-4 text-right">
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ patient.last_name }}, {{ patient.first_name }}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{ patient.RAMQ_number }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ patient.birth_date }}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{{clinique.ID}}/patients/{{patient.ID}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Selectionner</a>
+                    /
+                        <a href="/patients/{{patient.ID}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            
+            
+        </tbody>
+    </table>
+</div>
+
+
+  <!-- JS pour faire fonctionner Flowbite -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
