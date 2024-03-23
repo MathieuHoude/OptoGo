@@ -2,7 +2,7 @@
 Page d'informations concernant le patient
 -->
 <form>
-    <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div class="patientInformationForm">
         <div>
             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
             <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ patient['first_name'] }}" required />
@@ -19,21 +19,49 @@ Page d'informations concernant le patient
 
         <div>
             <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexe</label>
-            <input type="text" id="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ patient['gender'] }}" required />
+            <select name="genders" id="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                <option value="male" {% if patient['gender'] =='male' %} selected {% endif %}>Homme</option>
+                <option value="female" {% if patient['gender'] == 'female' %} selected {% endif %}>Femme</option>
+                <option value="other" {% if patient['gender'] == 'other' %} selected {% endif %}>Autre</option>
+            </select>
         </div>
+        
+        <div>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+            <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient['email'] }}"required />
+        </div> 
+        <div>
+            <label for="birthDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date de naissance</label>
+            <input type="date" id="birthDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient['birth_date'] }}" required />
+        </div> 
+        <div>
+            <label for="ramq" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RAMQ</label>
+            <input type="text" id="ramq" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ patient['RAMQ_number'] }}" required />
+        </div> 
     </div>
-    <div class="mb-6">
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-        <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ patient['email'] }}" required />
-    </div> 
-    <div class="mb-6">
-        <label for="birthDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date de naissance</label>
-        <input type="text" id="birthDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ patient['birth_date'] }}" required />
-    </div> 
-    <div class="mb-6">
-        <label for="ramq" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RAMQ</label>
-        <input type="text" id="ramq" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ patient['RAMQ_number'] }}" required />
-    </div> 
-
-    <button  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</button>
 </form>
+
+<button onclick="check()" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</button>
+
+
+
+<script src="/static/js/verifRAMQ.js"></script>
+
+
+<script>
+
+    function check() {
+    let ramq = (document.getElementById("ramq")).value;
+    let result = validateRAMQ(ramq);
+    
+    if (!result){
+    Swal.fire({
+        icon: 'error',
+        title: 'Numéro RAMQ non valide',
+        text: 'Veuillez vérfier le numéro RAMQ',
+    });
+    
+    }
+    }
+    
+    </script>

@@ -116,6 +116,7 @@ def clinique(clinique_id):
                            optometriste=session["user"],
                            patients=patients)
 
+
 # route pour la page du patient
 @app.route("/patients") #TODO voir si c'est nécessaire
 def patients():
@@ -129,6 +130,7 @@ def patients():
                            index=index,
                            ClinicGlobal=ClinicGlobal,
                            Patients=Patients)
+
 
 
 # route pour la page des cards de choix
@@ -147,6 +149,24 @@ def choice(clinique_id, patient_id):
                            clinique=session["clinique_choisie"],
                            optometriste=session["user"],
                            patient=session["patient_choisi"])
+
+@app.route("/cliniques/patients/new")
+def new_patient():
+    try:
+        index=2.5
+        clinique_id = request.args.get('clinique_id')
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
+        session["clinique_choisie"] = cursor.fetchone()
+        return render_template(
+            "newPatientPage.html",
+            index=index,
+            clinique=session["clinique_choisie"],
+            optometriste=session["user"])
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
+        return "An error occurred while processing your request.", 500
 
 
 # route pour la page des informations du patient

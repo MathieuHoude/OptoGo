@@ -9,35 +9,35 @@ RX_Objective
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sphere</label>
                 <div class="flex flex-col">
-                    <input type="number" id="sphere_od" class="prescription-input" placeholder="OD" required/>
-                    <input type="number" id="sphere_og" class="prescription-input" placeholder="OG" required/>
+                    <select id="sphere_od_rx_obj" class="prescription-input" required></select>
+                    <select id="sphere_og_rx_obj" class="prescription-input" required></select>
                 </div>
             </div>
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ast</label>
                 <div class="flex flex-col">
-                    <input type="number" id="ast_od" class="prescription-input" required/>
-                    <input type="number" id="ast_og" class="prescription-input" required/>
+                    <select id="ast_od_rx_obj" class="prescription-input" required></select>
+                    <select id="ast_og_rx_obj" class="prescription-input" required></select>
                 </div>
             </div>
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Axe</label>
                 <div class="flex flex-col">
-                    <input type="number" id="axe_od" class="prescription-input" required/>
-                    <input type="number" id="axe_og" class="prescription-input" required/>
+                    <select id="axe_od_rx_obj" class="prescription-input-axe" required></select>
+                    <select id="axe_og_rx_obj" class="prescription-input-axe" required></select>
                 </div>
             </div>
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add</label>
                 <div class="flex flex-col">
-                    <input type="number" id="add_od" class="prescription-input" required/>
-                    <input type="number" id="add_og" class="prescription-input" required/>
+                    <select id="add_od_rx_obj" class="prescription-input-add" required></select>
+                    <select id="add_og_rx_obj" class="prescription-input-add" required></select>
                 </div>
             </div>
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Acuite</label>
                 <div class="flex flex-col">
-                    <select name="acuity_od" id="acuity-select_od" class="prescription-input" required>
+                    <select name="acuity_od" id="acuity-select_od" class="prescription-input-acuity" required>
                         <option value="">A/V</option>
                         <option value="1/6">1/6</option>
                         <option value="2/6">2/6</option>
@@ -48,7 +48,7 @@ RX_Objective
                     </select>
                 </div>
                 <div class="flex flex-col">
-                    <select name="acuity_og" id="acuity-select_og" class="prescription-input" required>
+                    <select name="acuity_og" id="acuity-select_og" class="prescription-input-acuity" required>
                         <option value="">A/V</option>
                         <option value="1/6">1/6</option>
                         <option value="2/6">2/6</option>
