@@ -46,22 +46,25 @@ Page d'informations concernant le patient
 
 
 <script src="/static/js/verifRAMQ.js"></script>
+<script src="{{ url_for('static', filename='callAPI/verifEntry.js') }}"></script>
 
 
 <script>
 
-    function check() {
-    let ramq = (document.getElementById("ramq")).value;
-    let result = validateRAMQ(ramq);
-    
-    if (!result){
-    Swal.fire({
-        icon: 'error',
-        title: 'Numéro RAMQ non valide',
-        text: 'Veuillez vérfier le numéro RAMQ',
-    });
-    
+    async function check() {
+        let ramq = document.getElementById("ramq").value;
+        try {
+            let result = await verifRamq(ramq);
+            if (!result.valid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Numéro RAMQ non valide',
+                    text: result.message,
+                });
+            }
+        } catch (error) {
+            console.error("Une erreur s'est produite lors de la vérification du numéro RAMQ :", error);
+        }
     }
-    }
-    
-    </script>
+
+</script>

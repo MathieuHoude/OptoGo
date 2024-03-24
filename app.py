@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+import re
+from flask import Flask, make_response, render_template, request, jsonify, redirect, url_for, session
 from dotenv import load_dotenv
 import os
 import mysql.connector
@@ -220,17 +221,69 @@ def update_clinic():
     return jsonify(response_data)
 
 
-# gestion de la requete HTTP pour mettre a jour les infos de l'opto
-@app.route("/update_opto", methods=["GET"])
+
+"""
+This function updates the optometrist's information in the database.
+
+Args:
+    request_data (dict): The request data containing the new practice number,
+        address, and phone number.
+
+Returns:
+    dict: A dictionary containing the message, updated practice number, address,
+        and phone number.
+"""
+@app.route("/update_opto", methods=["POST"])
 def update_opto():
-    new_practice_number = request.args.get("practice_number")
-    new_adresse = request.args.get("adresse")
-    new_phone_number = request.args.get("phone_number")
+    request_data = request.json
+    new_practice_number = request_data.get("practice_number")
+    new_adresse = request_data.get("adresse")
+    new_phone_number = request_data.get("phone_number")
     session['user']["PracticeNumber"] = new_practice_number
     session['user']["Adresse"] = new_adresse
     session['user']["Phone"] = new_phone_number
-    response_data = {"message": "Informations de l'optométriste mises à jour avec succès"}
-    return jsonify(response_data)
+
+    response_data = {
+        "message": "Informations de l'optométriste mises à jour avec succès",
+        "PracticeNumber": new_practice_number,
+        "Adresse": new_adresse,
+        "Phone": new_phone_number
+    }
+
+    response = make_response(jsonify(response_data))
+    response.status_code = 200
+    return response
+
+
+"""
+    This function is used to verify the RAMQ field in the patient's record.
+
+    Args:
+        request_data (dict): The request data containing the RAMQ field.
+
+    Returns:
+        dict: A dictionary containing the validation result and message.
+
+    Raises:
+        ValueError: If the RAMQ field is empty or contains invalid characters.
+"""
+@app.route("/verif_ramq", methods=["POST"])
+def verif_ramq():
+    request_data = request.json
+    ramq = request_data.get("ramq").replace(" ", "")
+    if ramq is None:
+        return jsonify({"valid": False, "message": "Le champ RAMQ est vide."})
+    if len(ramq) == 0:
+        return jsonify({"valid": False, "message": "Le champ RAMQ est vide."})
+    if len(ramq) > 12:
+        return jsonify({"valid": False, "message": "Le champ RAMQ est trop long."})
+    if not re.match("^[A-Za-z]+$", ramq[:3]):
+        return jsonify({"valid": False, "message": "Les 4 premiers caractères du champ RAMQ doivent être des lettres alphabétiques."})
+    if not re.match("^\d+$", ramq[3:]):
+        return jsonify({"valid": False, "message": "Les caractères restants du champ RAMQ doivent être des chiffres."})
+    return jsonify({"valid": True, "message": "Le champ RAMQ est valide."})
+
+
 
 
 if __name__ == '__main__':
