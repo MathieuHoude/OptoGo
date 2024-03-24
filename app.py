@@ -254,6 +254,19 @@ def update_opto():
     response.status_code = 200
     return response
 
+
+"""
+    This function is used to verify the RAMQ field in the patient's record.
+
+    Args:
+        request_data (dict): The request data containing the RAMQ field.
+
+    Returns:
+        dict: A dictionary containing the validation result and message.
+
+    Raises:
+        ValueError: If the RAMQ field is empty or contains invalid characters.
+"""
 @app.route("/verif_ramq", methods=["POST"])
 def verif_ramq():
     request_data = request.json
