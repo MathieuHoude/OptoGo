@@ -6,6 +6,8 @@ import mysql.connector
 from mysql.connector import Error
 import bcrypt
 
+from forms.patient_form import PatientForm
+
 app = Flask(__name__)
 app.secret_key = 'optogo' #TODO CHANGER!!
 # Load environment variables from .env file
@@ -36,6 +38,8 @@ def get_db_connection():
 
 # Middleware to check if user is logged in before serving any route
 @app.before_request
+# def before_request():
+#     session.pop('confirmation_message', None)
 def require_login():
     if request.endpoint and request.endpoint not in ROUTES_NOT_REQUIRING_AUTH and not 'user' in session:
         if not request.path.startswith(app.static_url_path):
@@ -51,6 +55,7 @@ def index():
     session["user"] = cursor.fetchone()
     cursor.execute(f'SELECT DISTINCT c.* FROM optometristes o JOIN optometristes_cliniques oc ON o.ID = oc.optometriste_ID JOIN cliniques c ON oc.clinique_ID = c.ID  WHERE o.ID = "{session["user"]["ID"]}";')
     cliniques = cursor.fetchall()
+    cursor.close()
     conn.close()
 
     clinique_choisie = None
@@ -75,6 +80,7 @@ def login():
         cursor = conn.cursor(dictionary=True)
         cursor.execute(f'SELECT * FROM optometristes WHERE email = "{email}"')
         optometriste = cursor.fetchone()
+        cursor.close()
         conn.close()
         
         if(optometriste is None):
@@ -110,6 +116,7 @@ def clinique(clinique_id):
     session["clinique_choisie"] = cursor.fetchone()
     cursor.execute(f'SELECT p.* FROM cliniques c JOIN patients_cliniques pc ON c.ID = pc.clinique_ID JOIN patients p ON pc.patient_ID = p.ID WHERE c.ID = {clinique_id} ORDER BY p.last_name;')
     patients = cursor.fetchall()
+    cursor.close()
     conn.close()
     return render_template("patientPage.html",
                            index=index,
@@ -125,7 +132,8 @@ def patients():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM patients ORDER BY last_name LIMIT 100')
-    Patients = cursor.fetchall() 
+    Patients = cursor.fetchall()
+    cursor.close()
     conn.close()
     return render_template("patientPage.html",
                            index=index,
@@ -144,6 +152,7 @@ def choice(clinique_id, patient_id):
     session["clinique_choisie"] = cursor.fetchone()
     cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
     session["patient_choisi"] = cursor.fetchone()
+    cursor.close()
     conn.close()
     return render_template("choicePage.html",
                            index=index,
@@ -160,6 +169,8 @@ def new_patient():
         cursor = conn.cursor(dictionary=True)
         cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
         session["clinique_choisie"] = cursor.fetchone()
+        cursor.close()
+        conn.close()
         return render_template(
             "newPatientPage.html",
             index=index,
@@ -177,13 +188,62 @@ def patient_details(patient_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
-    session["patient_choisi"] = cursor.fetchone()
+    patient = cursor.fetchone()
+    session["patient_choisi"] = patient
+    form = PatientForm(data=patient)
+    confirmation_message = session.pop('confirmation_message', None)
+    cursor.close()
+    conn.close()
     return render_template("patientInformationPage.html",
                            index=index,
                            clinique=session["clinique_choisie"],
                            optometriste=session["user"],
-                           patient=session["patient_choisi"])
+                           patient=session["patient_choisi"],
+                           confirmation_message=confirmation_message,
+                           form=form)
 
+# route pour la page de modification des informations du patient
+@app.route("/patients/<int:patient_id>/edit", methods=['GET', 'POST'])
+def patient_edit(patient_id):
+
+    index = 4
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
+    patient = cursor.fetchone()
+    session["patient_choisi"] = patient
+    form = PatientForm(data=patient)
+
+    if request.method == 'POST' and form.validate_on_submit():
+        modified_fields = {}
+        for field in form:
+            if field.name != 'csrf_token' and field.data != patient[field.name]:
+                modified_fields[field.name] = field.data
+
+        if modified_fields:
+            sql_update_query = "UPDATE patients SET "
+            sql_update_query += ", ".join([f"{field} = %s" for field in modified_fields.keys()])
+            sql_update_query += " WHERE id = %s"
+            
+            # Create a tuple of parameter values in the same order as placeholders
+            params = tuple(modified_fields.values()) + (patient_id,)
+
+            cursor.execute(sql_update_query, params)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            session['confirmation_message'] = {"title": "Modifications complétées", "text": f"Les informations de {patient['first_name']} {patient['last_name']} ont été mises à jour avec succès."}
+            return redirect(url_for("patient_details", patient_id=patient['ID']))
+
+    else:
+        cursor.close()
+        conn.close()
+        return render_template("patientEditPage.html",
+                            index=index,
+                            clinique=session["clinique_choisie"],
+                            optometriste=session["user"],
+                            patient=session["patient_choisi"],
+                            form=form)
 
 # route pour la page d'un nouvel examen
 @app.route("/examens/new")

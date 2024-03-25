@@ -1,0 +1,74 @@
+<!--
+Page d'informations concernant le patient
+-->
+<form method="post">
+    {{ form.hidden_tag() }}
+    <!-- {{ form.first_name.label }}: {{ form.first_name }} -->
+    <div class="patientInformationForm">
+        <div>
+            <label for="{{ form.first_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.first_name.label }}</label>
+            <input name="{{ form.first_name.name }}" type="text" id="{{ form.first_name.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.first_name.data }}" required />
+            {% for error in form.first_name.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            <label for="{{ form.last_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.last_name.label }}</label>
+            <input name="{{ form.last_name.name }}" type="text" id="{{ form.last_name.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.last_name.data }}" required />
+            {% for error in form.last_name.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div>
+            <label for="{{ form.phone_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.phone_number.label }}</label>
+            <input name="{{ form.phone_number.name }}" type="phone" id="{{ form.phone_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.phone_number.data }}" required />
+            {% for error in form.phone_number.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div>
+            <label for="{{ form.gender.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.gender.label }}</label>
+            <select name="{{ form.gender.name }}" id="{{ form.gender.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                <option value="Male" {% if form.gender.data  =='Male' %} selected {% endif %}>Homme</option>
+                <option value="Female" {% if form.gender.data == 'Female' %} selected {% endif %}>Femme</option>
+                <option value="Genderqueer" {% if form.gender.data == 'Genderqueer' %} selected {% endif %}>Non-binaire</option>
+                <option value="Bigender" {% if form.gender.data == 'Bigender' %} selected {% endif %}>Bigenre</option>
+                <option value="Agender" {% if form.gender.data == 'Agender' %} selected {% endif %}>Agenre</option>
+                <option value="Polygender" {% if form.gender.data == 'Polygender' %} selected {% endif %}>Polygenre</option>
+                <option value="Other" {% if form.gender.data == 'Other' %} selected {% endif %}>Autre</option>
+            </select>
+            {% for error in form.gender.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            <label for="{{ form.email.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.email.label }}</label>
+            <input name="{{ form.email.name }}" type="email" id="{{ form.email.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.email.data }}"required />
+            {% for error in form.email.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div> 
+        <div>
+            <label for="{{ form.birth_date.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.birth_date.label }}</label>
+            <input  name="{{ form.birth_date.name }}" type="date" id="{{ form.birth_date.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.birth_date.data }}" required />
+            {% for error in form.birth_date.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div> 
+        <div>
+            <label for="{{ form.RAMQ_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RAMQ_number.label }}</label>
+            <input name="{{ form.RAMQ_number.name }}" type="text" id="{{ form.RAMQ_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.RAMQ_number.data }}" required />
+            {% for error in form.RAMQ_number.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div> 
+    </div>
+    <button type="submit" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</button>
+    <a href="/patients/{{patient['ID']}}">
+        <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Annuler</button>
+    </a>
+</form>
+
