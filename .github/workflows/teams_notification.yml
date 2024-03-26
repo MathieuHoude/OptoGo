@@ -7,8 +7,6 @@ on:
 
 jobs:
   send-notification:
-    runs-on: ubuntu-latest
-
     steps:
       - name: Send Notification
         uses: dhollerbach/actions.send-message-to-ms-teams@v3
