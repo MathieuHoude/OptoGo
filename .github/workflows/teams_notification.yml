@@ -13,5 +13,5 @@ jobs:
       - name: Send Notification
         uses: dhollerbach/actions.send-message-to-ms-teams@v3
         with:
-          webhook-url: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
-          text: 'New push detected on the main branch!'
+          webhook: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
+          message: 'New push detected on the main branch!'
