@@ -1,0 +1,17 @@
+name: Send Notification to Microsoft Teams
+
+on:
+  push:
+    branches:
+      - main  # Adjust this branch name as needed
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Notification
+        uses: dhollerbach/actions.send-message-to-ms-teams@v3
+        with:
+          webhook-url: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
+          text: 'New push detected on the main branch!'
