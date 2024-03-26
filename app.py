@@ -169,13 +169,15 @@ def new_patient():
         cursor = conn.cursor(dictionary=True)
         cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
         session["clinique_choisie"] = cursor.fetchone()
+        form = PatientForm()
         cursor.close()
         conn.close()
         return render_template(
             "newPatientPage.html",
             index=index,
             clinique=session["clinique_choisie"],
-            optometriste=session["user"])
+            optometriste=session["user"],
+            form=form)
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
         return "An error occurred while processing your request.", 500
