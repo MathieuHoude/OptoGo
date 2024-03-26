@@ -1,15 +1,20 @@
-name: Send Notification to Microsoft Teams
+name: MS Teams Notification
 
-on:
-  push:
-    branches:
-      - main  # Adjust this branch name as needed
+on: [push, pull_request]
 
 jobs:
-  send-notification:
+  build:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Send Notification
-        uses: dhollerbach/actions.send-message-to-ms-teams@v3
+      - uses: actions/checkout@v4
+      # this is the new step using the ms-teams-notification action
+      - name: Notify dedicated teams channel
+        uses: jdcargile/ms-teams-notification@v1.4
         with:
-          webhook: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
-          message: 'New push detected on the main branch!'
+          github-token: ${{ github.token }} # this will use the runner's token.
+          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          notification-summary: New push detected
+          notification-color: 17a2b8
+          timezone: America/Denver
+          verbose-logging: true
