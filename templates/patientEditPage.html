@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OptoGo - Patients</title>
+    <title>Optogo - Patient Details</title>
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/newPatientButton.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/form.css') }}">
 </head>
 
 <body>
@@ -22,8 +23,8 @@
     {% include "breadcrumb.html" %}
 </div>
 
-<div id="patient_information">
-    {% include "patientsTable.html"%}
+<div id="patientsTable" class="m-4">
+    {% include "patientEditForm.html" %}
 </div>
 </body>
 

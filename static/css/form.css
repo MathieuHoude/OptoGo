@@ -1,0 +1,9 @@
+.patientInformationForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+.patientInformationForm div {
+  margin-bottom: 20px;
+}
