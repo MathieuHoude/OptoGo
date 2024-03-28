@@ -2,44 +2,53 @@
     <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Troubles de la vision</h5>
     <div class="flex flex-col gap-2">
         <div class="checkbox">
-            <label for="glaucome" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Glaucome</label>
-            <input id="glaucome" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.glaucoma.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.glaucoma.label }}</label>
+            <input name="{{ form.glaucoma.name }}" type="checkbox"  id="{{ form.glaucoma.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.glaucoma.data }}" />
+            {% for error in form.glaucoma.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="cataracte" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cataracte</label>
-            <input id="cataracte" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.cataract.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.cataract.label }}</label>
+            <input name="{{ form.cataract.name }}" type="checkbox"  id="{{ form.cataract.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.cataract.data }}" />
+            {% for error in form.cataract.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="strabisme" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Strabisme</label>
-            <input id="strabisme" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.strabismus.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.strabismus.label }}</label>
+            <input name="{{ form.strabismus.name }}" type="checkbox"  id="{{ form.strabismus.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.strabismus.data }}" />
+            {% for error in form.strabismus.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="vision-double" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Vision
-                double</label>
-            <input id="vision-double" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.double_vision.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.double_vision.label }}</label>
+            <input name="{{ form.double_vision.name }}" type="checkbox"  id="{{ form.double_vision.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.double_vision.data }}" />
+            {% for error in form.double_vision.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="perception-de-flash" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Perception
-                de
-                flash</label>
-            <input id="perception-de-flash" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.flash.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.flash.label }}</label>
+            <input name="{{ form.flash.name }}" type="checkbox"  id="{{ form.flash.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.flash.data }}" />
+            {% for error in form.flash.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="mouches volantes" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Mouches
-                volantes</label>
-            <input id="mouches volantes" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.floaters.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.floaters.label }}</label>
+            <input name="{{ form.floaters.name }}" type="checkbox"  id="{{ form.floaters.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.floaters.data }}" />
+            {% for error in form.floaters.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="degenerescence-maculaire" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Degenerescence
-                maculaire</label>
-            <input id="degenerescence-maculaire" type="checkbox" value=""
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="{{ form.macular_degeneration.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.macular_degeneration.label }}</label>
+            <input name="{{ form.macular_degeneration.name }}" type="checkbox"  id="{{ form.macular_degeneration.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.macular_degeneration.data }}" />
+            {% for error in form.macular_degeneration.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
         </div>
     </div>
 </div>

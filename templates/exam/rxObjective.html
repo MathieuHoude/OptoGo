@@ -7,55 +7,79 @@ RX_Objective
     <div class=" gap-2 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <form class="flex gap-2 mx-auto">
             <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sphere</label>
+                <label for="{{ form.RX_objective_Sphere_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Sphere_LE.label }}</label>
                 <div class="flex flex-col">
-                    <select id="sphere_od_rx_obj" class="prescription-input" required></select>
-                    <select id="sphere_og_rx_obj" class="prescription-input" required></select>
-                </div>
-            </div>
-            <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ast</label>
-                <div class="flex flex-col">
-                    <select id="ast_od_rx_obj" class="prescription-input" required></select>
-                    <select id="ast_og_rx_obj" class="prescription-input" required></select>
-                </div>
-            </div>
-            <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Axe</label>
-                <div class="flex flex-col">
-                    <select id="axe_od_rx_obj" class="prescription-input-axe" required></select>
-                    <select id="axe_og_rx_obj" class="prescription-input-axe" required></select>
-                </div>
-            </div>
-            <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add</label>
-                <div class="flex flex-col">
-                    <select id="add_od_rx_obj" class="prescription-input-add" required></select>
-                    <select id="add_og_rx_obj" class="prescription-input-add" required></select>
-                </div>
-            </div>
-            <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Acuite</label>
-                <div class="flex flex-col">
-                    <select name="acuity_od" id="acuity-select_od" class="prescription-input-acuity" required>
-                        <option value="">A/V</option>
-                        <option value="1/6">1/6</option>
-                        <option value="2/6">2/6</option>
-                        <option value="3/6">3/6</option>
-                        <option value="4/6">4/6</option>
-                        <option value="5/6">5/6</option>
-                        <option value="6/6">6/6</option>
+                    <select id="{{ form.RX_objective_Sphere_LE.id }}" name="{{ form.RX_objective_Sphere_LE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Sphere_LE.choices %}
+                            <option  {% if value  == form.RX_objective_Sphere_LE.data or (form.RX_objective_Sphere_LE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}    
+                    </select>
+                    <select id="{{ form.RX_objective_Sphere_RE.id }}" name="{{ form.RX_objective_Sphere_RE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Sphere_RE.choices %}
+                            <option  {% if value  == form.RX_objective_Sphere_RE.data or (form.RX_objective_Sphere_RE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}  
                     </select>
                 </div>
+            </div>
+            <div>
+                <label for="{{ form.RX_objective_Ast_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Ast_LE.label }}</label>
                 <div class="flex flex-col">
-                    <select name="acuity_og" id="acuity-select_og" class="prescription-input-acuity" required>
-                        <option value="">A/V</option>
-                        <option value="1/6">1/6</option>
-                        <option value="2/6">2/6</option>
-                        <option value="3/6">3/6</option>
-                        <option value="4/6">4/6</option>
-                        <option value="5/6">5/6</option>
-                        <option value="6/6">6/6</option>
+                    <select id="{{ form.RX_objective_Ast_LE.id }}" name="{{ form.RX_objective_Ast_LE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Ast_LE.choices %}
+                            <option  {% if value  == form.RX_objective_Ast_LE.data or (form.RX_objective_Ast_LE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}    
+                    </select>
+                    <select id="{{ form.RX_objective_Ast_RE.id }}" name="{{ form.RX_objective_Ast_RE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Ast_RE.choices %}
+                            <option {% if value  == form.RX_objective_Ast_RE.data or (form.RX_objective_Ast_RE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}  
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="{{ form.RX_objective_Axis_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Axis_LE.label }}</label>
+                <div class="flex flex-col">
+                    <select id="{{ form.RX_objective_Axis_LE.id }}" name="{{ form.RX_objective_Axis_LE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Axis_LE.choices %}
+                            <option  {% if value  == form.RX_objective_Axis_LE.data or (form.RX_objective_Axis_LE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}    
+                    </select>
+                    <select id="{{ form.RX_objective_Axis_RE.id }}" name="{{ form.RX_objective_Axis_RE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Axis_RE.choices %}
+                            <option {% if value  == form.RX_objective_Axis_RE.data or (form.RX_objective_Axis_RE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}  
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="{{ form.RX_objective_Add_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Add_LE.label }}</label>
+                <div class="flex flex-col">
+                    <select id="{{ form.RX_objective_Add_LE.id }}" name="{{ form.RX_objective_Add_LE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Add_LE.choices %}
+                            <option  {% if value  == form.RX_objective_Add_LE.data or (form.RX_objective_Add_LE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}    
+                    </select>
+                    <select id="{{ form.RX_objective_Add_RE.id }}" name="{{ form.RX_objective_Add_RE.name }}" class="prescription-input">
+                        {% for value, label in form.RX_objective_Add_RE.choices %}
+                            <option {% if value  == form.RX_objective_Add_RE.data or (form.RX_objective_Add_RE.data == None and value == '0.00')%} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                        {% endfor %}  
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="{{ form.RX_objective_Acuity_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Acuity_LE.label }}</label>
+                <div class="flex flex-col">
+                    <select id="{{ form.RX_objective_Acuity_LE.id }}" name="{{ form.RX_objective_Acuity_LE.name }}" class="prescription-input">
+                        <option disabled selected value="">A/V</option>
+                        {% for value, label in form.RX_objective_Acuity_LE.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <select id="{{ form.RX_objective_Acuity_RE.id }}" name="{{ form.RX_objective_Acuity_RE.name }}" class="prescription-input">
+                        <option disabled selected value="">A/V</option>
+                        {% for value, label in form.RX_objective_Acuity_RE.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>

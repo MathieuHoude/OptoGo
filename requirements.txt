@@ -5,3 +5,4 @@ fontawesomefree==6.5.1
 bcrypt==4.1.2
 flask-wtf==1.2.1
 email-validator==2.1.1
+lorem-text==2.1
