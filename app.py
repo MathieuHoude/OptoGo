@@ -163,8 +163,8 @@ def choice(clinique_id, patient_id):
     index = 3
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    update_session(cursor, "clinique", clinique_id)
-    update_session(cursor, "patient", patient_id)
+    update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+    update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
     cursor.close()
     conn.close()
     return render_template("choicePage.html",
