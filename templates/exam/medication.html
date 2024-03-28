@@ -2,37 +2,37 @@
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Medicaments</h5>
     <div class="flex flex-col gap-2">
         <div class="checkbox">
-            <label for="{{ form.amiodarone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.amiodarone.label }}</label>
-            <input name="{{ form.amiodarone.name }}" type="checkbox"  id="{{ form.amiodarone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.amiodarone.data }}" />
-            {% for error in form.amiodarone.errors %}
+            <label for="{{ form.medications_amiodarone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_amiodarone.label }}</label>
+            <input name="{{ form.medications_amiodarone.name }}" type="checkbox"  {% if form.medications_amiodarone.data%}checked{% endif %} id="{{ form.medications_amiodarone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_amiodarone.data }}" />
+            {% for error in form.medications_amiodarone.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.digoxin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.digoxin.label }}</label>
-            <input name="{{ form.digoxin.name }}" type="checkbox"  id="{{ form.digoxin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.digoxin.data }}" />
-            {% for error in form.digoxin.errors %}
+            <label for="{{ form.medications_digoxin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_digoxin.label }}</label>
+            <input name="{{ form.medications_digoxin.name }}" type="checkbox"  {% if form.medications_digoxin.data%}checked{% endif %} id="{{ form.medications_digoxin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_digoxin.data }}" />
+            {% for error in form.medications_digoxin.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.isotretinoin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.isotretinoin.label }}</label>
-            <input name="{{ form.isotretinoin.name }}" type="checkbox"  id="{{ form.isotretinoin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.isotretinoin.data }}" />
-            {% for error in form.isotretinoin.errors %}
+            <label for="{{ form.medications_isotretinoin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_isotretinoin.label }}</label>
+            <input name="{{ form.medications_isotretinoin.name }}" type="checkbox"  {% if form.medications_isotretinoin.data%}checked{% endif %} id="{{ form.medications_isotretinoin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_isotretinoin.data }}" />
+            {% for error in form.medications_isotretinoin.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.chloroquine.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.chloroquine.label }}</label>
-            <input name="{{ form.chloroquine.name }}" type="checkbox"  id="{{ form.chloroquine.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.chloroquine.data }}" />
-            {% for error in form.chloroquine.errors %}
+            <label for="{{ form.medications_chloroquine.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_chloroquine.label }}</label>
+            <input name="{{ form.medications_chloroquine.name }}" type="checkbox"  {% if form.medications_chloroquine.data%}checked{% endif %} id="{{ form.medications_chloroquine.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_chloroquine.data }}" />
+            {% for error in form.medications_chloroquine.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.methylprednisolone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.methylprednisolone.label }}</label>
-            <input name="{{ form.methylprednisolone.name }}" type="checkbox"  id="{{ form.methylprednisolone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.methylprednisolone.data }}" />
-            {% for error in form.methylprednisolone.errors %}
+            <label for="{{ form.medications_methylprednisolone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_methylprednisolone.label }}</label>
+            <input name="{{ form.medications_methylprednisolone.name }}" type="checkbox"  {% if form.medications_methylprednisolone.data%}checked{% endif %} id="{{ form.medications_methylprednisolone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_methylprednisolone.data }}" />
+            {% for error in form.medications_methylprednisolone.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>

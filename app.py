@@ -38,8 +38,8 @@ def get_db_connection():
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
 
-def update_session(cursor, key, value):
-    cursor.execute(f'SELECT * FROM {key}s WHERE ID = {value}')
+def update_session(cursor, key, query):
+    cursor.execute(query)
     session[key] = cursor.fetchone()
 
     # try:
@@ -267,9 +267,9 @@ def exam_details(clinique_id, patient_id, examen_id):
         index = 5
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        update_session(cursor, "clinique", clinique_id)
-        update_session(cursor, "patient", patient_id)
-        update_session(cursor, "examen", examen_id)
+        update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+        update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
+        update_session(cursor, "examen", f"SELECT * FROM examens e LEFT JOIN histoireDeCas h ON e.ID = h.examen_ID WHERE e.ID = {examen_id}" )
         conn.close()
         session["examen"] = parse_exam_json_objects(session["examen"])
         form = ExamForm(data=session["examen"])
