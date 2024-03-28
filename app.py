@@ -2,11 +2,13 @@ import re
 from flask import Flask, make_response, render_template, request, jsonify, redirect, url_for, session
 from dotenv import load_dotenv
 import os
+import json
 import mysql.connector
 from mysql.connector import Error
 import bcrypt
 
 from forms.patient_form import PatientForm
+from forms.exam_form import ExamForm
 
 app = Flask(__name__)
 app.secret_key = 'optogo' #TODO CHANGER!!
@@ -36,6 +38,37 @@ def get_db_connection():
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
 
+def update_session(cursor, key, value):
+    cursor.execute(f'SELECT * FROM {key}s WHERE ID = {value}')
+    session[key] = cursor.fetchone()
+
+    # try:
+    #     if session[key]["ID"] != value:
+    #         cursor.execute(f'SELECT * FROM {key}s WHERE ID = {value}')
+    #         session[key] = cursor.fetchone()
+    # except(KeyError): 
+    #     cursor.execute(f'SELECT * FROM {key}s WHERE ID = {value}')
+    #     session[key] = cursor.fetchone()
+
+def parse_exam_json_objects(dict):
+    # Initialize a new dictionary to store extracted key-value pairs
+    new_dict = {}
+
+    # Iterate over the original dictionary
+    for key, value in dict.items():
+        # Try to parse the value as JSON
+        try:
+            json_data = json.loads(value)
+            # If successful, iterate over the JSON object and add key-value pairs to the new dictionary
+            for json_key, json_value in json_data.items():
+                new_key = f'{key}_{json_key}'  # Creating new keys by concatenating the original key with JSON keys
+                new_dict[new_key] = json_value
+        except (json.JSONDecodeError, TypeError):
+            # If parsing fails, simply copy the key-value pair to the new dictionary
+            new_dict[key] = value
+    
+    return new_dict
+
 # Middleware to check if user is logged in before serving any route
 @app.before_request
 # def before_request():
@@ -58,15 +91,15 @@ def index():
     cursor.close()
     conn.close()
 
-    clinique_choisie = None
-    if 'clinique_choisie' in session:
-        clinique_choisie = session['clinique_choisie']
+    clinique = None
+    if 'clinique' in session:
+        clinique = session['clinique']
     return render_template(
         "index.html",
         index=index,
         optometriste=session["user"],
         cliniques=cliniques,
-        clinique_choisie=clinique_choisie
+        clinique=clinique
     )
 
 # route pour la page d'authentification
@@ -113,34 +146,16 @@ def clinique(clinique_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id};')
-    session["clinique_choisie"] = cursor.fetchone()
+    session["clinique"] = cursor.fetchone()
     cursor.execute(f'SELECT p.* FROM cliniques c JOIN patients_cliniques pc ON c.ID = pc.clinique_ID JOIN patients p ON pc.patient_ID = p.ID WHERE c.ID = {clinique_id} ORDER BY p.last_name;')
     patients = cursor.fetchall()
     cursor.close()
     conn.close()
     return render_template("patientPage.html",
                            index=index,
-                           clinique=session["clinique_choisie"],
+                           clinique=session["clinique"],
                            optometriste=session["user"],
                            patients=patients)
-
-
-# route pour la page du patient
-@app.route("/patients") #TODO voir si c'est nécessaire
-def patients():
-    index = 2
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM patients ORDER BY last_name LIMIT 100')
-    Patients = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return render_template("patientPage.html",
-                           index=index,
-                           ClinicGlobal=ClinicGlobal,
-                           Patients=Patients)
-
-
 
 # route pour la page des cards de choix
 @app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>")
@@ -148,17 +163,15 @@ def choice(clinique_id, patient_id):
     index = 3
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
-    session["clinique_choisie"] = cursor.fetchone()
-    cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
-    session["patient_choisi"] = cursor.fetchone()
+    update_session(cursor, "clinique", clinique_id)
+    update_session(cursor, "patient", patient_id)
     cursor.close()
     conn.close()
     return render_template("choicePage.html",
                            index=index,
-                           clinique=session["clinique_choisie"],
+                           clinique=session["clinique"],
                            optometriste=session["user"],
-                           patient=session["patient_choisi"])
+                           patient=session["patient"])
 
 @app.route("/cliniques/patients/new")
 def new_patient():
@@ -168,14 +181,14 @@ def new_patient():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
-        session["clinique_choisie"] = cursor.fetchone()
+        session["clinique"] = cursor.fetchone()
         form = PatientForm()
         cursor.close()
         conn.close()
         return render_template(
             "newPatientPage.html",
             index=index,
-            clinique=session["clinique_choisie"],
+            clinique=session["clinique"],
             optometriste=session["user"],
             form=form)
     except Error as e:
@@ -191,16 +204,16 @@ def patient_details(patient_id):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
     patient = cursor.fetchone()
-    session["patient_choisi"] = patient
+    session["patient"] = patient
     form = PatientForm(data=patient)
     confirmation_message = session.pop('confirmation_message', None)
     cursor.close()
     conn.close()
     return render_template("patientInformationPage.html",
                            index=index,
-                           clinique=session["clinique_choisie"],
+                           clinique=session["clinique"],
                            optometriste=session["user"],
-                           patient=session["patient_choisi"],
+                           patient=session["patient"],
                            confirmation_message=confirmation_message,
                            form=form)
 
@@ -213,7 +226,7 @@ def patient_edit(patient_id):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
     patient = cursor.fetchone()
-    session["patient_choisi"] = patient
+    session["patient"] = patient
     form = PatientForm(data=patient)
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -242,15 +255,39 @@ def patient_edit(patient_id):
         conn.close()
         return render_template("patientEditPage.html",
                             index=index,
-                            clinique=session["clinique_choisie"],
+                            clinique=session["clinique"],
                             optometriste=session["user"],
-                            patient=session["patient_choisi"],
+                            patient=session["patient"],
                             form=form)
+
+# route pour la page d'un examen existant
+@app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>/examens/<int:examen_id>")
+def exam_details(clinique_id, patient_id, examen_id):
+    try:
+        index = 5
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        update_session(cursor, "clinique", clinique_id)
+        update_session(cursor, "patient", patient_id)
+        update_session(cursor, "examen", examen_id)
+        conn.close()
+        session["examen"] = parse_exam_json_objects(session["examen"])
+        form = ExamForm(data=session["examen"])
+        return render_template("examDetailsPage.html",
+                            index=index,
+                            clinique=session["clinique"],
+                            optometriste=session["user"],
+                            patient=session["patient"],
+                            form=form
+                            )
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
 
 # route pour la page d'un nouvel examen
 @app.route("/examens/new")
-def patient_exam():
+def new_patient_exam():
     try:
+        form = ExamForm()
         clinique_id = request.args.get('clinique_id')
         patient_id = request.args.get('patient_id')
         index = 5
@@ -265,7 +302,8 @@ def patient_exam():
                             index=index,
                             clinique=ClinicGlobal,
                             optometriste=session["user"],
-                            patient=PatientSelect
+                            patient=PatientSelect,
+                            form=form
                             )
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
@@ -277,9 +315,9 @@ def update_clinic():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT ID FROM cliniques WHERE name = "{selected_option}";')
-    session['clinique_choisie'] = cursor.fetchone()
+    session['clinique'] = cursor.fetchone()
     conn.close()
-    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique_choisie']}
+    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique']}
     return jsonify(response_data)
 
 
@@ -344,9 +382,6 @@ def verif_ramq():
     if not re.match("^\d+$", ramq[3:]):
         return jsonify({"valid": False, "message": "Les caractères restants du champ RAMQ doivent être des chiffres."})
     return jsonify({"valid": True, "message": "Le champ RAMQ est valide."})
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

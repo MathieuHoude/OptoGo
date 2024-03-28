@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS histoireDeCas (
     trouble_vision JSON NOT NULL,
     antecedants_familiaux JSON NOT NULL,
     antecedants_oculaires JSON NOT NULL,
+    notes VARCHAR(2000),
     examens_ID INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

@@ -21,7 +21,7 @@ def main():
 
         if connection.is_connected():
             cursor = connection.cursor()
-            cursor.execute("DROP DATABASE optogo;")
+            cursor.execute("DROP DATABASE IF EXISTS optogo;")
             connection.commit()
             cursor.close()
             print(f"Successfully dropped optogo database")

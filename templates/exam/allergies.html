@@ -1,26 +1,41 @@
 <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Allergies</h5>
     <div class="flex flex-col gap-2">
-    <div class="checkbox">
-        <label for="antibiotiques-topiques" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">antibiotiques topiques</label>
-        <input id="antibiotiques-topiques" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-    <div class="checkbox">
-        <label for="corticostéroïdes-topiques" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">corticostéroïdes topiques</label>
-        <input id="corticostéroïdes-topiques" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-    <div class="checkbox">
-        <label for="collyres-décongestion" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">collyres de décongestion</label>
-        <input id="collyres-décongestion" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-         <div class="checkbox">
-        <label for="anesthésiques" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">anesthésiques</label>
-        <input id="anesthésiques" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-         <div class="checkbox">
-        <label for="conservateurs" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">conservateurs dans les collyres </label>
-        <input id="conservateurs" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
+        <div class="checkbox">
+            <label for="{{ form.topical_antibiotics.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.topical_antibiotics.label }}</label>
+            <input name="{{ form.topical_antibiotics.name }}" type="checkbox"  id="{{ form.topical_antibiotics.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.topical_antibiotics.data }}" />
+            {% for error in form.topical_antibiotics.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.topical_corticosteroids.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.topical_corticosteroids.label }}</label>
+            <input name="{{ form.topical_corticosteroids.name }}" type="checkbox"  id="{{ form.topical_corticosteroids.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.topical_corticosteroids.data }}" />
+            {% for error in form.topical_corticosteroids.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.decongestant_eye_drops.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.decongestant_eye_drops.label }}</label>
+            <input name="{{ form.decongestant_eye_drops.name }}" type="checkbox"  id="{{ form.decongestant_eye_drops.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.decongestant_eye_drops.data }}" />
+            {% for error in form.decongestant_eye_drops.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.anesthetics.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.anesthetics.label }}</label>
+            <input name="{{ form.anesthetics.name }}" type="checkbox"  id="{{ form.anesthetics.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.anesthetics.data }}" />
+            {% for error in form.anesthetics.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.preservatives.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.preservatives.label }}</label>
+            <input name="{{ form.preservatives.name }}" type="checkbox"  id="{{ form.preservatives.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.preservatives.data }}" />
+            {% for error in form.preservatives.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

@@ -1,26 +1,41 @@
 <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Condition médicale</h5>
     <div class="flex flex-col gap-2">
-    <div class="checkbox">
-        <label for="diabete" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Diabete</label>
-        <input id="diabete" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-    <div class="checkbox">
-        <label for="hypertension" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Hypertension arterielle</label>
-        <input id="hypertension" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-    <div class="checkbox">
-        <label for="cardiaques" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Troubles cardiaques</label>
-        <input id="cardiaques" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-         <div class="checkbox">
-        <label for="asthme" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Asthme</label>
-        <input id="asthme" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
-         <div class="checkbox">
-        <label for="cholesterol" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Taux de cholesterol eleve</label>
-        <input id="cholesterol" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    </div>
+        <div class="checkbox">
+            <label for="{{ form.diabetes.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.diabetes.label }}</label>
+            <input name="{{ form.diabetes.name }}" type="checkbox"  id="{{ form.diabetes.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.diabetes.data }}" />
+            {% for error in form.diabetes.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.hypertension.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.hypertension.label }}</label>
+            <input name="{{ form.hypertension.name }}" type="checkbox"  id="{{ form.hypertension.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.hypertension.data }}" />
+            {% for error in form.hypertension.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.heart_condition.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.heart_condition.label }}</label>
+            <input name="{{ form.heart_condition.name }}" type="checkbox"  id="{{ form.heart_condition.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.heart_condition.data }}" />
+            {% for error in form.heart_condition.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.asthma.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.asthma.label }}</label>
+            <input name="{{ form.asthma.name }}" type="checkbox"  id="{{ form.asthma.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.asthma.data }}" />
+            {% for error in form.asthma.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="checkbox">
+            <label for="{{ form.cholesterol.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.cholesterol.label }}</label>
+            <input name="{{ form.cholesterol.name }}" type="checkbox"  id="{{ form.cholesterol.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.cholesterol.data }}" />
+            {% for error in form.cholesterol.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

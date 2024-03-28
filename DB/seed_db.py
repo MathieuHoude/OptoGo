@@ -3,14 +3,13 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 from mysql.connector import Error
+from fake_data_generator import ExamensGenerator, HistoireDeCasGenerator
 
-# Load environment variables from .env file
 load_dotenv()
 
-def seed_table_from_csv(connection, table_name, csv_file_path):
+def seed_table_from_csv(connection, cursor, table_name, csv_file_path):
     try:
         with open(csv_file_path, 'r', newline='', encoding='utf-8') as csv_file:
-            cursor = connection.cursor()
 
             csv_reader = csv.DictReader(csv_file)
             columns = ', '.join(csv_reader.fieldnames)
@@ -21,9 +20,7 @@ def seed_table_from_csv(connection, table_name, csv_file_path):
             for row in csv_reader:
                 values = [row[column] for column in csv_reader.fieldnames]
                 cursor.execute(insert_query, values)
-
             connection.commit()
-            cursor.close()
             print(f"Data successfully seeded into table: {table_name}")
 
     except Error as e:
@@ -31,7 +28,6 @@ def seed_table_from_csv(connection, table_name, csv_file_path):
         connection.rollback()
 
 def main():
-    # Replace these with your actual database connection details
     # MySQL configuration
     mysql_config = {
         'host': os.getenv('HOST'),
@@ -39,13 +35,11 @@ def main():
         'password': os.getenv('PASSWORD'),
         'database': os.getenv('DBNAME')
     }
-        
-    # Replace 'your_table_name' with the actual table name
-    table_name = 'patients'
 
-    csv_file_path = './DB/seeds/patients.csv'
+    #Generate the csv files needed
+    ExamensGenerator.generate_csv()
+    HistoireDeCasGenerator.generate_csv()
 
-    # Connect to the MySQL server
     try:
         connection = mysql.connector.connect(**mysql_config)
 
@@ -55,11 +49,13 @@ def main():
 
             csv_files = [f for f in os.listdir(csv_folder_path) if f.endswith(".csv")]
             csv_files.sort()  # Sort the files to execute them in order
-
+            cursor = connection.cursor()
+            cursor.execute("SET foreign_key_checks = 0")
             for csv_file in csv_files:
                 table_name = csv_file.split('-')[1].split('.')[0]
                 csv_file_path = os.path.join(csv_folder_path, csv_file)
-                seed_table_from_csv(connection, table_name, csv_file_path)
+                seed_table_from_csv(connection, cursor, table_name, csv_file_path)
+            cursor.execute("SET foreign_key_checks = 1")
 
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
