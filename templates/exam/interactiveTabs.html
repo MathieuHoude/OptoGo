@@ -15,13 +15,6 @@
                 Examen de vue
             </button>
         </li>
-        <li role="presentation">
-            <button class="inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
-                    aria-current="page" id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
-                    aria-controls="settings" aria-selected="false">
-                Prescription
-            </button>
-        </li>
     </ul>
 
 
@@ -29,6 +22,7 @@
     <div id="default-tab-content">
         <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
              id="profile" role="tabpanel" aria-labelledby="profile-tab">
+             <form>
             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Histoire de cas</h3>
             <div class="flex flex-wrap gap-2">
                 {% include "exam/medicalConditions.html" %}
@@ -60,15 +54,12 @@
 
              <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Générer une prescription</h2>
             <div class="divider"></div>
-             <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
-
-
+            <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600">Valider examen</button>
+        <a href="/cliniques/{{clinique['ID']}}/prescription">
+            <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
+           </a>
         </div>
-        <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
-             id="settings" role="tabpanel" aria-labelledby="settings-tab">
-            <h3 class="text-lg text-center font-bold text-gray-900 dark:text-white mb-2">Prescription</h3>
-        </div>
-
+    </form>
 
     </div>
 </div>

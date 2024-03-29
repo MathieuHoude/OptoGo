@@ -284,6 +284,37 @@ def exam_details(clinique_id, patient_id, examen_id):
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
 
+
+@app.route("/cliniques/<int:clinique_id>/prescription")
+def prescription(clinique_id):
+    try:
+        index = 7
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute(f'SELECT * FROM addresses WHERE ID = {clinique_id}') 
+        addresse_clinique = cursor.fetchone()
+   # TODO: Ici jai du hardcode des IDs pour tester la page prescription. A finir
+        update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+        update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {104}")
+        update_session(cursor, "examen", f"SELECT * FROM examens e LEFT JOIN histoireDeCas h ON e.ID = h.examen_ID WHERE e.ID = {740}" )
+
+        cursor.close()
+        conn.close()
+        session["examen"] = parse_exam_json_objects(session["examen"])
+        form = ExamForm(data=session["examen"])
+        return render_template("prescription/prescriptionPage.html",
+                            index=index,
+                            clinique=session["clinique"],
+                            optometriste=session["user"],
+                            patient=session["patient"],
+                            addresse = addresse_clinique,
+                            form=form
+                            )
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
+
+
 # route pour la page des examens du patient
 @app.route("/cliniques/<clinique_id>/patients/<patient_id>/examens")
 def examens(clinique_id, patient_id):

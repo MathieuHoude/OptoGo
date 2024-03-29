@@ -1,0 +1,25 @@
+    <!--
+Prescription
+-->
+
+<div class="prescription-box">
+
+ 
+<div class="logo">
+    <img alt="Flowbite Logo" class="h-8" src="/static/assets/optogo-high-resolution-logo-black-transparent.png">
+</div>    
+<div class="mx-auto mb-4 mt-5">
+    <p class="text-2xl text-gray-900 dark:text-white">Prescription</p>
+</div>
+<div class="identification">
+    {% include "prescription/optometriste_name.html" %} 
+    {% include "prescription/patient_name.html" %}
+</div>   
+
+<div class="power">
+{% include "prescription/power.html" %} 
+</div>
+
+<div class="validity">
+{% include "prescription/validity.html" %}  
+
