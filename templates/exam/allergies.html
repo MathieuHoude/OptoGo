@@ -2,37 +2,37 @@
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Allergies</h5>
     <div class="flex flex-col gap-2">
         <div class="checkbox">
-            <label for="{{ form.topical_antibiotics.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.topical_antibiotics.label }}</label>
-            <input name="{{ form.topical_antibiotics.name }}" type="checkbox"  id="{{ form.topical_antibiotics.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.topical_antibiotics.data }}" />
-            {% for error in form.topical_antibiotics.errors %}
+            <label for="{{ form.allergies_topical_antibiotics.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.allergies_topical_antibiotics.label }}</label>
+            <input name="{{ form.allergies_topical_antibiotics.name }}" type="checkbox"  {% if form.allergies_topical_antibiotics.data%}checked{% endif %}  id="{{ form.allergies_topical_antibiotics.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.allergies_topical_antibiotics.data }}" />
+            {% for error in form.allergies_topical_antibiotics.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.topical_corticosteroids.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.topical_corticosteroids.label }}</label>
-            <input name="{{ form.topical_corticosteroids.name }}" type="checkbox"  id="{{ form.topical_corticosteroids.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.topical_corticosteroids.data }}" />
-            {% for error in form.topical_corticosteroids.errors %}
+            <label for="{{ form.allergies_topical_corticosteroids.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.allergies_topical_corticosteroids.label }}</label>
+            <input name="{{ form.allergies_topical_corticosteroids.name }}" type="checkbox"  {% if form.allergies_topical_corticosteroids.data%}checked{% endif %}  id="{{ form.allergies_topical_corticosteroids.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.allergies_topical_corticosteroids.data }}" />
+            {% for error in form.allergies_topical_corticosteroids.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.decongestant_eye_drops.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.decongestant_eye_drops.label }}</label>
-            <input name="{{ form.decongestant_eye_drops.name }}" type="checkbox"  id="{{ form.decongestant_eye_drops.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.decongestant_eye_drops.data }}" />
-            {% for error in form.decongestant_eye_drops.errors %}
+            <label for="{{ form.allergies_decongestant_eye_drops.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.allergies_decongestant_eye_drops.label }}</label>
+            <input name="{{ form.allergies_decongestant_eye_drops.name }}" type="checkbox"  {% if form.allergies_decongestant_eye_drops.data%}checked{% endif %}  id="{{ form.allergies_decongestant_eye_drops.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.allergies_decongestant_eye_drops.data }}" />
+            {% for error in form.allergies_decongestant_eye_drops.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.anesthetics.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.anesthetics.label }}</label>
-            <input name="{{ form.anesthetics.name }}" type="checkbox"  id="{{ form.anesthetics.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.anesthetics.data }}" />
-            {% for error in form.anesthetics.errors %}
+            <label for="{{ form.allergies_anesthetics.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.allergies_anesthetics.label }}</label>
+            <input name="{{ form.allergies_anesthetics.name }}" type="checkbox"  {% if form.allergies_anesthetics.data%}checked{% endif %}  id="{{ form.allergies_anesthetics.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.allergies_anesthetics.data }}" />
+            {% for error in form.allergies_anesthetics.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.preservatives.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.preservatives.label }}</label>
-            <input name="{{ form.preservatives.name }}" type="checkbox"  id="{{ form.preservatives.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.preservatives.data }}" />
-            {% for error in form.preservatives.errors %}
+            <label for="{{ form.allergies_preservatives.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.allergies_preservatives.label }}</label>
+            <input name="{{ form.allergies_preservatives.name }}" type="checkbox"  {% if form.allergies_preservatives.data%}checked{% endif %}  id="{{ form.allergies_preservatives.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.allergies_preservatives.data }}" />
+            {% for error in form.allergies_preservatives.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>

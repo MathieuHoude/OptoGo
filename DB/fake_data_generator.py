@@ -48,15 +48,15 @@ class HistoireDeCasGenerator:
         }
         return json.dumps(data)
     
-    def _generate_antecedants_oculaires():
+    def _generate_antecedants_familiaux():
         data = {
-            "family_retinal_detachment": random.getrandbits(1),
-            "family_macular_degeneration": random.getrandbits(1),
-            "family_glaucoma": random.getrandbits(1)
+            "retinal_detachment": random.getrandbits(1),
+            "macular_degeneration": random.getrandbits(1),
+            "glaucoma": random.getrandbits(1)
         }
         return json.dumps(data)
     
-    def _generate_antecedants_familiaux():
+    def _generate_antecedants_oculaires():
         data = {
             "surgery": random.getrandbits(1),
             "trauma": random.getrandbits(1),
@@ -76,10 +76,10 @@ class HistoireDeCasGenerator:
             conditions = [HistoireDeCasGenerator._generate_conditions() for _ in range(num_objects)]
             allergies = [HistoireDeCasGenerator._generate_allergies() for _ in range(num_objects)]
             medications = [HistoireDeCasGenerator._generate_medications() for _ in range(num_objects)]
-            trouble_vision = [HistoireDeCasGenerator._generate_medications() for _ in range(num_objects)]
-            antecedants_familiaux = [HistoireDeCasGenerator._generate_medications() for _ in range(num_objects)]
-            antecedants_oculaires = [HistoireDeCasGenerator._generate_medications() for _ in range(num_objects)]
-            writer.writerow(["ID", "conditions", "allergies", "medications", "trouble_vision", "antecedants_familiaux", "antecedants_oculaires", "notes", "examens_ID"])
+            trouble_vision = [HistoireDeCasGenerator._generate_trouble_vision() for _ in range(num_objects)]
+            antecedants_familiaux = [HistoireDeCasGenerator._generate_antecedants_familiaux() for _ in range(num_objects)]
+            antecedants_oculaires = [HistoireDeCasGenerator._generate_antecedants_oculaires() for _ in range(num_objects)]
+            writer.writerow(["ID", "conditions", "allergies", "medications", "trouble_vision", "antecedants_familiaux", "antecedants_oculaires", "notes", "examen_ID"])
             for i in range(1, num_objects):
                 writer.writerow([i, conditions[i], allergies[i], medications[i], trouble_vision[i], antecedants_familiaux[i], antecedants_oculaires[i], lorem.paragraph(), i])
 
@@ -123,7 +123,7 @@ class ExamensGenerator:
 
     def _generate_lens_type():
         data = {
-            "single_vision_lens": random.getrandbits(1),
+            "single_vision_lenses": random.getrandbits(1),
             "progressive_lenses": random.getrandbits(1),
             "office_lenses": random.getrandbits(1),
             "bifocal_lenses": random.getrandbits(1)

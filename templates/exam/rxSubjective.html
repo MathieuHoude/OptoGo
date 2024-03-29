@@ -72,13 +72,13 @@ RX_subjective
                     <select id="{{ form.RX_subjective_Acuity_LE.id }}" name="{{ form.RX_subjective_Acuity_LE.name }}" class="prescription-input">
                         <option disabled selected value="">A/V</option>
                         {% for value, label in form.RX_subjective_Acuity_LE.choices %}
-                            <option value="{{ value }}">{{ label }}</option>
+                            <option {% if "{:.2f}".format(value)  == "{:.2f}".format(form.RX_subjective_Acuity_LE.data | float) %} selected {% endif %} value="{{ value }}">{{ label }}</option>
                         {% endfor %}
                     </select>
                     <select id="{{ form.RX_subjective_Acuity_RE.id }}" name="{{ form.RX_subjective_Acuity_RE.name }}" class="prescription-input">
                         <option disabled selected value="">A/V</option>
                         {% for value, label in form.RX_subjective_Acuity_RE.choices %}
-                            <option value="{{ value }}">{{ label }}</option>
+                            <option {% if "{:.2f}".format(value)  == "{:.2f}".format(form.RX_subjective_Acuity_RE.data | float) %} selected {% endif %} value="{{ value }}">{{ label }}</option>
                         {% endfor %}
                     </select>
                 </div>

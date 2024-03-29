@@ -38,8 +38,8 @@ def get_db_connection():
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
 
-def update_session(cursor, key, value):
-    cursor.execute(f'SELECT * FROM {key}s WHERE ID = {value}')
+def update_session(cursor, key, query):
+    cursor.execute(query)
     session[key] = cursor.fetchone()
 
     # try:
@@ -163,8 +163,8 @@ def choice(clinique_id, patient_id):
     index = 3
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    update_session(cursor, "clinique", clinique_id)
-    update_session(cursor, "patient", patient_id)
+    update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+    update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
     cursor.close()
     conn.close()
     return render_template("choicePage.html",
@@ -264,12 +264,12 @@ def patient_edit(patient_id):
 @app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>/examens/<int:examen_id>")
 def exam_details(clinique_id, patient_id, examen_id):
     try:
-        index = 5
+        index = 6
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        update_session(cursor, "clinique", clinique_id)
-        update_session(cursor, "patient", patient_id)
-        update_session(cursor, "examen", examen_id)
+        update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+        update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
+        update_session(cursor, "examen", f"SELECT * FROM examens e LEFT JOIN histoireDeCas h ON e.ID = h.examen_ID WHERE e.ID = {examen_id}" )
         conn.close()
         session["examen"] = parse_exam_json_objects(session["examen"])
         form = ExamForm(data=session["examen"])
@@ -278,10 +278,30 @@ def exam_details(clinique_id, patient_id, examen_id):
                             clinique=session["clinique"],
                             optometriste=session["user"],
                             patient=session["patient"],
+                            examen=session["examen"],
                             form=form
                             )
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
+
+# route pour la page des examens du patient
+@app.route("/cliniques/<clinique_id>/patients/<patient_id>/examens")
+def examens(clinique_id, patient_id):
+    index = 4.5
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+    update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
+    cursor.execute(f"SELECT e.ID, e.created_at, o.last_name AS optometriste_last_name, o.first_name AS optometriste_first_name FROM examens e JOIN optometristes o ON e.optometriste_ID = o.ID WHERE e.patient_ID = {patient_id} ORDER BY e.ID;")
+    examens = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("examensPage.html",
+                           index=index,
+                           clinique=session["clinique"],
+                           optometriste=session["user"],
+                           patient=session["patient"],
+                           examens=examens)
 
 # route pour la page d'un nouvel examen
 @app.route("/examens/new")
