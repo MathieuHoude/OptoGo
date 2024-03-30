@@ -1,0 +1,34 @@
+.prescription-box{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border : solid;
+    border-color: black;
+    width: 700px;
+    margin: auto;
+    padding: 15px;
+    
+}
+.power .validity{
+    display: flex;
+    justify-content: left;
+}
+
+
+.prescription-input {
+    width: 85px;
+}
+
+.logo {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+.identification {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 15px;
+    margin-right: 15px;
+}
