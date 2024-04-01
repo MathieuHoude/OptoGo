@@ -259,6 +259,64 @@ def patient_edit(patient_id):
                             optometriste=session["user"],
                             patient=session["patient"],
                             form=form)
+    
+
+
+# route pour la page de création d'un nouveau patient
+@app.route("/clinique/<int:clinique_id>/patients/new", methods=['GET', 'POST'])
+def new_patient_entry(clinique_id):
+    """
+    This function creates a new patient record in the database.
+
+    Args:
+        clinique_id (int): The ID of the clinic where the patient will be registered.
+
+    Returns:
+        render_template: A rendered template displaying the new patient form.
+
+    """
+    index = 2.5
+    form = PatientForm()
+    # TODO: On doit ajouter la condition pour le form 
+    if request.method == 'POST':
+        app.logger.info('Requête POST reçue')
+        new_patient_data = {
+            'first_name': form.first_name.data,
+            'last_name': form.last_name.data,
+            'birth_date': form.birth_date.data,
+            'gender': form.gender.data,
+            'email': form.email.data,
+            'phone_number': form.phone_number.data,
+            'RAMQ_number': form.RAMQ_number.data,
+        }
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        sql_insert_patient_query = "INSERT INTO patients (first_name, last_name, birth_date, gender, email, phone_number, RAMQ_number) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        params = tuple(new_patient_data.values())
+        cursor.execute(sql_insert_patient_query, params)
+        conn.commit()
+
+        app.logger.info('Nouveau patient inséré en base de données')
+
+        new_patient_id = cursor.lastrowid
+
+        sql_insert_patient_clinique_query = "INSERT INTO patients_cliniques (patient_ID, clinique_ID) VALUES (%s, %s)"
+        cursor.execute(sql_insert_patient_clinique_query, (new_patient_id, clinique_id))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+        session['confirmation_message'] = {"title": "Ajout complété", "text": f"Les informations de {new_patient_data['first_name']} {new_patient_data['last_name']} ont été ajoutées avec succès."}
+
+    return render_template("newPatientPage.html",  
+            index=index,
+            clinique=session["clinique"],
+            optometriste=session["user"],
+            form=form)
+
+
 
 # route pour la page d'un examen existant
 @app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>/examens/<int:examen_id>")
