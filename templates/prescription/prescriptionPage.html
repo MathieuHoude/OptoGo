@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptoGo - Patients</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/prescription.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    
+</head>
+
+<body>
+<div id="nav-bar" class="mb-10">
+    {% include "navbar.html" %}
+</div>
+
+<div id="breadcrumb" class="mb-10">
+    {% include "breadcrumb.html" %}
+</div>
+
+<div id="patient_information">
+    {% include "prescription/prescription.html"%}
+</div>
+
+<button onClick="printPrescription()" class="mt-3 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" id="print" type="button">Imprimer</button>
+</body>
+
+</html>
+
+<script>
+    function printPrescription() {
+       
+        document.getElementById('nav-bar').style.display = 'none';
+        document.getElementById('breadcrumb').style.display = 'none';
+        document.getElementById('print').style.display = 'none';
+        setTimeout(function() {
+            window.print();
+            // Réaffichage des éléments après l'impression
+            document.getElementById('nav-bar').style.display = 'block';
+            document.getElementById('breadcrumb').style.display = 'block';
+            document.getElementById('print').style.display = 'block';
+        }, 100);
+    }
+</script>

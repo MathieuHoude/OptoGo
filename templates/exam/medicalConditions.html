@@ -2,37 +2,37 @@
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Condition médicale</h5>
     <div class="flex flex-col gap-2">
         <div class="checkbox">
-            <label for="{{ form.diabetes.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.diabetes.label }}</label>
-            <input name="{{ form.diabetes.name }}" type="checkbox"  id="{{ form.diabetes.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.diabetes.data }}" />
-            {% for error in form.diabetes.errors %}
+            <label for="{{ form.conditions_diabetes.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.conditions_diabetes.label }}</label>
+            <input name="{{ form.conditions_diabetes.name }}" type="checkbox"  {% if form.conditions_diabetes.data%}checked{% endif %} id="{{ form.conditions_diabetes.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.conditions_diabetes.data }}" />
+            {% for error in form.conditions_diabetes.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.hypertension.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.hypertension.label }}</label>
-            <input name="{{ form.hypertension.name }}" type="checkbox"  id="{{ form.hypertension.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.hypertension.data }}" />
-            {% for error in form.hypertension.errors %}
+            <label for="{{ form.conditions_hypertension.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.conditions_hypertension.label }}</label>
+            <input name="{{ form.conditions_hypertension.name }}" type="checkbox"  {% if form.conditions_hypertension.data%}checked{% endif %} id="{{ form.conditions_hypertension.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.conditions_hypertension.data }}" />
+            {% for error in form.conditions_hypertension.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.heart_condition.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.heart_condition.label }}</label>
-            <input name="{{ form.heart_condition.name }}" type="checkbox"  id="{{ form.heart_condition.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.heart_condition.data }}" />
-            {% for error in form.heart_condition.errors %}
+            <label for="{{ form.conditions_heart_condition.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.conditions_heart_condition.label }}</label>
+            <input name="{{ form.conditions_heart_condition.name }}" type="checkbox"  {% if form.conditions_heart_condition.data%}checked{% endif %} id="{{ form.conditions_heart_condition.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.conditions_heart_condition.data }}" />
+            {% for error in form.conditions_heart_condition.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.asthma.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.asthma.label }}</label>
-            <input name="{{ form.asthma.name }}" type="checkbox"  id="{{ form.asthma.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.asthma.data }}" />
-            {% for error in form.asthma.errors %}
+            <label for="{{ form.conditions_asthma.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.conditions_asthma.label }}</label>
+            <input name="{{ form.conditions_asthma.name }}" type="checkbox"  {% if form.conditions_asthma.data%}checked{% endif %} id="{{ form.conditions_asthma.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.conditions_asthma.data }}" />
+            {% for error in form.conditions_asthma.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.cholesterol.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.cholesterol.label }}</label>
-            <input name="{{ form.cholesterol.name }}" type="checkbox"  id="{{ form.cholesterol.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.cholesterol.data }}" />
-            {% for error in form.cholesterol.errors %}
+            <label for="{{ form.conditions_cholesterol.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.conditions_cholesterol.label }}</label>
+            <input name="{{ form.conditions_cholesterol.name }}" type="checkbox"  {% if form.conditions_cholesterol.data%}checked{% endif %} id="{{ form.conditions_cholesterol.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.conditions_cholesterol.data }}" />
+            {% for error in form.conditions_cholesterol.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
