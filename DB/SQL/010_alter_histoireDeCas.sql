@@ -1,2 +1,0 @@
-ALTER TABLE histoireDeCas
-ADD CONSTRAINT FK_examens_histoireDeCas FOREIGN KEY (examen_ID) REFERENCES examens(ID) ON DELETE NO ACTION;
