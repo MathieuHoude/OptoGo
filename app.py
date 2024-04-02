@@ -218,7 +218,7 @@ def patient_details(patient_id):
                            form=form)
 
 # route pour la page de modification des informations du patient
-@app.route("/patients/<int:patient_id>/edit", methods=['GET', 'POST'])
+@app.route("/patients/<int:patient_id>/edit", methods=['GET', 'PUT'])
 def patient_edit(patient_id):
 
     index = 4
