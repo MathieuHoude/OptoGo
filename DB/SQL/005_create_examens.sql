@@ -5,14 +5,13 @@ CREATE TABLE IF NOT EXISTS examens (
     contact_lens_type JSON NOT NULL ,
     lens_type JSON NOT NULL,
     old_RX JSON NOT NULL,
+    periode_validite INTEGER,
     patient_ID INTEGER NOT NULL,
     optometriste_ID INTEGER NOT NULL REFERENCES optometristes(ID) ON DELETE NO ACTION,
     histoireDeCas_ID INTEGER,
-    prescription_ID INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (patient_ID) REFERENCES patients(ID) ON DELETE NO ACTION,
     FOREIGN KEY (optometriste_ID) REFERENCES optometristes(ID) ON DELETE NO ACTION,
-    FOREIGN KEY (histoireDeCas_ID) REFERENCES histoireDeCas(ID) ON DELETE NO ACTION,
-    FOREIGN KEY (prescription_ID) REFERENCES prescriptions(ID) ON DELETE NO ACTION
+    FOREIGN KEY (histoireDeCas_ID) REFERENCES histoireDeCas(ID) ON DELETE NO ACTION
 );
