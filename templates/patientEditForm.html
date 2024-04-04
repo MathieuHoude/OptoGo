@@ -1,9 +1,8 @@
 <!--
 Page d'informations concernant le patient
 -->
-<form method="post">
+<form method="POST">
     {{ form.hidden_tag() }}
-    <!-- {{ form.first_name.label }}: {{ form.first_name }} -->
     <div class="patientInformationForm">
         <div>
             <label for="{{ form.first_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.first_name.label }}</label>
@@ -72,3 +71,15 @@ Page d'informations concernant le patient
     </a>
 </form>
 
+{% if error_message %}
+    <script>
+        var error_message = {{ error_message|tojson }};
+        if (error_message) {
+            Swal.fire({
+                icon: 'error',
+                title: confirmation_message.title,
+                text: confirmation_message.text,
+            });
+        }
+    </script>
+{% endif %}

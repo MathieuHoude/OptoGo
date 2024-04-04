@@ -35,7 +35,7 @@
                         {{ examen.optometriste_last_name }}, {{ examen.optometriste_first_name }}
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="examens/{{examen.ID}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Selectionner</a>
+                        <a href="/examens/{{examen.ID}}?clinique_id={{clinique.ID}}&patient_id={{patient.ID}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Selectionner</a>
                     /
                         <a href="/patients/{{patient.ID}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
                     </td>

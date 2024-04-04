@@ -29,14 +29,14 @@
         <div class="flex mt-4 md:mt-6">
 
             <!-- Champs d'infos de l'opto -->
-            <form class="max-w-sm mx-auto">
+            <form class="max-w-sm mx-auto" method="post">
+                {{ form.hidden_tag() }}
                 <div>
-                    <label for="optoNumberInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero
-                        de pratique</label>
-                    <input readonly type="number" id="optoNumberInput" aria-describedby="helper-text-explanation"
-                           placeholder="{{optometriste.exercise_number}}"
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                           required/>
+                    <label for="{{ form.exercise_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.exercise_number.label }}</label>
+                    <input readonly type="number" name="{{ form.exercise_number.name }}" type="text" id="{{ form.exercise_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.exercise_number.data }}" required />
+                    {% for error in form.exercise_number.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
                 </div>
                 <div>
                     <label for="adresseInput"
@@ -47,7 +47,8 @@
                 </div>
                 <div>
 
-                    <label for="phoneInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telephone:</label>
+                    <!-- <label for="phoneInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telephone:</label> -->
+                    <label for="{{ form.phone_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.phone_number.label }}</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -55,15 +56,26 @@
                                 <path d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z"/>
                             </svg>
                         </div>
-                        <input readonly type="text" id="phoneInput" aria-describedby="helper-text-explanation"
+                        <!-- <input readonly type="text" id="phoneInput" aria-describedby="helper-text-explanation"
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="{{optometriste.phone_number}}" required/>
+                               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="{{optometriste.phone_number}}" required/> -->
+                        
+                        <input readonly type="text" name="{{ form.phone_number.name }}"
+                            aria-describedby="helper-text-explanation" id="{{ form.phone_number.id }}" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.phone_number.data }}" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required />
+                        {% for error in form.phone_number.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="flex justify-end px-4 pt-4">
-                    <button id="saveButton"
-                            class="hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+                <div class="flex flex-row px-4 pt-4">
+                    <button type="submit" id="saveButton"
+                            class="hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 rounded mt-4">
                         Enregistrer
+                    </button>
+                    <button type="button" id="cancelButton"
+                            class="hidden bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
+                        Annuler
                     </button>
                 </div>
             </form>
@@ -83,54 +95,58 @@ Le bouton "Enregistrer" permet de sauvegarder les modifications et de restaurer 
 
 
     const editButton = document.getElementById('editButton');
-    const saveButton = document.getElementById('saveButton');
-    const numberInput = document.getElementById('optoNumberInput');
-    const adresseInput = document.getElementById('adresseInput');
-    const phoneInput = document.getElementById('phoneInput');
-
+    const cancelButton = document.getElementById('cancelButton');
+    const numberInput = document.getElementById("{{ form.exercise_number.id }}");
+    // const adresseInput = document.getElementById();
+    const phoneInput = document.getElementById("{{ form.phone_number.id }}");
+    original_data = {};
 
     editButton.addEventListener('click', function () {
-        if (saveButton.classList.contains('hidden')) {
-            saveButton.classList.remove('hidden');
-
-            numberInput.removeAttribute('readonly');
-            adresseInput.removeAttribute('readonly');
-            phoneInput.removeAttribute('readonly');
-        } else {
-            saveButton.classList.add('hidden');
-        }
+        original_data = {{form.data|tojson}};
+        saveButton.classList.remove('hidden');
+        cancelButton.classList.remove('hidden');
+        numberInput.removeAttribute('readonly');
+        // adresseInput.removeAttribute('readonly');
+        phoneInput.removeAttribute('readonly');
     });
 
-    saveButton.addEventListener('click', async function () {
+    cancelButton.addEventListener('click', function () {
         saveButton.classList.add('hidden');
+        cancelButton.classList.add('hidden');
+        numberInput.classList.add('readonly');
+        numberInput.value = original_data.exercise_number;
+        // adresseInput.add('readonly');
+        phoneInput.classList.add('readonly');
+        phoneInput.value = original_data.phone_number;
 
-        let newPracticeNumber = numberInput.value;
-        let newAdresse = adresseInput.value;
-        let newPhoneNumber = phoneInput.value;
-
-        numberInput.placeholder = newPracticeNumber;
-        adresseInput.placeholder = newAdresse;
-        phoneInput.placeholder = newPhoneNumber;
-
-        <!--MAJ de la variable globale OptoInfoGLobal du fichier app.py concernant les informations de l'optometriste -->
-        await modifyOptoInfos(newPracticeNumber, newAdresse, newPhoneNumber)
-
-            .then(responseData => {
-                console.log(responseData)
-                numberInput.placeholder = responseData.PracticeNumber;
-                adresseInput.placeholder = responseData.Adresse;
-                phoneInput.placeholder = responseData.Phone;
-            })
-            .catch(error => {
-                console.log("MAJ impossible des infos de l'optometriste :", error);
-            });
-
-        numberInput.setAttribute('readonly', 'readonly');
-        adresseInput.setAttribute('readonly', 'readonly');
-        phoneInput.setAttribute('readonly', 'readonly');
     });
 
 </script>
+
+{% if form.errors %}
+    <script>
+        saveButton.classList.remove('hidden');
+        cancelButton.classList.remove('hidden');
+        numberInput.removeAttribute('readonly');
+        // adresseInput.removeAttribute('readonly');
+        phoneInput.removeAttribute('readonly');
+    </script>
+{% endif %}
+
+{% if confirmation_message %}
+    <script>
+        
+        var confirmation_message = {{ confirmation_message|tojson }};
+        console.log(confirmation_message)
+        if (confirmation_message) {
+            Swal.fire({
+                icon: 'success',
+                title: confirmation_message.title,
+                text: confirmation_message.text,
+            });
+        }
+    </script>
+{% endif %}
 
 <!-- JS pour faire fonctionner Flowbite -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>

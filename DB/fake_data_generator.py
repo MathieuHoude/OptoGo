@@ -154,6 +154,6 @@ class ExamensGenerator:
             contact_lens_types = [ExamensGenerator._generate_contact_lens_type() for _ in range(num_objects)]
             old_rx = [ExamensGenerator._generate_RX() for _ in range(num_objects)]
 
-            writer.writerow(["ID", "RX_objective", "RX_subjective", "contact_lens_type", "lens_type", "old_RX", "patient_ID", "optometriste_ID", "histoireDeCas_ID", "prescription_ID"])
+            writer.writerow(["ID", "RX_objective", "RX_subjective", "contact_lens_type", "lens_type", "old_RX", "patient_ID", "optometriste_ID", "histoireDeCas_ID"])
             for i in range(0, num_objects):
-                writer.writerow([i + 1, RX_objectives[i], RX_subjective[i], contact_lens_types[i], lens_types[i], old_rx[i], random.uniform(0, 250), random.uniform(0, 100), i + 1, i + 1])
+                writer.writerow([i + 1, RX_objectives[i], RX_subjective[i], contact_lens_types[i], lens_types[i], old_rx[i], random.uniform(0, 250), random.uniform(0, 100), i + 1])

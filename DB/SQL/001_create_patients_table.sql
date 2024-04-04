@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS patients (
     phone_number VARCHAR(20) NOT NULL,
     birth_date DATE NOT NULL,
     RAMQ_number VARCHAR(20) UNIQUE,
-    homonyme INTEGER NOT NULL,
+    homonyme INTEGER NOT NULL DEFAULT 0,
     address_ID INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
