@@ -30,7 +30,7 @@
             {% include "clinicSelection.html" %}
         </div>
         <div>
-            <a href="/logout">
+            <a href="/auth/logout">
             <button type="button"
                     class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Deconnexion
@@ -44,6 +44,15 @@
 
 </html>
 
-<script>
-
-</script>
+{% if error_message %}
+    <script>
+        var error_message = {{ error_message|tojson }};
+        if (error_message) {
+            Swal.fire({
+                icon: 'error',
+                title: confirmation_message.title,
+                text: confirmation_message.text,
+            });
+        }
+    </script>
+{% endif %}
