@@ -9,6 +9,7 @@ import bcrypt
 
 from forms.patient_form import PatientForm
 from forms.exam_form import ExamForm
+from forms.optometrist_form import OptometristForm
 
 app = Flask(__name__)
 app.secret_key = 'optogo' #TODO CHANGER!!
@@ -78,28 +79,47 @@ def require_login():
         if not request.path.startswith(app.static_url_path):
             return redirect(url_for('login'))
 
-@app.route("/")
-@app.route("/index")
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/index", methods=['GET', 'POST'])
 def index():
     index = 1
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute(f'SELECT o.*, a.street_number, a.street_name, a.city, a.province, a.postal_code FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = {session["user"]["ID"]};')
-    session["user"] = cursor.fetchone()
+    form = OptometristForm()
+    confirmation_message = None
+    if request.method == 'POST' and form.validate_on_submit():
+        modified_fields = {}
+        for field in form:
+            if field.name != 'csrf_token' and field.data != session["user"][field.name]:
+                modified_fields[field.name] = field.data
+
+        if modified_fields:
+            sql_update_query = "UPDATE optometristes SET "
+            sql_update_query += ", ".join([f"{field} = %s" for field in modified_fields.keys()])
+            sql_update_query += " WHERE id = %s"
+            
+            # Create a tuple of parameter values in the same order as placeholders
+            params = tuple(modified_fields.values()) + (session["user"]["ID"],)
+
+            cursor.execute(sql_update_query, params)
+            conn.commit()
+        confirmation_message = {"title": "Modifications complétées", "text": f"Vos informations ont été mises à jour avec succès."}
+    if request.method == 'GET':
+        cursor.execute(f'SELECT o.*, a.street_number, a.street_name, a.city, a.province, a.postal_code FROM optometristes o JOIN addresses a ON o.address_id = a.ID  WHERE o.ID = {session["user"]["ID"]};')
+        session["user"] = cursor.fetchone()
+        form.process(data=session["user"])
     cursor.execute(f'SELECT DISTINCT c.* FROM optometristes o JOIN optometristes_cliniques oc ON o.ID = oc.optometriste_ID JOIN cliniques c ON oc.clinique_ID = c.ID  WHERE o.ID = "{session["user"]["ID"]}";')
     cliniques = cursor.fetchall()
     cursor.close()
     conn.close()
-
-    clinique = None
-    if 'clinique' in session:
-        clinique = session['clinique']
     return render_template(
         "index.html",
         index=index,
         optometriste=session["user"],
         cliniques=cliniques,
-        clinique=clinique
+        clinique_choisie=session['clinique'],
+        form=form,
+        confirmation_message=confirmation_message
     )
 
 # route pour la page d'authentification
@@ -173,27 +193,6 @@ def choice(clinique_id, patient_id):
                            optometriste=session["user"],
                            patient=session["patient"])
 
-@app.route("/cliniques/patients/new")
-def new_patient():
-    try:
-        index=2.5
-        clinique_id = request.args.get('clinique_id')
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
-        session["clinique"] = cursor.fetchone()
-        form = PatientForm()
-        cursor.close()
-        conn.close()
-        return render_template(
-            "newPatientPage.html",
-            index=index,
-            clinique=session["clinique"],
-            optometriste=session["user"],
-            form=form)
-    except Error as e:
-        print(f"Error connecting to MySQL: {e}")
-        return "An error occurred while processing your request.", 500
 
 
 # route pour la page des informations du patient
@@ -218,7 +217,7 @@ def patient_details(patient_id):
                            form=form)
 
 # route pour la page de modification des informations du patient
-@app.route("/patients/<int:patient_id>/edit", methods=['GET', 'PUT'])
+@app.route("/patients/<int:patient_id>/edit", methods=['GET', 'POST'])
 def patient_edit(patient_id):
 
     index = 4
@@ -249,7 +248,6 @@ def patient_edit(patient_id):
             conn.close()
             session['confirmation_message'] = {"title": "Modifications complétées", "text": f"Les informations de {patient['first_name']} {patient['last_name']} ont été mises à jour avec succès."}
             return redirect(url_for("patient_details", patient_id=patient['ID']))
-
     else:
         cursor.close()
         conn.close()
@@ -263,7 +261,7 @@ def patient_edit(patient_id):
 
 
 # route pour la page de création d'un nouveau patient
-@app.route("/clinique/<int:clinique_id>/patients/new", methods=['GET', 'POST'])
+@app.route("/cliniques/<int:clinique_id>/patients/new", methods=['GET', 'POST'])
 def new_patient_entry(clinique_id):
     """
     This function creates a new patient record in the database.
@@ -275,48 +273,66 @@ def new_patient_entry(clinique_id):
         render_template: A rendered template displaying the new patient form.
 
     """
-    index = 2.5
+    index=2.5
     form = PatientForm()
     # TODO: On doit ajouter la condition pour le form 
-    if request.method == 'POST':
-        app.logger.info('Requête POST reçue')
-        new_patient_data = {
-            'first_name': form.first_name.data,
-            'last_name': form.last_name.data,
-            'birth_date': form.birth_date.data,
-            'gender': form.gender.data,
-            'email': form.email.data,
-            'phone_number': form.phone_number.data,
-            'RAMQ_number': form.RAMQ_number.data,
-        }
+    if request.method == 'POST' and form.validate_on_submit():
+        try :
+            app.logger.info('Requête POST reçue')
+            new_patient_data = {
+                'first_name': form.first_name.data,
+                'last_name': form.last_name.data,
+                'birth_date': form.birth_date.data,
+                'gender': form.gender.data,
+                'email': form.email.data,
+                'phone_number': form.phone_number.data,
+                'RAMQ_number': form.RAMQ_number.data,
+            }
 
+            conn = get_db_connection()
+            cursor = conn.cursor(dictionary=True)
+
+            sql_insert_patient_query = "INSERT INTO patients (first_name, last_name, birth_date, gender, email, phone_number, RAMQ_number) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            params = tuple(new_patient_data.values())
+            cursor.execute(sql_insert_patient_query, params)
+            conn.commit()
+
+            app.logger.info('Nouveau patient inséré en base de données')
+
+            new_patient_id = cursor.lastrowid
+
+            sql_insert_patient_clinique_query = "INSERT INTO patients_cliniques (patient_ID, clinique_ID) VALUES (%s, %s)"
+            cursor.execute(sql_insert_patient_clinique_query, (new_patient_id, clinique_id))
+            conn.commit()
+
+            cursor.close()
+            conn.close()
+            session['confirmation_message'] = {"title": "Nouveau patient enregistré", "text": f"Le nouveau patient {new_patient_data['first_name']} {new_patient_data['last_name']} a été ajouté avec succès."}
+            return redirect(url_for("patient_details", patient_id=new_patient_id))
+        except Error as e:
+            return render_template(
+                "newPatientPage.html",
+                index=index,
+                clinique=session["clinique"],
+                optometriste=session["user"],
+                error_message={'title': 'Erreur lors de la création du nouveau patient', 'message': e.msg, 'code': e.errno},
+                form=form)
+
+    try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-
-        sql_insert_patient_query = "INSERT INTO patients (first_name, last_name, birth_date, gender, email, phone_number, RAMQ_number) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        params = tuple(new_patient_data.values())
-        cursor.execute(sql_insert_patient_query, params)
-        conn.commit()
-
-        app.logger.info('Nouveau patient inséré en base de données')
-
-        new_patient_id = cursor.lastrowid
-
-        sql_insert_patient_clinique_query = "INSERT INTO patients_cliniques (patient_ID, clinique_ID) VALUES (%s, %s)"
-        cursor.execute(sql_insert_patient_clinique_query, (new_patient_id, clinique_id))
-        conn.commit()
-
+        cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
+        session["clinique"] = cursor.fetchone()
         cursor.close()
         conn.close()
-        session['confirmation_message'] = {"title": "Ajout complété", "text": f"Les informations de {new_patient_data['first_name']} {new_patient_data['last_name']} ont été ajoutées avec succès."}
-
-    return render_template("newPatientPage.html",  
+        return render_template(
+            "newPatientPage.html",
             index=index,
             clinique=session["clinique"],
             optometriste=session["user"],
             form=form)
-
-
+    except Error as e:
+        print(f"Error with MySQL: {e}")
 
 # route pour la page d'un examen existant
 @app.route("/cliniques/<int:clinique_id>/patients/<int:patient_id>/examens/<int:examen_id>")
@@ -452,6 +468,26 @@ def update_opto():
     session['user']["Adresse"] = new_adresse
     session['user']["Phone"] = new_phone_number
 
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    modified_fields = {}
+    # for field in form:
+    #     if field.name != 'csrf_token' and field.data != patient[field.name]:
+    #         modified_fields[field.name] = field.data
+
+    # if modified_fields:
+    #     sql_update_query = "UPDATE patients SET "
+    #     sql_update_query += ", ".join([f"{field} = %s" for field in modified_fields.keys()])
+    #     sql_update_query += " WHERE id = %s"
+        
+    #     # Create a tuple of parameter values in the same order as placeholders
+    #     params = tuple(modified_fields.values()) + (patient_id,)
+
+    #     cursor.execute(sql_update_query, params)
+    #     conn.commit()
+    #     cursor.close()
+    #     conn.close()
+    
     response_data = {
         "message": "Informations de l'optométriste mises à jour avec succès",
         "PracticeNumber": new_practice_number,
