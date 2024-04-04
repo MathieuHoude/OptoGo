@@ -88,20 +88,21 @@ def new():
     except Error as e:
         print(f"MySQL error: {e}")
 
-@examens_bp.route("/prescription")
-def prescription():
+@examens_bp.route("/<int:examen_id>/prescription")
+def prescription(examen_id):
     try:
         clinique_id = request.args.get('clinique_id')
+        patient_id = request.args.get('patient_id')
         index = 7
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(f'SELECT * FROM addresses WHERE ID = {clinique_id}') 
         addresse_clinique = cursor.fetchone()
-   # TODO: Ici jai du hardcode des IDs pour tester la page prescription. A finir
+
         update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
-        update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {104}")
-        update_session(cursor, "examen", f"SELECT * FROM examens e LEFT JOIN histoireDeCas h ON e.ID = h.examen_ID WHERE e.ID = {740}" )
+        update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
+        update_session(cursor, "examen", f"SELECT * FROM examens e LEFT JOIN histoireDeCas h ON e.ID = h.examen_ID WHERE e.ID = {examen_id}" )
 
         cursor.close()
         conn.close()
@@ -112,6 +113,7 @@ def prescription():
                             clinique=session["clinique"],
                             optometriste=session["user"],
                             patient=session["patient"],
+                            examen=session["examen"],
                             addresse = addresse_clinique,
                             form=form
                             )
