@@ -33,17 +33,28 @@
 </html>
 
 <script>
-    function printPrescription() {
-       
-        document.getElementById('nav-bar').style.display = 'none';
-        document.getElementById('breadcrumb').style.display = 'none';
-        document.getElementById('print').style.display = 'none';
-        setTimeout(function() {
-            window.print();
-            // Réaffichage des éléments après l'impression
-            document.getElementById('nav-bar').style.display = 'block';
-            document.getElementById('breadcrumb').style.display = 'block';
-            document.getElementById('print').style.display = 'block';
-        }, 100);
-    }
+   /**
+ * Function to print the prescription.
+ * This function hides the navigation bar, breadcrumb, and print button, then prints the page.
+ * After the print operation, it re-enables the hidden elements.
+ *
+ * @returns {void} No return value.
+ */
+function printPrescription() {
+    const navBar = document.getElementById('nav-bar');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const printButton = document.getElementById('print');
+
+    navBar.style.display = 'none';
+    breadcrumb.style.display = 'none';
+    printButton.style.display = 'none';
+
+    setTimeout(function() {
+        window.print();
+
+        navBar.style.display = 'block';
+        breadcrumb.style.display = 'block';
+        printButton.style.display = 'block';
+    }, 100);
+}
 </script>

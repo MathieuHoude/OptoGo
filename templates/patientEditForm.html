@@ -72,6 +72,8 @@ Page d'informations concernant le patient
 </form>
 
 {% if error_message %}
+ <!-- This script block is conditionally included when the 'confirmation_message' variable is truthy.
+    It is responsible for displaying a success message to the user using the SweetAlert2 library. -->
     <script>
         var error_message = {{ error_message|tojson }};
         if (error_message) {

@@ -57,8 +57,9 @@ Page d'informations concernant le patient
 <script src="{{ url_for('static', filename='callAPI/verifEntry.js') }}"></script>
 
 {% if confirmation_message %}
+    <!-- This script block is conditionally included when the 'confirmation_message' variable is truthy.
+    It is responsible for displaying a success message to the user using the SweetAlert2 library. -->
     <script>
-        
         var confirmation_message = {{ confirmation_message|tojson }};
         console.log(confirmation_message)
         if (confirmation_message) {

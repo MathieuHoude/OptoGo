@@ -9,6 +9,16 @@ patients_bp = Blueprint('patients', __name__, url_prefix='/patients')
 # route pour la page des informations du patient
 @patients_bp.route("/<int:patient_id>")
 def details(patient_id):
+    """
+    This function retrieves and displays the details of a specific patient.
+
+    Args:
+        patient_id (int): The ID of the patient whose details are to be displayed.
+
+    Returns:
+        A rendered template: A HTML page displaying the details of the specified patient.
+
+    """
     index = 4
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)

@@ -71,8 +71,9 @@
 <!-- JS pour faire fonctionner Flowbite -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 {% if session['login_error'] %}
-    <script>
-        
+ <!-- This script block is conditionally included when the 'confirmation_message' variable is truthy.
+    It is responsible for displaying a success message to the user using the SweetAlert2 library. -->
+    <script> 
         var login_error = {{ session['login_error']|tojson }};
         console.log(login_error)
         if (login_error) {
