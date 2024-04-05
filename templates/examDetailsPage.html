@@ -11,6 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{url_for('static', filename='css/interactiveTabs.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -26,5 +27,19 @@
     {% include "exam/interactiveTabs.html" %}
 </div>
 </body>
+
+{% if confirmation_message %}
+    <script>
+        var confirmation_message = {{ confirmation_message|tojson }};
+        console.log(confirmation_message)
+        if (confirmation_message) {
+            Swal.fire({
+                icon: 'success',
+                title: confirmation_message.title,
+                text: confirmation_message.text,
+            });
+        }
+    </script>
+{% endif %}
 
 </html>

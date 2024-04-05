@@ -2,37 +2,37 @@
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Medicaments</h5>
     <div class="flex flex-col gap-2">
         <div class="checkbox">
-            <label for="{{ form.medications_amiodarone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_amiodarone.label }}</label>
-            <input name="{{ form.medications_amiodarone.name }}" type="checkbox"  {% if form.medications_amiodarone.data%}checked{% endif %} id="{{ form.medications_amiodarone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_amiodarone.data }}" />
-            {% for error in form.medications_amiodarone.errors %}
+            <label for="{{ hdc_form.medications_amiodarone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.medications_amiodarone.label }}</label>
+            <input name="{{ hdc_form.medications_amiodarone.name }}" type="checkbox"  {% if hdc_form.medications_amiodarone.data%}checked{% endif %} id="{{ hdc_form.medications_amiodarone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.medications_amiodarone.data }}" />
+            {% for error in hdc_form.medications_amiodarone.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.medications_digoxin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_digoxin.label }}</label>
-            <input name="{{ form.medications_digoxin.name }}" type="checkbox"  {% if form.medications_digoxin.data%}checked{% endif %} id="{{ form.medications_digoxin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_digoxin.data }}" />
-            {% for error in form.medications_digoxin.errors %}
+            <label for="{{ hdc_form.medications_digoxin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.medications_digoxin.label }}</label>
+            <input name="{{ hdc_form.medications_digoxin.name }}" type="checkbox"  {% if hdc_form.medications_digoxin.data%}checked{% endif %} id="{{ hdc_form.medications_digoxin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.medications_digoxin.data }}" />
+            {% for error in hdc_form.medications_digoxin.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.medications_isotretinoin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_isotretinoin.label }}</label>
-            <input name="{{ form.medications_isotretinoin.name }}" type="checkbox"  {% if form.medications_isotretinoin.data%}checked{% endif %} id="{{ form.medications_isotretinoin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_isotretinoin.data }}" />
-            {% for error in form.medications_isotretinoin.errors %}
+            <label for="{{ hdc_form.medications_isotretinoin.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.medications_isotretinoin.label }}</label>
+            <input name="{{ hdc_form.medications_isotretinoin.name }}" type="checkbox"  {% if hdc_form.medications_isotretinoin.data%}checked{% endif %} id="{{ hdc_form.medications_isotretinoin.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.medications_isotretinoin.data }}" />
+            {% for error in hdc_form.medications_isotretinoin.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.medications_chloroquine.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_chloroquine.label }}</label>
-            <input name="{{ form.medications_chloroquine.name }}" type="checkbox"  {% if form.medications_chloroquine.data%}checked{% endif %} id="{{ form.medications_chloroquine.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_chloroquine.data }}" />
-            {% for error in form.medications_chloroquine.errors %}
+            <label for="{{ hdc_form.medications_chloroquine.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.medications_chloroquine.label }}</label>
+            <input name="{{ hdc_form.medications_chloroquine.name }}" type="checkbox"  {% if hdc_form.medications_chloroquine.data%}checked{% endif %} id="{{ hdc_form.medications_chloroquine.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.medications_chloroquine.data }}" />
+            {% for error in hdc_form.medications_chloroquine.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.medications_methylprednisolone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.medications_methylprednisolone.label }}</label>
-            <input name="{{ form.medications_methylprednisolone.name }}" type="checkbox"  {% if form.medications_methylprednisolone.data%}checked{% endif %} id="{{ form.medications_methylprednisolone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.medications_methylprednisolone.data }}" />
-            {% for error in form.medications_methylprednisolone.errors %}
+            <label for="{{ hdc_form.medications_methylprednisolone.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.medications_methylprednisolone.label }}</label>
+            <input name="{{ hdc_form.medications_methylprednisolone.name }}" type="checkbox"  {% if hdc_form.medications_methylprednisolone.data%}checked{% endif %} id="{{ hdc_form.medications_methylprednisolone.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.medications_methylprednisolone.data }}" />
+            {% for error in hdc_form.medications_methylprednisolone.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>

@@ -98,34 +98,5 @@ def update_clinic():
     response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique']}
     return jsonify(response_data)
 
-
-"""
-    This function is used to verify the RAMQ field in the patient's record.
-
-    Args:
-        request_data (dict): The request data containing the RAMQ field.
-
-    Returns:
-        dict: A dictionary containing the validation result and message.
-
-    Raises:
-        ValueError: If the RAMQ field is empty or contains invalid characters.
-"""
-@app.route("/verif_ramq", methods=["POST"])
-def verif_ramq():
-    request_data = request.json
-    ramq = request_data.get("ramq").replace(" ", "")
-    if ramq is None:
-        return jsonify({"valid": False, "message": "Le champ RAMQ est vide."})
-    if len(ramq) == 0:
-        return jsonify({"valid": False, "message": "Le champ RAMQ est vide."})
-    if len(ramq) > 12:
-        return jsonify({"valid": False, "message": "Le champ RAMQ est trop long."})
-    if not re.match("^[A-Za-z]+$", ramq[:3]):
-        return jsonify({"valid": False, "message": "Les 4 premiers caractères du champ RAMQ doivent être des lettres alphabétiques."})
-    if not re.match("^\d+$", ramq[3:]):
-        return jsonify({"valid": False, "message": "Les caractères restants du champ RAMQ doivent être des chiffres."})
-    return jsonify({"valid": True, "message": "Le champ RAMQ est valide."})
-
 if __name__ == '__main__':
     app.run(debug=True)

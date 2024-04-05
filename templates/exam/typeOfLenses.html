@@ -6,36 +6,41 @@ Type de lunette porté
 <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
     <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
         <div class="flex items-center ps-3">
-            <input id="{{ form.lens_type_single_vision_lenses.id }}" type="checkbox" {% if form.lens_type_single_vision_lenses.data%}checked{% endif %} value="{{ form.lens_type_single_vision_lenses.data }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="{{ form.lens_type_single_vision_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.lens_type_single_vision_lenses.label }}</label>
-            {% for error in form.lens_type_single_vision_lenses.errors %}
+            {{ exam_form.lens_type_single_vision_lenses }}
+            <!-- {{ exam_form.lens_type_single_vision_lenses.label }} -->
+            <!-- <input id="{{ exam_form.lens_type_single_vision_lenses.id }}" type="checkbox" {% if exam_form.lens_type_single_vision_lenses.data%}checked{% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> -->
+            <label for="{{ exam_form.lens_type_single_vision_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ exam_form.lens_type_single_vision_lenses.label }}</label>
+            {% for error in exam_form.lens_type_single_vision_lenses.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
     </li>
     <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
         <div class="flex items-center ps-3">
-            <input id="{{ form.lens_type_progressive_lenses.id }}" type="checkbox" {% if form.lens_type_progressive_lenses.data%}checked{% endif %} value="{{ form.lens_type_progressive_lenses.data }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="{{ form.lens_type_progressive_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.lens_type_progressive_lenses.label }}</label>
-            {% for error in form.lens_type_progressive_lenses.errors %}
+            {{ exam_form.lens_type_progressive_lenses }}
+            <!-- <input id="{{ exam_form.lens_type_progressive_lenses.id }}" type="checkbox" {% if exam_form.lens_type_progressive_lenses.data%}checked{% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> -->
+            <label for="{{ exam_form.lens_type_progressive_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ exam_form.lens_type_progressive_lenses.label }}</label>
+            {% for error in exam_form.lens_type_progressive_lenses.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
     </li>
     <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
         <div class="flex items-center ps-3">
-            <input id="{{ form.lens_type_office_lenses.id }}" type="checkbox" {% if form.lens_type_office_lenses.data%}checked{% endif %} value="{{ form.lens_type_office_lenses.data }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="{{ form.lens_type_office_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.lens_type_office_lenses.label }}</label>
-            {% for error in form.lens_type_office_lenses.errors %}
+            {{ exam_form.lens_type_office_lenses }}
+            <!-- <input id="{{ exam_form.lens_type_office_lenses.id }}" type="checkbox" {% if exam_form.lens_type_office_lenses.data%}checked{% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> -->
+            <label for="{{ exam_form.lens_type_office_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ exam_form.lens_type_office_lenses.label }}</label>
+            {% for error in exam_form.lens_type_office_lenses.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
     </li>
     <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
         <div class="flex items-center ps-3">
-            <input id="{{ form.lens_type_bifocal_lenses.id }}" type="checkbox" {% if form.lens_type_bifocal_lenses.data%}checked{% endif %} value="{{ form.lens_type_bifocal_lenses.data }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="{{ form.lens_type_bifocal_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.lens_type_bifocal_lenses.label }}</label>
-            {% for error in form.lens_type_bifocal_lenses.errors %}
+            {{ exam_form.lens_type_bifocal_lenses }}
+            <!-- <input id="{{ exam_form.lens_type_bifocal_lenses.id }}" type="checkbox" {% if exam_form.lens_type_bifocal_lenses.data%}checked{% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> -->
+            <label for="{{ exam_form.lens_type_bifocal_lenses.id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ exam_form.lens_type_bifocal_lenses.label }}</label>
+            {% for error in exam_form.lens_type_bifocal_lenses.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>

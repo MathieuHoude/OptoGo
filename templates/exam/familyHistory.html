@@ -2,23 +2,23 @@
      <h5 class="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Antécédents familiaux</h5>
     <div class="flex flex-col gap-2">
         <div class="checkbox">
-            <label for="{{ form.antecedants_familiaux_retinal_detachment.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.antecedants_familiaux_retinal_detachment.label }}</label>
-            <input name="{{ form.antecedants_familiaux_retinal_detachment.name }}" type="checkbox"  {% if form.antecedants_familiaux_retinal_detachment.data%}checked{% endif %} id="{{ form.antecedants_familiaux_retinal_detachment.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.antecedants_familiaux_retinal_detachment.data }}" />
-            {% for error in form.antecedants_familiaux_retinal_detachment.errors %}
+            <label for="{{ hdc_form.antecedants_familiaux_retinal_detachment.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.antecedants_familiaux_retinal_detachment.label }}</label>
+            <input name="{{ hdc_form.antecedants_familiaux_retinal_detachment.name }}" type="checkbox"  {% if hdc_form.antecedants_familiaux_retinal_detachment.data%}checked{% endif %} id="{{ hdc_form.antecedants_familiaux_retinal_detachment.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.antecedants_familiaux_retinal_detachment.data }}" />
+            {% for error in hdc_form.antecedants_familiaux_retinal_detachment.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.antecedants_familiaux_macular_degeneration.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.antecedants_familiaux_macular_degeneration.label }}</label>
-            <input name="{{ form.antecedants_familiaux_macular_degeneration.name }}" type="checkbox"  {% if form.antecedants_familiaux_macular_degeneration.data%}checked{% endif %} id="{{ form.antecedants_familiaux_macular_degeneration.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.antecedants_familiaux_macular_degeneration.data }}" />
-            {% for error in form.antecedants_familiaux_macular_degeneration.errors %}
+            <label for="{{ hdc_form.antecedants_familiaux_macular_degeneration.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.antecedants_familiaux_macular_degeneration.label }}</label>
+            <input name="{{ hdc_form.antecedants_familiaux_macular_degeneration.name }}" type="checkbox"  {% if hdc_form.antecedants_familiaux_macular_degeneration.data%}checked{% endif %} id="{{ hdc_form.antecedants_familiaux_macular_degeneration.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.antecedants_familiaux_macular_degeneration.data }}" />
+            {% for error in hdc_form.antecedants_familiaux_macular_degeneration.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="checkbox">
-            <label for="{{ form.antecedants_familiaux_glaucoma.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.antecedants_familiaux_glaucoma.label }}</label>
-            <input name="{{ form.antecedants_familiaux_glaucoma.name }}" type="checkbox"  {% if form.antecedants_familiaux_glaucoma.data%}checked{% endif %} id="{{ form.antecedants_familiaux_glaucoma.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ form.antecedants_familiaux_glaucoma.data }}" />
-            {% for error in form.antecedants_familiaux_glaucoma.errors %}
+            <label for="{{ hdc_form.antecedants_familiaux_glaucoma.id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ hdc_form.antecedants_familiaux_glaucoma.label }}</label>
+            <input name="{{ hdc_form.antecedants_familiaux_glaucoma.name }}" type="checkbox"  {% if hdc_form.antecedants_familiaux_glaucoma.data%}checked{% endif %} id="{{ hdc_form.antecedants_familiaux_glaucoma.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="{{ hdc_form.antecedants_familiaux_glaucoma.data }}" />
+            {% for error in hdc_form.antecedants_familiaux_glaucoma.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
