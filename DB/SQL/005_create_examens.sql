@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS examens (
     contact_lens_type JSON NOT NULL ,
     lens_type JSON NOT NULL,
     old_RX JSON NOT NULL,
-    periode_validite INTEGER,
+    periode_validite INTEGER NOT NULL,
     patient_ID INTEGER NOT NULL,
     optometriste_ID INTEGER NOT NULL REFERENCES optometristes(ID) ON DELETE NO ACTION,
     histoireDeCas_ID INTEGER,

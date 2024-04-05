@@ -1,3 +1,32 @@
+<style>
+    .tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 16em;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
 <div class="md:flex">
     <ul class="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0"
         id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
@@ -55,9 +84,12 @@
              <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Générer une prescription</h2>
             <div class="divider"></div>
             <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600">Valider examen</button>
-        <a href="/cliniques/{{clinique['ID']}}/prescription">
-            <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
-           </a>
+        <div class="tooltip">
+            <a href="/examens/{{examen['ID']}}/prescription?clinique_id={{clinique['ID']}}&patient_id={{patient['ID']}}">
+            <button disabled  title="Disabled button tooltip" class="tooltip-btn px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
+            <span class="tooltiptext">Veuillez d'abord valider l'examen</span>
+        </div>
+        </a>
         </div>
     </form>
 

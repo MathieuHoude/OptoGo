@@ -32,7 +32,7 @@
                 </li>
                 <li>
                     <a id="disconnect" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                       href="/logout">Deconnexion</a>
+                       href="/auth/logout">Deconnexion</a>
                 </li>
             </ul>
         </div>
@@ -47,7 +47,7 @@
    // Script de redirection vers la page LOGIN
     const disconnect = document.getElementById("disconnect")
     disconnect.addEventListener("click", function () {
-        window.location.href = "login";
+        window.location.href = "auth/login";
     })
 
 </script>

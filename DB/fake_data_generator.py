@@ -82,22 +82,6 @@ class HistoireDeCasGenerator:
             writer.writerow(["ID", "conditions", "allergies", "medications", "trouble_vision", "antecedants_familiaux", "antecedants_oculaires", "notes", "examen_ID"])
             for i in range(1, num_objects):
                 writer.writerow([i, conditions[i], allergies[i], medications[i], trouble_vision[i], antecedants_familiaux[i], antecedants_oculaires[i], lorem.paragraph(), i])
-
-class PrescriptionsGenerator:
-    
-    @staticmethod
-    def generate_csv():
-        # Number of JSON objects you want to generate
-        num_objects = 1000
-
-        # Write JSON objects to a CSV file
-        csv_file = "./DB/seeds/005-prescriptions.csv"
-        with open(csv_file, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["ID", "periode_validite", "optometriste_ID", "puissance", "examen_ID"])
-            for i in range(0, num_objects):
-                writer.writerow([i + 1, random.randint(6, 24), random.uniform(0, 100), random.uniform(0, 100), i + 1])
-
         
 
 class ExamensGenerator:
