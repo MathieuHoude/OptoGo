@@ -47,6 +47,12 @@ def index():
     cursor = conn.cursor(dictionary=True)
     form = OptometristForm()
     confirmation_message = None
+
+    cursor.execute('SELECT nombre_patients_du();')
+    appointmentsToDo = cursor.fetchone()
+    nombre_patients = appointmentsToDo['nombre_patients_du()']
+
+
     if request.method == 'POST' and form.validate_on_submit():
         modified_fields = {}
         for field in form:
@@ -82,7 +88,8 @@ def index():
         cliniques=cliniques,
         clinique_choisie=clinique,
         form=form,
-        confirmation_message=confirmation_message
+        confirmation_message=confirmation_message,
+        nombre_patients=nombre_patients
     )
 
 
@@ -97,6 +104,67 @@ def update_clinic():
     conn.close()
     response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique']}
     return jsonify(response_data)
+
+@app.route("/examen-to-do")
+def exam_to_do():
+    """
+    This function is used to display a list of patients who have exams to do.
+
+    Returns:
+        str: A rendered template displaying the list of patients with exams to do.
+
+    Raises:
+        Exception: If there is an error connecting to the MySQL database.
+    """
+    try:
+        index = 0
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("CALL liste_patients_du()")
+        patients = cursor.fetchall()
+        app.logger.debug(patients)
+        return render_template("examsToDoPage.html",
+                                patients=patients,
+                                optometriste=session["user"],
+                                index=index
+                                )
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
+
+@app.route("/examen-to-do/<int:patient_id>")
+def exam_to_do_patient(patient_id):
+    """
+    This function is used to display boxes of choice in order to decide what to do concerning this patient.
+
+    Args:
+        patient_id (int): The ID of the patient whose exams need to be displayed.
+
+    Returns:
+        str: A rendered template displaying the list of patients with exams to do.
+
+    Raises:
+        Exception: If there is an error connecting to the MySQL database.
+    """
+    try:
+        index = 3
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM cliniques WHERE ID = (SELECT PC.clinique_ID FROM patients_cliniques PC, patients P WHERE PC.patient_ID = P.ID AND P.ID = {patient_id})")
+        clinique = cursor.fetchone()
+        session["clinique"] = clinique
+        cursor.execute(f"SELECT * FROM patients WHERE ID = {patient_id}")
+        patient = cursor.fetchone()
+        session["patient"] = patient
+        cursor.close()
+        conn.close()
+        return render_template("choicePage.html",
+                                index=index,
+                                clinique=session["clinique"],
+                                optometriste=session["user"],
+                                patient=session["patient"])
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
