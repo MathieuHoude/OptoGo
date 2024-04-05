@@ -32,14 +32,14 @@ class ExamForm(FlaskForm):
     choices = [(1/6, '1/6'), (2/6, '2/6'), (3/6, '3/6'), (4/6, '4/6'), (5/6, '5/6'), (6/6, '6/6')]
     old_RX_Acuity_RE = SelectField('Acuité', choices=choices)
 
-    lens_type_single_vision_lenses = BooleanField('Verres simple vision')
-    lens_type_progressive_lenses = BooleanField('Verres progressifs')
-    lens_type_office_lenses = BooleanField('Verres offices')
-    lens_type_bifocal_lenses = BooleanField('Verres bifocaux')
+    lens_type_single_vision_lenses = BooleanField('Verres simple vision', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
+    lens_type_progressive_lenses = BooleanField('Verres progressifs', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
+    lens_type_office_lenses = BooleanField('Verres offices', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
+    lens_type_bifocal_lenses = BooleanField('Verres bifocaux', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
 
-    contact_lens_type_single_vision_contact_lenses = BooleanField('VC simple vision')
-    contact_lens_type_multifocal_contact_lenses = BooleanField('VC multifocaux')
-    contact_lens_type_mono_vision_contact_lenses = BooleanField('VC mono-vision')
+    contact_lens_type_single_vision_contact_lenses = BooleanField('VC simple vision', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
+    contact_lens_type_multifocal_contact_lenses = BooleanField('VC multifocaux', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
+    contact_lens_type_mono_vision_contact_lenses = BooleanField('VC mono-vision', render_kw={"class":"w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"})
 
     choices = [("%.2f" % (x / 4.0), "%.2f" % (x / 4.0)) for x in range(-80, 81)]  # Generating options from -20 to 20 by steps of 0.25
     RX_objective_Sphere_LE = SelectField('Sphere', choices=choices, validators=[validate_rx_add])
