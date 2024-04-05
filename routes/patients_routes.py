@@ -40,7 +40,20 @@ def details(patient_id):
 # route pour la page de modification des informations du patient
 @patients_bp.route("/<int:patient_id>/edit", methods=['GET', 'POST'])
 def edit(patient_id):
+    """
+    This function allows the editing of a specific patient's information.
 
+    Args:
+        patient_id (int): The ID of the patient whose information is to be edited.
+
+    Returns:
+        A rendered template: A HTML page displaying the form for editing the specified patient's information.
+
+    If the request method is POST and the form is valid, the function updates the patient's information in the database and redirects to the details page of the edited patient.
+
+    If the request method is GET, the function retrieves the patient's information from the database, populates the form with the current information, and renders the edit page.
+
+    """
     index = 4
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
