@@ -33,7 +33,6 @@
 {% if confirmation_message %}
     <script>
         var confirmation_message = {{ confirmation_message|tojson }};
-        console.log(confirmation_message)
         if (confirmation_message) {
             Swal.fire({
                 icon: 'success',
@@ -50,8 +49,8 @@
         if (error_message) {
             Swal.fire({
                 icon: 'error',
-                title: confirmation_message.title,
-                text: confirmation_message.text,
+                title: error_message.title,
+                text: error_message.message,
             });
         }
     </script>

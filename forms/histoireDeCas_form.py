@@ -32,4 +32,4 @@ class HistoireDeCasForm(FlaskForm):
     antecedants_oculaires_surgery = BooleanField('Chirurgie aux yeux')
     antecedants_oculaires_trauma = BooleanField('Traumatisme aux yeux')
     antecedants_oculaires_retinal_detachment = BooleanField('Décollement de la rétine')
-    notes = StringField('Notes', validators=[Length(max=2000)])
+    notes = StringField('Notes', validators=[Length(max=2000)], default='')

@@ -81,4 +81,5 @@ class ExamForm(FlaskForm):
     choices = [(1/6, '1/6'), (2/6, '2/6'), (3/6, '3/6'), (4/6, '4/6'), (5/6, '5/6'), (6/6, '6/6')]
     RX_subjective_Acuity_RE = SelectField('Acuité', choices=choices)
 
-    periode_validite = IntegerField('Période de validité', validators=[Optional()])
+    periode_validite = StringField('Période de validité', validators=[Optional()], default=0)
+    reason_next_appt = StringField('Raison', validators=[Optional()])
