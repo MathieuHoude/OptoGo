@@ -1,0 +1,37 @@
+<div>
+    <a id="appointement-box" href="{{ url_for('exam_to_do') }}"
+        class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Patients en attente de
+            rendez-vous :</h5>
+        <p id="number" class="text-5xl text-gray-900 dark:text-white">{{nombre_patients}}</p>
+    </a>
+</div>
+
+<script>
+    let number = parseInt(document.getElementById("number").innerText.trim());
+
+    let backgroundColor;
+    if (number < 10) {
+        backgroundColor = "#BCF0DA";
+    } else if (number < 30) {
+        backgroundColor = "#FCE96A"; 
+    } else if (number < 60) {
+        backgroundColor = "#FBD5D5";
+    } else {
+        backgroundColor = "#F3FAF7";
+    }
+
+    document.getElementById("appointement-box").style.backgroundColor = backgroundColor;
+</script>
+
+<style>
+    
+    #number {
+        text-align: center;
+        color: black !important;
+    }
+
+    #appointement-box h5 {
+        color: black !important; 
+    }
+</style>
