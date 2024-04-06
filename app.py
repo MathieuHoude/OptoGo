@@ -32,17 +32,35 @@ ROUTES_NOT_REQUIRING_AUTH = ['auth.login']
 
 # Middleware to check if user is logged in before serving any route
 @app.before_request
-# def before_request():
-#     session.pop('confirmation_message', None)
+# This middleware function is used to check if the user is logged in before serving any route.
+# If the user is not logged in and the requested route requires authentication,
+# it redirects the user to the login page.
 def require_login():
+    """
+    This middleware function is used to check if the user is logged in before serving any route.
+    If the user is not logged in and the requested route requires authentication,
+    it redirects the user to the login page.
+   
+    """
     if request.endpoint and request.endpoint not in ROUTES_NOT_REQUIRING_AUTH and not 'user' in session:
         if not request.path.startswith(app.static_url_path):
             return redirect(url_for('auth.login'))
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/index", methods=['GET', 'POST'])
-def index():
-    index = 1
+def index(index=1):
+    """
+    This function is the main entry point for the application. It handles GET and POST requests to the '/' and '/index' routes.
+
+    Args:
+        index (int, optional): An integer representing the current index. Defaults to 1.
+
+    Returns:
+        str: A rendered template displaying the main page of the application.
+
+    Raises:
+        Exception: If there is an error connecting to the MySQL database.
+    """
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     form = OptometristForm()
@@ -96,13 +114,27 @@ def index():
 # gestion de la requete HTTP pour mettre a jour la clinique
 @app.route("/update_clinic", methods=["GET"])
 def update_clinic():
+    """
+    This function is used to update the selected clinic for the logged-in optometrist.
+    It retrieves the ID of the selected clinic from the database based on the provided name,
+    and stores it in the session for future reference.
+
+    Args:
+        selected_option (str): The name of the clinic to be selected.
+
+    Returns:
+        json: A JSON response containing a message indicating the selected clinic and its ID.
+
+    Raises:
+        Exception: If there is an error connecting to the MySQL database.
+    """
     selected_option = request.args.get("selected_option")
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(f'SELECT ID FROM cliniques WHERE name = "{selected_option}";')
     session['clinique'] = cursor.fetchone()
     conn.close()
-    response_data = {"message": "Option sélectionnée : " + selected_option, "clinique": session['clinique']}
+    response_data = {"message": f"Option sélectionnée : {selected_option}", "clinique": session['clinique']}
     return jsonify(response_data)
 
 @app.route("/examen-to-do")
