@@ -11,10 +11,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{url_for('static', filename='css/prescription.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="{{url_for('static', filename='js/darkMode.js')}}"></script>
     
 </head>
 
-<body>
+<body class="dark:bg-gray-900 antialiased">
 <div id="nav-bar" class="mb-10">
     {% include "navbar.html" %}
 </div>
@@ -25,9 +26,9 @@
 
 <div id="patient_information">
     {% include "prescription/prescription.html"%}
+    <button onClick="printPrescription()" class="mt-3 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" id="print" type="button">Imprimer</button>
 </div>
 
-<button onClick="printPrescription()" class="mt-3 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" id="print" type="button">Imprimer</button>
 </body>
 
 </html>

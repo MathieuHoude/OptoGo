@@ -1,3 +1,40 @@
+<style>
+    .tooltip {
+    position: relative;
+    display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 16em;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    }
+
+    .char-count {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        color: #666;
+        font-size: 14px;
+    }
+</style>
+
 
 <div class="md:flex">
     <ul class="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0"
@@ -17,59 +54,99 @@
             </button>
         </li>
     </ul>
-
-
-    </ul>
     <div id="default-tab-content">
-        <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
-             id="profile" role="tabpanel" aria-labelledby="profile-tab">
-             <form>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Histoire de cas</h3>
-            <div class="flex flex-wrap gap-2">
-                {% include "exam/medicalConditions.html" %}
-                {% include "exam/allergies.html" %}
-                {% include "exam/medication.html" %}
-                {% include "exam/visionTrouble.html" %}
-                {% include "exam/familyHistory.html" %}
-                {% include 'exam/eyeHistory.html' %}
-            </div>
-        </div>
-        <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
-             id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-5">Examen</h3>
-            <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-2">Détail de l'équipement antérieur</h2>
-            <div class="divider"></div>
-
-            <div>
-                <div class="flex flex-wrap gap-2">{% include "exam/oldPrescription.html" %}</div>
+        <form method="post" action="/examens/submit_histoireDeCas">
+            {{ hdc_form.hidden_tag() }}
+            <input type="hidden" name="{{hdc_form.ID.name}}" id="{{hdc_form.ID.id}}" value="{{hdc_form.ID.data}}">
+            <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
+                id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Histoire de cas</h3>
                 <div class="flex flex-wrap gap-2">
-                    {% include "exam/typeOfLenses.html" %}
-                    {% include 'exam/contactLenses.html' %}
+                    {% include "exam/medicalConditions.html" %}
+                    {% include "exam/allergies.html" %}
+                    {% include "exam/medication.html" %}
+                    {% include "exam/visionTrouble.html" %}
+                    {% include "exam/familyHistory.html" %}
+                    {% include 'exam/eyeHistory.html' %}
                 </div>
-
+                <div class="relative">
+                    <label for="{{ hdc_form.notes.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ hdc_form.notes.label }}</label>
+                    <textarea name="{{ hdc_form.notes.name }}" rows="4" id="{{ hdc_form.notes.id }}" maxlength="{{hdc_form.notes.validators[0].max}}" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Détails supplémentaires">{{ hdc_form.notes.data }}</textarea>
+                    <div id="charCount"></div>
+                    {% for error in hdc_form.notes.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="divider"></div>
+                <button type="submit" class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600">Soumettre</button>
             </div>
-            <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Nouvelles prescription</h2>
-            <div class="divider"></div>
-            <div class="flex flex-wrap">{% include "exam/rxObjective.html" %}</div>
-            <div class="flex flex-wrap">{% include "exam/rxSubjective.html" %}</div>
-            <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Date du prochain rendez-vous recommandé</h2>
-            <div class="divider"></div>
-            <div class ="validity-container">
+        </form>
+        <form method="post" action="/examens/submit_examen">
+            {{ exam_form.hidden_tag() }}
+            <input type="hidden" name="{{exam_form.ID.name}}" id="{{exam_form.ID.id}}" value="{{exam_form.ID.data}}">
+            <input type="hidden" name="{{exam_form.patient_ID.name}}" id="{{exam_form.patient_ID.id}}" value="{{exam_form.patient_ID.data}}">
+            <input type="hidden" name="{{exam_form.optometriste_ID.name}}" id="{{exam_form.optometriste_ID.id}}" value="{{exam_form.optometriste_ID.data}}">
+            <input type="hidden" name="{{exam_form.histoireDeCas_ID.name}}" id="{{exam_form.histoireDeCas_ID.id}}" value="{{exam_form.histoireDeCas_ID.data}}">
+            <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
+                id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-5">Examen</h3>
+                <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-2">Détail de l'équipement antérieur</h2>
+                <div class="divider"></div>
+
+                <div>
+                    <div class="flex flex-wrap gap-2">{% include "exam/oldPrescription.html" %}</div>
+                    <div class="flex flex-wrap gap-2">
+                        {% include "exam/typeOfLenses.html" %}
+                        {% include 'exam/contactLenses.html' %}
+                    </div>
+
+                </div>
+                <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Nouvelles prescription</h2>
+                <div class="divider"></div>
+                <div class="flex flex-wrap">{% include "exam/rxObjective.html" %}</div>
+                <div class="flex flex-wrap">{% include "exam/rxSubjective.html" %}</div>
+
+                <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Date du prochain rendez-vous recommandé</h2>
+                <div class="divider"></div>
+                <div class ="validity-container">
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">{{examen.periode_validite}} Mois</span>
                 <label>Cause</label>
                 <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{examen.reason_next_appt}}</span>
-            </div>
-             <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Générer une prescription</h2>
-            <div class="divider"></div>
-            <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600">Valider examen</button>
-        <div class="tooltip">
-            <a href="/examens/{{examen['ID']}}/prescription?clinique_id={{clinique['ID']}}&patient_id={{patient['ID']}}">
-            <button disabled  title="Disabled button tooltip" class="tooltip-btn px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
-            <span class="tooltiptext">Veuillez d'abord valider l'examen</span>
-        </div>
-        </a>
-        </div>
-    </form>
+                </div>
 
+
+
+                <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Générer une prescription</h2>
+                <div class="divider"></div>
+                <button type="submit" class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600">Valider examen</button>
+                {% if exam_form.periode_validite.data == None %}
+                    <div class="tooltip">
+                        <button disabled  title="Disabled button tooltip" class="tooltip-btn px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
+                        <span class="tooltiptext">Veuillez d'abord valider l'examen</span>
+                    </div>
+                {% else %}
+                    <a href="/examens/{{examen['ID']}}/prescription?clinique_id={{clinique['ID']}}&patient_id={{patient['ID']}}">
+                        <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
+                    </a>
+                {% endif %}
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    const textarea = document.getElementById("notes");
+    const charCount = document.getElementById('charCount');
+
+    // Function to update character count
+    function updateCharCount() {
+        const count = textarea.value.length;
+        charCount.textContent = `${count} / {{hdc_form.notes.validators[0].max}} caractères`;
+    }
+
+    // Attach event listener to textarea
+    textarea.addEventListener('input', updateCharCount);
+
+    // Initialize character count
+    updateCharCount();
+</script>
