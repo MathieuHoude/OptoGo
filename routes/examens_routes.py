@@ -12,6 +12,19 @@ examens_bp = Blueprint('examens', __name__, url_prefix='/examens')
 # route pour la page des examens du patient
 @examens_bp.route("/")
 def examens():
+    """
+    This function handles the page displaying the patient's exams.
+
+    Parameters:
+    - clinique_id (int): The ID of the selected clinic.
+    - patient_id (int): The ID of the selected patient.
+
+    Returns:
+    - A rendered HTML template "examensPage.html" containing the patient's exams.
+
+    Raises:
+    - Redirects to the index page if the selected patient does not belong to the selected clinic.
+    """
     index = 4.5
     clinique_id = request.args.get('clinique_id')
     patient_id = request.args.get('patient_id')
