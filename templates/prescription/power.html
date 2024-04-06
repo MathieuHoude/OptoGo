@@ -9,51 +9,51 @@ Power
         <div class=" gap-2 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <form class="flex gap-2 mx-auto">
                 <div>
-                    <label for="{{ form.RX_objective_Sphere_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Sphere_LE.label }}</label>
+                    <label for="{{ form.RX_subjective_Sphere_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_subjective_Sphere_LE.label }}</label>
                     <div class="flex flex-col">
-                        <input id="{{ form.RX_objective_Sphere_LE.id }}" name="{{ form.RX_objective_Sphere_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Sphere_LE.data is not none %}{{ form.RX_objective_Sphere_LE.data }}{% else %}0.00{% endif %}" readonly>
-                        <input id="{{ form.RX_objective_Sphere_RE.id }}" name="{{ form.RX_objective_Sphere_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Sphere_RE.data is not none %}{{ form.RX_objective_Sphere_RE.data }}{% else %}0.00{% endif %}" readonly>
+                        <input id="{{ form.RX_subjective_Sphere_LE.id }}" name="{{ form.RX_subjective_Sphere_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Sphere_LE.data is not none %}{{ form.RX_subjective_Sphere_LE.data }}{% else %}0.00{% endif %}" readonly>
+                        <input id="{{ form.RX_subjective_Sphere_RE.id }}" name="{{ form.RX_subjective_Sphere_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Sphere_RE.data is not none %}{{ form.RX_subjective_Sphere_RE.data }}{% else %}0.00{% endif %}" readonly>
 
                     </div>
                 </div>
                 <div>
-                    <label for="{{ form.RX_objective_Ast_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Ast_LE.label }}</label>
+                    <label for="{{ form.RX_subjective_Ast_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_subjective_Ast_LE.label }}</label>
                     <div class="flex flex-col">
-                        <input id="{{ form.RX_objective_Ast_LE.id }}" name="{{ form.RX_objective_Ast_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Ast_LE.data is not none %}{{ form.RX_objective_Ast_LE.data }}{% else %}0.00{% endif %}" readonly>
-                        <input id="{{ form.RX_objective_Ast_RE.id }}" name="{{ form.RX_objective_Ast_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Ast_RE.data is not none %}{{ form.RX_objective_Ast_RE.data }}{% else %}0.00{% endif %}" readonly>
+                        <input id="{{ form.RX_subjective_Ast_LE.id }}" name="{{ form.RX_subjective_Ast_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Ast_LE.data is not none %}{{ form.RX_subjective_Ast_LE.data }}{% else %}0.00{% endif %}" readonly>
+                        <input id="{{ form.RX_subjective_Ast_RE.id }}" name="{{ form.RX_subjective_Ast_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Ast_RE.data is not none %}{{ form.RX_subjective_Ast_RE.data }}{% else %}0.00{% endif %}" readonly>
 
                     </div>
                 </div>
                 <div>
-                    <label for="{{ form.RX_objective_Axis_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Axis_LE.label }}</label>
+                    <label for="{{ form.RX_subjective_Axis_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_subjective_Axis_LE.label }}</label>
                     <div class="flex flex-col">
-                        <input id="{{ form.RX_objective_Axis_LE.id }}" name="{{ form.RX_objective_Axis_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Axis_LE.data is not none %}{{ form.RX_objective_Axis_LE.data }}{% else %}0.00{% endif %}" readonly>
-<input id="{{ form.RX_objective_Axis_RE.id }}" name="{{ form.RX_objective_Axis_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Axis_RE.data is not none %}{{ form.RX_objective_Axis_RE.data }}{% else %}0.00{% endif %}" readonly>
+                        <input id="{{ form.RX_subjective_Axis_LE.id }}" name="{{ form.RX_subjective_Axis_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Axis_LE.data is not none %}{{ form.RX_subjective_Axis_LE.data }}{% else %}0.00{% endif %}" readonly>
+<input id="{{ form.RX_subjective_Axis_RE.id }}" name="{{ form.RX_subjective_Axis_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Axis_RE.data is not none %}{{ form.RX_subjective_Axis_RE.data }}{% else %}0.00{% endif %}" readonly>
 
                     </div>
                 </div>
                 <div>
-                    <label for="{{ form.RX_objective_Add_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Add_LE.label }}</label>
+                    <label for="{{ form.RX_subjective_Add_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_subjective_Add_LE.label }}</label>
                     <div class="flex flex-col">
-                        <input id="{{ form.RX_objective_Add_LE.id }}" name="{{ form.RX_objective_Add_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Add_LE.data is not none %}{{ form.RX_objective_Add_LE.data }}{% else %}0.00{% endif %}" readonly>
+                        <input id="{{ form.RX_subjective_Add_LE.id }}" name="{{ form.RX_subjective_Add_LE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Add_LE.data is not none %}{{ form.RX_subjective_Add_LE.data }}{% else %}0.00{% endif %}" readonly>
 
-<input id="{{ form.RX_objective_Add_RE.id }}" name="{{ form.RX_objective_Add_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_objective_Add_RE.data is not none %}{{ form.RX_objective_Add_RE.data }}{% else %}0.00{% endif %}" readonly>
+<input id="{{ form.RX_subjective_Add_RE.id }}" name="{{ form.RX_subjective_Add_RE.name }}" class="prescription-input" type="text" value="{% if form.RX_subjective_Add_RE.data is not none %}{{ form.RX_subjective_Add_RE.data }}{% else %}0.00{% endif %}" readonly>
 
                     </div>
                 </div>
                 <div>
-                    <label for="{{ form.RX_objective_Acuity_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_objective_Acuity_LE.label }}</label>
+                    <label for="{{ form.RX_subjective_Acuity_LE.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RX_subjective_Acuity_LE.label }}</label>
                     <div class="flex flex-col">
-                        <select id="{{ form.RX_objective_Acuity_LE.id }}" name="{{ form.RX_objective_Acuity_LE.name }}" class="prescription-input" disabled>
+                        <select id="{{ form.RX_subjective_Acuity_LE.id }}" name="{{ form.RX_subjective_Acuity_LE.name }}" class="prescription-input" disabled>
                             <option disabled selected value="">A/V</option>
-                            {% for value, label in form.RX_objective_Acuity_LE.choices %}
-                                <option {% if "{:.2f}".format(value)  == "{:.2f}".format(form.RX_objective_Acuity_LE.data | float) %} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                            {% for value, label in form.RX_subjective_Acuity_LE.choices %}
+                                <option {% if "{:.2f}".format(value)  == "{:.2f}".format(form.RX_subjective_Acuity_LE.data | float) %} selected {% endif %} value="{{ value }}">{{ label }}</option>
                             {% endfor %}
                         </select>
-                        <select id="{{ form.RX_objective_Acuity_RE.id }}" name="{{ form.RX_objective_Acuity_RE.name }}" class="prescription-input" disabled>
+                        <select id="{{ form.RX_subjective_Acuity_RE.id }}" name="{{ form.RX_subjective_Acuity_RE.name }}" class="prescription-input" disabled>
                             <option disabled selected value="">A/V</option>
-                            {% for value, label in form.RX_objective_Acuity_RE.choices %}
-                                <option {% if "{:.2f}".format(value)  == "{:.2f}".format(form.RX_objective_Acuity_RE.data | float) %} selected {% endif %} value="{{ value }}">{{ label }}</option>
+                            {% for value, label in form.RX_subjective_Acuity_RE.choices %}
+                                <option {% if "{:.2f}".format(value)  == "{:.2f}".format(form.RX_subjective_Acuity_RE.data | float) %} selected {% endif %} value="{{ value }}">{{ label }}</option>
                             {% endfor %}
                         </select>
                     </div>
