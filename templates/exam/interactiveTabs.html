@@ -47,11 +47,22 @@
             </button>
         </li>
         <li role="presentation">
-            <button class="inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
+            {% if hdc_form.ID.data == None %}
+                <div class="tooltip">
+                    <button disabled class="tooltip-btn inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
+                        aria-current="page" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
+                        aria-controls="dashboard" aria-selected="false">
+                    Examen de vue
+                </button>
+                <span class="tooltiptext">Veuillez d'abord soumettre l'histoire de cas</span>
+                </div>
+            {% else %}
+                <button class="inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
                     aria-current="page" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
                     aria-controls="dashboard" aria-selected="false">
-                Examen de vue
-            </button>
+                    Examen de vue
+                    </button>
+            {% endif %}
         </li>
     </ul>
     <div id="default-tab-content">
@@ -83,10 +94,15 @@
         </form>
         <form method="post" action="/examens/submit_examen">
             {{ exam_form.hidden_tag() }}
+            <!-- {{ exam_form.ID }}
+            {{ exam_form.patient_ID }}
+            {{ exam_form.optometriste_ID }}
+            {{ exam_form.histoireDeCas_ID }} -->
             <input type="hidden" name="{{exam_form.ID.name}}" id="{{exam_form.ID.id}}" value="{{exam_form.ID.data}}">
             <input type="hidden" name="{{exam_form.patient_ID.name}}" id="{{exam_form.patient_ID.id}}" value="{{exam_form.patient_ID.data}}">
             <input type="hidden" name="{{exam_form.optometriste_ID.name}}" id="{{exam_form.optometriste_ID.id}}" value="{{exam_form.optometriste_ID.data}}">
-            <input type="hidden" name="{{exam_form.histoireDeCas_ID.name}}" id="{{exam_form.histoireDeCas_ID.id}}" value="{{exam_form.histoireDeCas_ID.data}}">
+            <input type="hidden" name="{{hdc_form.ID.name}}" id="{{hdc_form.ID.id}}" value="{{hdc_form.ID.data}}">
+            <input type="hidden" name="{{exam_form.periode_validite.name}}" id="{{exam_form.periode_validite.id}}" value="{{exam_form.periode_validite.data}}">
             <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
                 id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-5">Examen</h3>
