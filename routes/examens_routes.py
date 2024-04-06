@@ -76,6 +76,7 @@ def details(examen_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         if 'histoireDeCas' in session: session.pop('histoireDeCas', None)
+        if 'histoireDeCas_ID' in session: session.pop('histoireDeCas_ID', None)
         update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
         update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
         update_session(cursor, "examen", f"SELECT * FROM examens e WHERE e.ID = {examen_id}")
@@ -134,10 +135,6 @@ def new():
         cursor = conn.cursor(dictionary=True)
         update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
         update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
-        # if 'examen' in session: session.pop('examen', None)
-        # if 'new_examen' in session : 
-        #     form = ExamForm(data=session['examen'])
-        # else:
         exam_form = ExamForm()
         cursor.execute(f'SELECT RX_subjective FROM examens e WHERE patient_ID = {patient_id} ORDER BY created_at DESC LIMIT 1;')
         old_rx = cursor.fetchone()
