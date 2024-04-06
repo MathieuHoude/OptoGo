@@ -52,6 +52,23 @@ def examens():
 # route pour la page d'un examen existant
 @examens_bp.route("/<int:examen_id>")
 def details(examen_id):
+    """
+    Route to display the details of a specific exam.
+
+    Parameters:
+    examen_id (int): The ID of the exam to be displayed.
+
+    Returns:
+    A rendered HTML template containing the details of the exam.
+
+    Raises:
+    Error: If there is an error connecting to the MySQL database.
+
+    This function retrieves the details of a specific exam, along with the patient's information and the associated clinic.
+    It also retrieves the history of the exam and parses the JSON data stored in the exam and history of the exam. 
+    The parsed data is then stored in the session dictionary. 
+    The function then renders an HTML template containing the details of the exam, along with any confirmation messages that may have been stored in the session dictionary.
+    """
     try:
         index = 6
         clinique_id = request.args.get('clinique_id')
@@ -87,6 +104,19 @@ def details(examen_id):
 # route pour la page d'un nouvel examen
 @examens_bp.route("/new", methods=['GET', 'POST'])
 def new():
+    """
+    Handles the creation of a new exam.
+
+    Returns:
+    - A rendered HTML template containing a form for creating a new exam.
+
+    Raises:
+    - Error: If there is an error connecting to the database.
+
+    This function first retrieves the selected clinic and patient from the database.
+    It then renders an HTML template containing a form for creating a new exam, along with the selected clinic, patient, and any existing confirmation message.
+    If the form is submitted with valid data, it saves the new exam to the database and redirects to the exam page.
+    """
     form = ExamForm()
     try:
         index = 5
@@ -111,6 +141,21 @@ def new():
 
 @examens_bp.route("/<int:examen_id>/prescription")
 def prescription(examen_id):
+    """
+    This function handles the route for the prescription page of an exam.
+
+    Parameters:
+    - examen_id (int): The ID of the exam for which the prescription page is being accessed.
+
+    Returns:
+    - A rendered HTML template containing the prescription page for the selected exam.
+
+    Raises:
+    - Error: If there is an error connecting to the MySQL database.
+
+    Usage:
+    - This function is called when a user accesses the "/<int:examen_id>/prescription" route in the application.
+    """
     try:
         clinique_id = request.args.get('clinique_id')
         patient_id = request.args.get('patient_id')
@@ -144,6 +189,22 @@ def prescription(examen_id):
 # route pour sauvegarder l'histoire de cas
 @examens_bp.route("/submit_histoireDeCas", methods=['POST'])
 def submit_histoireDeCas():
+    """
+    This function handles the submission of an optometry patient's history of eye conditions.
+
+    It validates the submitted form data, converts the conditions, allergies, medications, trouble_vision,
+    antecedants_familiaux, and antecedents_oculaires fields into JSON strings, and then saves the data into the
+    database. If the submitted data corresponds to an existing history of eye conditions, it updates the
+    existing record; otherwise, it creates a new record.
+
+    :param form: The submitted form data, containing the patient's history of eye conditions.
+    :type form: Flask-WTF Form
+
+    :return: A redirect to the details page of the submitted history of eye conditions, along with a
+        confirmation message if the submission was successful.
+
+    :raises: An error if there is a problem connecting to the database.
+    """
     form = HistoireDeCasForm()
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -227,6 +288,21 @@ def submit_histoireDeCas():
 
 @examens_bp.route("/submit_examen", methods=['POST'])
 def submit_examen():
+    """
+    This function handles the submission of an exam. It validates the form data,
+    converts the conditions, allergies, medications, and troubles into JSON objects,
+    updates or inserts the exam data into the database, and redirects the user to the appropriate page.
+
+    Args:
+        form (Flask_WTF.Form): The form object containing the user's input data.
+
+    Returns:
+        Flask.Response: A response object that redirects the user to the appropriate page after the exam data has been saved.
+
+    Raises:
+        Error: If there is an error while connecting to the database or executing the SQL query.
+
+    """
     form = ExamForm()
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -306,6 +382,25 @@ def submit_examen():
         
 
 def parse_json_objects(dict):
+    """
+    This function takes a dictionary where some values are stored as JSON strings.
+    It parses these JSON strings and returns a new dictionary where the parsed JSON data is stored as separate key-value pairs.
+
+    Args:
+        dict (dict): The input dictionary containing key-value pairs where some values are stored as JSON strings.
+
+    Returns:
+        dict (dict): A new dictionary where the parsed JSON data is stored as separate key-value pairs.
+
+    Raises:
+        json.JSONDecodeError: If a value in the input dictionary cannot be parsed as a valid JSON string.
+        TypeError: If a value in the input dictionary is not a string.
+        AttributeError: If a value in the input dictionary is not a dictionary.
+
+    Example:
+        >>> parse_json_objects({'conditions': '{"asthma": true, "diabetes": false}'})
+        {'conditions_asthma': True, 'conditions_diabetes': False}
+    """
     # Initialize a new dictionary to store extracted key-value pairs
     new_dict = {}
 
