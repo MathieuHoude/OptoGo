@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, FloatField, IntegerField, SelectField, StringField
-from wtforms.validators import NumberRange, ValidationError
+from wtforms import BooleanField, HiddenField, IntegerField, SelectField, StringField
+from wtforms.validators import NumberRange, ValidationError, Optional
 
 def validate_rx_add(form, field):
     value = float(field.data)
@@ -8,10 +8,10 @@ def validate_rx_add(form, field):
         raise ValidationError('Value must be in steps of 0.25')
 
 class ExamForm(FlaskForm):
-    ID = StringField('ID')
-    patient_ID = IntegerField('ID patient')
-    optometriste_ID = IntegerField('ID optometriste')
-    histoireDeCas_ID = IntegerField('ID histoire de cas')
+    ID = HiddenField('ID')
+    patient_ID = HiddenField('ID patient')
+    optometriste_ID = HiddenField('ID optometriste')
+    histoireDeCas_ID = HiddenField('ID histoire de cas')
     choices = [("%.2f" % (x / 4.0), "%.2f" % (x / 4.0)) for x in range(-80, 81)]  # Generating options from -20 to 20 by steps of 0.25
     old_RX_Sphere_LE = SelectField('Sphère', choices=choices, validators=[validate_rx_add])
     old_RX_Ast_LE = SelectField('Ast', choices=choices, validators=[validate_rx_add])
@@ -81,4 +81,5 @@ class ExamForm(FlaskForm):
     choices = [(1/6, '1/6'), (2/6, '2/6'), (3/6, '3/6'), (4/6, '4/6'), (5/6, '5/6'), (6/6, '6/6')]
     RX_subjective_Acuity_RE = SelectField('Acuité', choices=choices)
 
-    periode_validite = IntegerField('Période de validité')
+    periode_validite = StringField('Période de validité', validators=[Optional()], default=0)
+    reason_next_appt = StringField('Raison', validators=[Optional()])

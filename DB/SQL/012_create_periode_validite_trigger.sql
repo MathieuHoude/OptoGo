@@ -28,7 +28,7 @@ BEGIN
 
         ELSE
             SET NEW.periode_validite = 24;
-            SET NEW.reason_next_appt = "Condition du patient normal";
+            SET NEW.reason_next_appt = "Condition du patient normale";
         END IF;
     END IF;
 END;
