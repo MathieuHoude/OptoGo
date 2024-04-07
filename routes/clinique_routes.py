@@ -21,8 +21,7 @@ def clinique(clinique_id):
     index = 2
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id};')
-    session["clinique"] = cursor.fetchone()
+    update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id};")
     cursor.execute(f'SELECT p.* FROM cliniques c JOIN patients_cliniques pc ON c.ID = pc.clinique_ID JOIN patients p ON pc.patient_ID = p.ID WHERE c.ID = {clinique_id} ORDER BY p.last_name;')
     patients = cursor.fetchall()
     cursor.close()
