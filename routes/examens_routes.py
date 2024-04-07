@@ -349,7 +349,7 @@ def submit_examen():
         if form.ID.data: #Existing exam
             return redirect(url_for("examens.details",examen_id=f"{form.ID.data}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
         else: #New exam
-            return redirect(url_for("examens.details", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+            return redirect(url_for("examens.new", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
 
 def parse_json_objects(dict):
     """
