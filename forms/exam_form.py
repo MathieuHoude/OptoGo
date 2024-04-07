@@ -6,9 +6,6 @@ def validate_rx_add(form, field):
     value = float(field.data)
     if value % 0.25 != 0:
         raise ValidationError('Value must be in steps of 0.25')
-    
-
-
 
 class ExamForm(FlaskForm):
     ID = HiddenField('ID')
