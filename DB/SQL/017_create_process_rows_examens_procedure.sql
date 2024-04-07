@@ -19,14 +19,14 @@ BEGIN
         IF (SELECT P.birth_date FROM patients P WHERE P.ID = patient_id) < DATE_SUB(CURDATE(), INTERVAL 18 YEAR) THEN
             /* Myopie + Perception de flash */
             IF JSON_EXTRACT(RX, '$.Sphere_LE') LIKE '%-%' AND JSON_EXTRACT(NEW_trouble_vision, '$.flash') = 1 THEN
-                UPDATE examens E SET periode_validite = 12 WHERE histoireDeCas_ID = NEW_id AND E.ID = id;
+                UPDATE examens E SET E.periode_validite = 12, E.reason_next_appt = "Possible décollement de rétine" WHERE histoireDeCas_ID = NEW_id AND E.ID = id;
 
             /* Diabete */
             ELSEIF JSON_EXTRACT(NEW_conditions, '$.diabetes') = 1 THEN
-                UPDATE examens E SET periode_validite = 12 WHERE histoireDeCas_ID = NEW_id AND E.ID = id;
+                UPDATE examens E SET E.periode_validite = 12, E.reason_next_appt = "Vision fluctuante à cause du diabète" WHERE histoireDeCas_ID = NEW_id AND E.ID = id;
 
             ELSE
-                UPDATE examens E SET periode_validite = 24 WHERE histoireDeCas_ID = NEW_id AND E.ID = id;
+                UPDATE examens E SET E.periode_validite = 24, E.reason_next_appt = "Condition du patient normale" WHERE histoireDeCas_ID = NEW_id AND E.ID = id;
             END IF;
         END IF;
 
