@@ -2,52 +2,50 @@
 Page d'informations concernant le patient
 -->
 <form method="post">
-    {{ form.hidden_tag() }}
-    <!-- {{ form.first_name.label }}: {{ form.first_name }} -->
+    {{ patient_form.hidden_tag() }}
     <div class="patientInformationForm">
         <div>
-            <label for="{{ form.first_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.first_name.label }}</label>
-            <input name="{{ form.first_name.name }}" type="text" id="{{ form.first_name.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.first_name.data }}" readonly />
+            <label for="{{ patient_form.first_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.first_name.label }}</label>
+            <input name="{{ patient_form.first_name.name }}" type="text" id="{{ patient_form.first_name.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient_form.first_name.data }}" readonly />
         </div>
         <div>
-            <label for="{{ form.last_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.last_name.label }}</label>
-            <input name="{{ form.last_name.name }}" type="text" id="{{ form.last_name.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.last_name.data }}" readonly />
-        </div>
-
-        <div>
-            <label for="{{ form.phone_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.phone_number.label }}</label>
-            <input name="{{ form.phone_number.name }}" type="phone" id="{{ form.phone_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.phone_number.data }}" readonly />
+            <label for="{{ patient_form.last_name.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.last_name.label }}</label>
+            <input name="{{ patient_form.last_name.name }}" type="text" id="{{ patient_form.last_name.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient_form.last_name.data }}" readonly />
         </div>
 
         <div>
-            <label for="{{ form.gender.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.gender.label }}</label>
-            <select name="{{ form.gender.name }}" id="{{ form.gender.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled />
-                <option value="Male" {% if form.gender.data  =='Male' %} selected {% endif %}>Homme</option>
-                <option value="Female" {% if form.gender.data == 'Female' %} selected {% endif %}>Femme</option>
-                <option value="Genderqueer" {% if form.gender.data == 'Genderqueer' %} selected {% endif %}>Non-binaire</option>
-                <option value="Bigender" {% if form.gender.data == 'Bigender' %} selected {% endif %}>Bigenre</option>
-                <option value="Agender" {% if form.gender.data == 'Agender' %} selected {% endif %}>Agenre</option>
-                <option value="Polygender" {% if form.gender.data == 'Polygender' %} selected {% endif %}>Polygenre</option>
-                <option value="Other" {% if form.gender.data == 'Other' %} selected {% endif %}>Autre</option>
+            <label for="{{ patient_form.phone_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.phone_number.label }}</label>
+            <input name="{{ patient_form.phone_number.name }}" type="phone" id="{{ patient_form.phone_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient_form.phone_number.data }}" readonly />
+        </div>
+
+        <div>
+            <label for="{{ patient_form.gender.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.gender.label }}</label>
+            <select name="{{ patient_form.gender.name }}" id="{{ patient_form.gender.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled />
+                <option value="Male" {% if patient_form.gender.data  =='Male' %} selected {% endif %}>Homme</option>
+                <option value="Female" {% if patient_form.gender.data == 'Female' %} selected {% endif %}>Femme</option>
+                <option value="Genderqueer" {% if patient_form.gender.data == 'Genderqueer' %} selected {% endif %}>Non-binaire</option>
+                <option value="Bigender" {% if patient_form.gender.data == 'Bigender' %} selected {% endif %}>Bigenre</option>
+                <option value="Agender" {% if patient_form.gender.data == 'Agender' %} selected {% endif %}>Agenre</option>
+                <option value="Polygender" {% if patient_form.gender.data == 'Polygender' %} selected {% endif %}>Polygenre</option>
+                <option value="Other" {% if patient_form.gender.data == 'Other' %} selected {% endif %}>Autre</option>
             </select>
         </div>
         
         <div>
-            <label for="{{ form.email.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.email.label }}</label>
-            <input name="{{ form.email.name }}" type="email" id="{{ form.email.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.email.data }}"readonly />
+            <label for="{{ patient_form.email.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.email.label }}</label>
+            <input name="{{ patient_form.email.name }}" type="email" id="{{ patient_form.email.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient_form.email.data }}"readonly />
         </div> 
         <div>
-            <label for="{{ form.birth_date.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.birth_date.label }}</label>
-            <input name="{{ form.birth_date.name }}" type="date" id="{{ form.birth_date.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.birth_date.data }}" readonly />
+            <label for="{{ patient_form.birth_date.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.birth_date.label }}</label>
+            <input name="{{ patient_form.birth_date.name }}" type="date" id="{{ patient_form.birth_date.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient_form.birth_date.data }}" readonly />
         </div> 
         <div>
-            <label for="{{ form.RAMQ_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.RAMQ_number.label }}</label>
-            <input name="{{ form.RAMQ_number.name }}" type="text" id="{{ form.RAMQ_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.RAMQ_number.data }}" readonly />
+            <label for="{{ patient_form.RAMQ_number.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ patient_form.RAMQ_number.label }}</label>
+            <input name="{{ patient_form.RAMQ_number.name }}" type="text" id="{{ patient_form.RAMQ_number.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:value-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ patient_form.RAMQ_number.data }}" readonly />
         </div> 
     </div>
-    <a href="/patients/{{patient['ID']}}/edit">
-    <button type="button" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier le patient</button>
-</form>
+
+    </form>
 
 
 
