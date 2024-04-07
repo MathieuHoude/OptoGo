@@ -161,7 +161,7 @@ def exam_to_do():
         index = 0
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("CALL liste_patients_du()")
+        cursor.execute("CALL liste_patients_du()", multi=True)
         patients = cursor.fetchall()
         app.logger.debug(patients)
         return render_template("examsToDoPage.html",
