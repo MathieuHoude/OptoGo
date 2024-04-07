@@ -76,10 +76,10 @@ def details(examen_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         if 'histoireDeCas' in session: session.pop('histoireDeCas', None)
-        if 'histoireDeCas_ID' in session: session.pop('histoireDeCas_ID', None)
+        if 'histoireDeCas_ID' in session.pop('histoireDeCas_ID', None)
+        update_session(cursor, "examen", f"SELECT * FROM examens e WHERE e.ID = {examen_id}")
         update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
         update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
-        update_session(cursor, "examen", f"SELECT * FROM examens e WHERE e.ID = {examen_id}")
         cursor.execute(f"SELECT * FROM histoireDeCas h WHERE h.ID = {session['examen']['histoireDeCas_ID']}")
         hdc = cursor.fetchone()
         if 'examen_ID' in session: #A new exam was validated
