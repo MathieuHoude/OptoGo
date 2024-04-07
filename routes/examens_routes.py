@@ -235,7 +235,6 @@ def submit_histoireDeCas():
 
     :raises: An error if there is a problem connecting to the database.
     """
-    index = 5
     form = HistoireDeCasForm()
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -251,19 +250,6 @@ def submit_histoireDeCas():
                 except (json.JSONDecodeError, TypeError):
                     pass
         if form.ID.data: #Existing hdc
-            # cursor.execute(f'SELECT * FROM histoireDeCas WHERE ID = {form.ID.data}')
-            # hdc = cursor.fetchone()
-            # modified_fields = {}
-            # for field in form: 
-            #     if field.name != 'csrf_token' and field.data != hdc[field.name]:
-            #         modified_fields[field.name] = field.data
-
-            # if modified_fields:
-            #     sql_update_query = "UPDATE histoireDeCas SET "
-            #     sql_update_query += ", ".join([f"{field} = %s" for field in modified_fields.keys()])
-            #     sql_update_query += " WHERE id = %s"
-                
-            #     # Create a tuple of parameter values in the same order as placeholders
             sql_query = "UPDATE histoireDeCas SET conditions = %s, allergies = %s, medications = %s, trouble_vision = %s, antecedants_familiaux = %s, antecedants_oculaires = %s, notes = %s WHERE ID = %s"
             params = tuple(histoireDeCas_data.values()) + (form.ID.data,)
             cursor.execute(sql_query, params)
@@ -288,13 +274,14 @@ def submit_histoireDeCas():
     else:
         cursor.close()
         conn.close()
-        return render_template("newExamPage.html",
-                            index=index,
-                            clinique=session['clinique'],
-                            optometriste=session["user"],
-                            patient=session['patient'],
-                            hdc_form=form
-                            )
+        session["error_message"] = {'title': 'Erreur de validation', 'message': "Une donnée invalide a été soumise dans l'histoire de cas, veuillez vérifier."}
+        if form.ID.data: #Existing hdc
+            if 'examen' not in session: 
+                return redirect(url_for("examens.new", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+            else:
+                return redirect(url_for("examens.details",examen_id=f"{session['examen']['ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+        else: #New hdc
+            return redirect(url_for("examens.new", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
 
 @examens_bp.route("/submit_examen", methods=['POST'])
 def submit_examen():
@@ -362,7 +349,7 @@ def submit_examen():
         if form.ID.data: #Existing exam
             return redirect(url_for("examens.details",examen_id=f"{form.ID.data}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
         else: #New exam
-            return redirect(url_for("examens.details", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+            return redirect(url_for("examens.new", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
 
 def parse_json_objects(dict):
     """
@@ -410,44 +397,44 @@ def validate_hidden_fields(session, form):
 def build_histoireDeCas_data(form):
      return  {
             'conditions': {
-                "asthma": form.conditions_asthma.data, 
-                "diabetes": form.conditions_diabetes.data,
-                "cholesterol": form.conditions_cholesterol.data, 
-                "hypertension": form.conditions_hypertension.data, 
-                "heart_condition": form.conditions_heart_condition.data
+                "asthma": int(form.conditions_asthma.data), 
+                "diabetes": int(form.conditions_diabetes.data),
+                "cholesterol": int(form.conditions_cholesterol.data), 
+                "hypertension": int(form.conditions_hypertension.data), 
+                "heart_condition": int(form.conditions_heart_condition.data)
             },
             'allergies': {
-                "anesthetics": form.allergies_anesthetics.data, 
-                "preservatives": form.allergies_preservatives.data, 
-                "topical_antibiotics": form.allergies_topical_antibiotics.data, 
-                "decongestant_eye_drops": form.allergies_decongestant_eye_drops.data, 
-                "topical_corticosteroids": form.allergies_topical_corticosteroids.data
+                "anesthetics": int(form.allergies_anesthetics.data), 
+                "preservatives": int(form.allergies_preservatives.data), 
+                "topical_antibiotics": int(form.allergies_topical_antibiotics.data), 
+                "decongestant_eye_drops": int(form.allergies_decongestant_eye_drops.data), 
+                "topical_corticosteroids": int(form.allergies_topical_corticosteroids.data)
             },
             'medications': {
-                "digoxin": form.medications_digoxin.data, 
-                "amiodarone": form.medications_amiodarone.data, 
-                "chloroquine": form.medications_chloroquine.data, 
-                "isotretinoin": form.medications_isotretinoin.data, 
-                "methylprednisolone": form.medications_methylprednisolone.data
+                "digoxin": int(form.medications_digoxin.data), 
+                "amiodarone": int(form.medications_amiodarone.data), 
+                "chloroquine": int(form.medications_chloroquine.data), 
+                "isotretinoin": int(form.medications_isotretinoin.data), 
+                "methylprednisolone": int(form.medications_methylprednisolone.data)
             },
             'trouble_vision': {
-                "flash": form.trouble_vision_flash.data, 
-                "cataract": form.trouble_vision_cataract.data, 
-                "floaters": form.trouble_vision_floaters.data, 
-                "glaucoma": form.trouble_vision_glaucoma.data, 
-                "strabismus": form.trouble_vision_strabismus.data, 
-                "double_vision": form.trouble_vision_double_vision.data, 
-                "macular_degeneration": form.trouble_vision_macular_degeneration.data
+                "flash": int(form.trouble_vision_flash.data), 
+                "cataract": int(form.trouble_vision_cataract.data), 
+                "floaters": int(form.trouble_vision_floaters.data), 
+                "glaucoma": int(form.trouble_vision_glaucoma.data), 
+                "strabismus": int(form.trouble_vision_strabismus.data), 
+                "double_vision": int(form.trouble_vision_double_vision.data), 
+                "macular_degeneration": int(form.trouble_vision_macular_degeneration.data)
             },
             'antecedants_familiaux': {
-                "glaucoma": form.antecedants_familiaux_glaucoma.data, 
-                "retinal_detachment": form.antecedants_familiaux_retinal_detachment.data, 
-                "macular_degeneration": form.antecedants_familiaux_macular_degeneration.data
+                "glaucoma": int(form.antecedants_familiaux_glaucoma.data), 
+                "retinal_detachment": int(form.antecedants_familiaux_retinal_detachment.data), 
+                "macular_degeneration": int(form.antecedants_familiaux_macular_degeneration.data)
             },
             'antecedants_oculaires': {
-                "trauma": form.antecedants_oculaires_trauma.data, 
-                "surgery": form.antecedants_oculaires_surgery.data, 
-                "retinal_detachment": form.antecedants_oculaires_retinal_detachment.data
+                "trauma": int(form.antecedants_oculaires_trauma.data), 
+                "surgery": int(form.antecedants_oculaires_surgery.data), 
+                "retinal_detachment": int(form.antecedants_oculaires_retinal_detachment.data)
             },
             'notes': form.notes.data
         }
@@ -479,15 +466,15 @@ def build_exam_data(form):
                 "Sphere_RE": form.RX_subjective_Sphere_RE.data
             },
             'contact_lens_type': {
-                "multifocal_contact_lenses": form.contact_lens_type_multifocal_contact_lenses.data, 
-                "mono_vision_contact_lenses": form.contact_lens_type_mono_vision_contact_lenses.data, 
-                "single_vision_contact_lenses": form.contact_lens_type_single_vision_contact_lenses.data
+                "multifocal_contact_lenses": int(form.contact_lens_type_multifocal_contact_lenses.data), 
+                "mono_vision_contact_lenses": int(form.contact_lens_type_mono_vision_contact_lenses.data), 
+                "single_vision_contact_lenses": int(form.contact_lens_type_single_vision_contact_lenses.data)
             },
             'lens_type': {
-                "office_lenses": form.lens_type_office_lenses.data, 
-                "bifocal_lenses": form.lens_type_bifocal_lenses.data, 
-                "progressive_lenses": form.lens_type_progressive_lenses.data, 
-                "single_vision_lenses": form.lens_type_single_vision_lenses.data
+                "office_lenses": int(form.lens_type_office_lenses.data), 
+                "bifocal_lenses": int(form.lens_type_bifocal_lenses.data), 
+                "progressive_lenses": int(form.lens_type_progressive_lenses.data), 
+                "single_vision_lenses": int(form.lens_type_single_vision_lenses.data)
             },
             'old_RX': {
                 "Add_LE": form.old_RX_Add_LE.data, 
