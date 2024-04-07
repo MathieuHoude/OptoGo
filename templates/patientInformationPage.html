@@ -12,9 +12,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{url_for('static', filename='css/form.css') }}">
+    <script src="{{url_for('static', filename='js/darkMode.js')}}"></script>
+    <script src="{{ url_for('static', filename='callAPI/verifEntry.js') }}"></script>
 </head>
 
-<body>
+<body class="dark:bg-gray-900 antialiased">
 <div id="nav-bar" class="mb-10">
     {% include "navbar.html" %}
 </div>

@@ -47,11 +47,22 @@
             </button>
         </li>
         <li role="presentation">
-            <button class="inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
+            {% if hdc_form.ID.data == None %}
+                <div class="tooltip">
+                    <button disabled class="tooltip-btn inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
+                        aria-current="page" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
+                        aria-controls="dashboard" aria-selected="false">
+                    Examen de vue
+                </button>
+                <span class="tooltiptext">Veuillez d'abord soumettre l'histoire de cas</span>
+                </div>
+            {% else %}
+                <button class="inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
                     aria-current="page" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
                     aria-controls="dashboard" aria-selected="false">
-                Examen de vue
-            </button>
+                    Examen de vue
+                    </button>
+            {% endif %}
         </li>
     </ul>
     <div id="default-tab-content">
@@ -83,10 +94,15 @@
         </form>
         <form method="post" action="/examens/submit_examen">
             {{ exam_form.hidden_tag() }}
+            <!-- {{ exam_form.ID }}
+            {{ exam_form.patient_ID }}
+            {{ exam_form.optometriste_ID }}
+            {{ exam_form.histoireDeCas_ID }} -->
             <input type="hidden" name="{{exam_form.ID.name}}" id="{{exam_form.ID.id}}" value="{{exam_form.ID.data}}">
             <input type="hidden" name="{{exam_form.patient_ID.name}}" id="{{exam_form.patient_ID.id}}" value="{{exam_form.patient_ID.data}}">
             <input type="hidden" name="{{exam_form.optometriste_ID.name}}" id="{{exam_form.optometriste_ID.id}}" value="{{exam_form.optometriste_ID.data}}">
-            <input type="hidden" name="{{exam_form.histoireDeCas_ID.name}}" id="{{exam_form.histoireDeCas_ID.id}}" value="{{exam_form.histoireDeCas_ID.data}}">
+            <input type="hidden" name="{{hdc_form.ID.name}}" id="{{hdc_form.ID.id}}" value="{{hdc_form.ID.data}}">
+            <input type="hidden" name="{{exam_form.periode_validite.name}}" id="{{exam_form.periode_validite.id}}" value="{{exam_form.periode_validite.data}}">
             <div class="hidden p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
                 id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-5">Examen</h3>
@@ -104,18 +120,35 @@
                 <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Nouvelles prescription</h2>
                 <div class="divider"></div>
                 <div class="flex flex-wrap">{% include "exam/rxObjective.html" %}</div>
+                {% if exam_form.ID.data == None %}
+                    <button class="mt-4 px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" type="button" onclick="copyObjectiveToSubjective()">Copier vers RX_Subjective</button>
+                {% endif %}
                 <div class="flex flex-wrap">{% include "exam/rxSubjective.html" %}</div>
+                
+                {% if exam_form.periode_validite.data %}
+                    <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Date du prochain rendez-vous recommandé</h2>
+                    <div class="divider"></div>
+                    <div class ="validity-container">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">{{exam_form.periode_validite.data}} Mois</span>
+                        <input type="hidden" name="{{exam_form.periode_validite.name}}" id="{{exam_form.periode_validite.id}}" value="{{exam_form.periode_validite.data}}">
+                        <label>Cause</label>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{exam_form.reason_next_appt.data}}</span>
+                        <input type="hidden" name="{{exam_form.reason_next_appt.name}}" id="{{exam_form.reason_next_appt.id}}" value="{{exam_form.reason_next_appt.data}}">
+                    </div>
+                {% endif %}
+                
+
 
                 <h2 class="text-sm font-bold text-gray-900 dark:text-white mt-8 mb-2">Générer une prescription</h2>
                 <div class="divider"></div>
                 <button type="submit" class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600">Valider examen</button>
-                {% if exam_form.periode_validite.data == None %}
+                {% if exam_form.periode_validite.data == 0 %}
                     <div class="tooltip">
-                        <button disabled  title="Disabled button tooltip" class="tooltip-btn px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
+                        <button disabled title="Disabled button tooltip" class="tooltip-btn px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
                         <span class="tooltiptext">Veuillez d'abord valider l'examen</span>
                     </div>
                 {% else %}
-                    <a href="/examens/{{examen['ID']}}/prescription?clinique_id={{clinique['ID']}}&patient_id={{patient['ID']}}">
+                    <a href="/examens/{{exam_form.ID.data}}/prescription?clinique_id={{clinique['ID']}}&patient_id={{patient['ID']}}">
                         <button class="px-4 py-3 text-white bg-blue-700 rounded-lg dark:bg-blue-600" type="button">Prescription</button>
                     </a>
                 {% endif %}
@@ -125,6 +158,11 @@
 </div>
 
 <script>
+    /**
+     * This script updates the character count displayed next to the textarea with id "notes".
+     * It listens for the 'input' event on the textarea and updates the count whenever the text changes.
+     * The maximum number of characters allowed is determined by the 'validators[0].max' attribute of the form field with id "notes".
+     */
     const textarea = document.getElementById("notes");
     const charCount = document.getElementById('charCount');
 
@@ -139,4 +177,34 @@
 
     // Initialize character count
     updateCharCount();
+
+    
+
+</script>
+
+<script>
+    function copyObjectiveToSubjective() {
+    // Get all select elements with class 'prescription-input' in the objective form
+    var objectiveSelects = document.querySelectorAll('.prescription-input');
+
+    // Loop through each select element
+    objectiveSelects.forEach(function(select) {
+        // Get the name attribute of the select element
+        var name = select.getAttribute('name');
+        
+        // Check if the name contains 'RX_objective'
+        if (name.includes('RX_objective')) {
+            // Replace 'RX_objective' with 'RX_subjective' to get the corresponding subjective field name
+            var subjectiveName = name.replace('RX_objective', 'RX_subjective');
+            
+            // Find the corresponding select element with the subjective name in the subjective form
+            var subjectiveSelect = document.querySelector('select[name="' + subjectiveName + '"]');
+            
+            // If a corresponding subjective select element is found, copy the value
+            if (subjectiveSelect) {
+                subjectiveSelect.value = select.value;
+            }
+        }
+    });
+}
 </script>

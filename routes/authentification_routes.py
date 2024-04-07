@@ -11,6 +11,16 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 # route pour la page d'authentification
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """This function handles the login process for the application.
+It checks if the request method is POST, then retrieves the email and password from the request form.
+It then queries the database for the user with the provided email.
+If the user is found, it checks if the provided password matches the stored hashed password.
+If the passwords match, it logs the user in and redirects to the index page.
+If the passwords do not match, it sets an error message in the session and redirects back to the login page.
+If the request method is not POST, it checks if a user is already logged in.
+If a user is already logged in, it redirects to the index page.
+If no user is logged in, it renders the login page template."""
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']

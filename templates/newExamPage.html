@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body>
+<body class="dark:bg-gray-900 antialiased">
 <div id="nav-bar" class="mb-10">
     {% include "navbar.html" %}
 </div>
@@ -33,12 +33,24 @@
 {% if confirmation_message %}
     <script>
         var confirmation_message = {{ confirmation_message|tojson }};
-        console.log(confirmation_message)
         if (confirmation_message) {
             Swal.fire({
                 icon: 'success',
                 title: confirmation_message.title,
                 text: confirmation_message.text,
+            });
+        }
+    </script>
+{% endif %}
+
+{% if error_message %}
+    <script>
+        var error_message = {{ error_message|tojson }};
+        if (error_message) {
+            Swal.fire({
+                icon: 'error',
+                title: error_message.title,
+                text: error_message.message,
             });
         }
     </script>
