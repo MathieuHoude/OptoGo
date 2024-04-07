@@ -1,0 +1,36 @@
+{{ address_form.hidden_tag() }}
+<div>
+    {{ address_form.street_number.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+    {{ address_form.street_number }}
+    {% for error in address_form.street_number.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+</div>
+<div>
+    {{ address_form.street_name.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+    {{ address_form.street_name }}
+    {% for error in address_form.street_name.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+</div>
+<div>
+    {{ address_form.city.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+    {{ address_form.city }}
+    {% for error in address_form.city.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+</div>
+<div>
+    {{ address_form.province.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+    {{ address_form.province }}
+    {% for error in address_form.province.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+</div>
+<div>
+    {{ address_form.postal_code.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+    {{ address_form.postal_code }}
+    {% for error in address_form.postal_code.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+</div>
