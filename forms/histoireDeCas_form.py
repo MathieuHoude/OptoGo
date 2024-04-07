@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, IntegerField
-from wtforms.validators import Length
+from wtforms import BooleanField, StringField, HiddenField
+from wtforms.validators import Length, Optional
 
 class HistoireDeCasForm(FlaskForm):
-    ID = IntegerField("ID")
+    ID = HiddenField("ID", validators=[Optional()])
     conditions_diabetes = BooleanField('Diabète')
     conditions_hypertension = BooleanField('Hypertension artérielle')
     conditions_heart_condition = BooleanField('Troubles cardiaques')
@@ -32,4 +32,4 @@ class HistoireDeCasForm(FlaskForm):
     antecedants_oculaires_surgery = BooleanField('Chirurgie aux yeux')
     antecedants_oculaires_trauma = BooleanField('Traumatisme aux yeux')
     antecedants_oculaires_retinal_detachment = BooleanField('Décollement de la rétine')
-    notes = StringField('Notes', validators=[Length(max=2000)])
+    notes = StringField('Notes', validators=[Length(max=2000)], default='')

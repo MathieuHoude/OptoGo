@@ -75,17 +75,25 @@ def details(examen_id):
         patient_id = request.args.get('patient_id')
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
+        if 'histoireDeCas' in session: session.pop('histoireDeCas', None)
+        if 'histoireDeCas_ID' in session: session.pop('histoireDeCas_ID', None)
         update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
         update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
         update_session(cursor, "examen", f"SELECT * FROM examens e WHERE e.ID = {examen_id}")
         cursor.execute(f"SELECT * FROM histoireDeCas h WHERE h.ID = {session['examen']['histoireDeCas_ID']}")
         hdc = cursor.fetchone()
-        conn.close()
+        if 'examen_ID' in session: #A new exam was validated
+            cursor.execute(f"SELECT * FROM examens WHERE ID = {session.pop('examen_ID', None)}")
+            exam = cursor.fetchone()
+            session['examen'] = parse_json_objects(exam)
+            exam_form = ExamForm(data=session['examen'])
         session["examen"] = parse_json_objects(session["examen"])
         hdc = parse_json_objects(hdc)
         exam_form = ExamForm(data=session["examen"])
         hdc_form = HistoireDeCasForm(data=hdc)
         confirmation_message = session.pop('confirmation_message', None)
+        cursor.close()
+        conn.close()
         return render_template("examDetailsPage.html",
                             index=index,
                             clinique=session["clinique"],
@@ -117,24 +125,46 @@ def new():
     It then renders an HTML template containing a form for creating a new exam, along with the selected clinic, patient, and any existing confirmation message.
     If the form is submitted with valid data, it saves the new exam to the database and redirects to the exam page.
     """
-    form = ExamForm()
     try:
         index = 5
+        clinique_id = request.args.get('clinique_id')
+        patient_id = request.args.get('patient_id')
         confirmation_message = session.pop('confirmation_message', None)
+        error_message = session.pop('error_message', None)
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute(f'SELECT * FROM cliniques WHERE ID = {clinique_id}')
-        ClinicGlobal = cursor.fetchone()
-        cursor.execute(f'SELECT * FROM patients WHERE ID = {patient_id}')
-        PatientSelect = cursor.fetchone()
+        update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
+        update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
+        exam_form = ExamForm()
+        cursor.execute(f'SELECT RX_subjective FROM examens e WHERE patient_ID = {patient_id} ORDER BY created_at DESC LIMIT 1;')
+        old_rx = cursor.fetchone()
+        if old_rx:
+            temp_old_rx = parse_json_objects(old_rx)
+            for key, value in temp_old_rx.items():
+                # Replace the key name
+                new_key = key.replace("RX_subjective", "old_RX")
+                old_rx[new_key] = value
+            exam_form.process(data=old_rx)
+        
+        if 'histoireDeCas_ID' in session:
+            cursor.execute(f"SELECT * FROM histoireDeCas WHERE ID = {session.pop('histoireDeCas_ID', None)}")
+            hdc = cursor.fetchone()
+            session['histoireDeCas'] = parse_json_objects(hdc)
+            hdc_form = HistoireDeCasForm(data=session['histoireDeCas'])
+        elif 'histoireDeCas' in session:
+            hdc_form = HistoireDeCasForm(data=session['histoireDeCas'])
+        else: 
+            hdc_form = HistoireDeCasForm()
         conn.close()
         return render_template("newExamPage.html",
                             index=index,
-                            clinique=ClinicGlobal,
+                            clinique=session['clinique'],
                             optometriste=session["user"],
-                            patient=PatientSelect,
+                            patient=session['patient'],
                             confirmation_message=confirmation_message,
-                            form=form
+                            error_message=error_message,
+                            exam_form=exam_form,
+                            hdc_form=hdc_form
                             )
     except Error as e:
         print(f"MySQL error: {e}")
@@ -186,7 +216,7 @@ def prescription(examen_id):
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
 
-# route pour sauvegarder l'histoire de cas
+
 @examens_bp.route("/submit_histoireDeCas", methods=['POST'])
 def submit_histoireDeCas():
     """
@@ -205,12 +235,180 @@ def submit_histoireDeCas():
 
     :raises: An error if there is a problem connecting to the database.
     """
+    index = 5
     form = HistoireDeCasForm()
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
     if form.validate_on_submit():
-        histoireDeCas_data = {
+        histoireDeCas_data = build_histoireDeCas_data(form)
+       
+        # Convert each sub-dictionary to JSON strings
+        for key, value in histoireDeCas_data.items():
+            if type(value) == dict:
+                try:
+                    histoireDeCas_data[key] = json.dumps(value)
+                except (json.JSONDecodeError, TypeError):
+                    pass
+        if form.ID.data: #Existing hdc
+            # cursor.execute(f'SELECT * FROM histoireDeCas WHERE ID = {form.ID.data}')
+            # hdc = cursor.fetchone()
+            # modified_fields = {}
+            # for field in form: 
+            #     if field.name != 'csrf_token' and field.data != hdc[field.name]:
+            #         modified_fields[field.name] = field.data
+
+            # if modified_fields:
+            #     sql_update_query = "UPDATE histoireDeCas SET "
+            #     sql_update_query += ", ".join([f"{field} = %s" for field in modified_fields.keys()])
+            #     sql_update_query += " WHERE id = %s"
+                
+            #     # Create a tuple of parameter values in the same order as placeholders
+            sql_query = "UPDATE histoireDeCas SET conditions = %s, allergies = %s, medications = %s, trouble_vision = %s, antecedants_familiaux = %s, antecedants_oculaires = %s, notes = %s WHERE ID = %s"
+            params = tuple(histoireDeCas_data.values()) + (form.ID.data,)
+            cursor.execute(sql_query, params)
+            conn.commit()
+            session['histoireDeCas_ID'] = form.ID.data
+        else: #New hdc
+            sql_query = "INSERT INTO histoireDeCas (conditions, allergies, medications, trouble_vision, antecedants_familiaux, antecedants_oculaires, notes) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            params = tuple(histoireDeCas_data.values())
+            cursor.execute(sql_query, params)
+            conn.commit()
+            session['histoireDeCas_ID'] = cursor.lastrowid
+        cursor.close()
+        conn.close()
+        session['confirmation_message'] = {"title": "Histoire de cas sauvegardée", "text": f"L'histoire de cas de l'examen en cours a été sauvegardée avec succès."}
+        if form.ID.data: #Existing hdc
+            if 'examen' not in session: 
+                return redirect(url_for("examens.new", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+            else:
+                return redirect(url_for("examens.details",examen_id=f"{session['examen']['ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+        else: #New hdc
+            return redirect(url_for("examens.new", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+    else:
+        cursor.close()
+        conn.close()
+        return render_template("newExamPage.html",
+                            index=index,
+                            clinique=session['clinique'],
+                            optometriste=session["user"],
+                            patient=session['patient'],
+                            hdc_form=form
+                            )
+
+@examens_bp.route("/submit_examen", methods=['POST'])
+def submit_examen():
+    """
+    This function handles the submission of an exam. It validates the form data,
+    converts the conditions, allergies, medications, and troubles into JSON objects,
+    updates or inserts the exam data into the database, and redirects the user to the appropriate page.
+
+    Args:
+        form (Flask_WTF.Form): The form object containing the user's input data.
+
+    Returns:
+        Flask.Response: A response object that redirects the user to the appropriate page after the exam data has been saved.
+
+    Raises:
+        Error: If there is an error while connecting to the database or executing the SQL query.
+
+    """
+    form = ExamForm()
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    # if not validate_hidden_fields(session, form):
+    #     session['error_message'] = {'title': "Erreur lors de la création de l'examen", 'message': "Vous avez soumis une valeur incorrecte"}
+    #     if form.ID.data: #Existing exam
+    #         return redirect(url_for("examens.details",examen_id=f"{session['examen']['ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+    #     else: #New exam
+    #         return redirect(url_for("examens.new"))
+    if request.method == 'POST' and form.validate_on_submit():
+        new_exam_data = build_exam_data(form)
+        patient_id = session['patient']['ID']
+        
+        for key, value in new_exam_data.items():
+            if type(value) == dict:
+                try:
+                    new_exam_data[key] = json.dumps(value)
+                except (json.JSONDecodeError, TypeError):
+                    pass
+        if form.ID.data: #Existing exam
+            # if old_rx:
+            sql_query = "UPDATE examens SET RX_objective = %s, RX_subjective = %s, contact_lens_type = %s, lens_type = %s, old_RX = %s, periode_validite = %s, patient_ID = %s, optometriste_ID = %s, histoireDeCas_ID = %s WHERE ID = %s"
+            # else:
+                # sql_query = "UPDATE examens SET RX_objective = %s, RX_subjective = %s, contact_lens_type = %s, lens_type = %s, periode_validite = %s, patient_ID = %s, optometriste_ID = %s, histoireDeCas_ID = %s WHERE ID = %s"
+            params = tuple(new_exam_data.values()) + (form.ID.data,)
+            cursor.execute(sql_query, params)
+            conn.commit()
+            session.pop('examen', None)
+        else: #New exam
+            sql_query = "INSERT INTO examens (RX_objective, RX_subjective, contact_lens_type, lens_type, old_RX, periode_validite, patient_ID, optometriste_ID, histoireDeCas_ID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            new_exam_data['patient_ID'] = session['patient']['ID']
+            new_exam_data['optometriste_ID'] = session['user']['ID']
+            new_exam_data['histoireDeCas_ID'] = session['histoireDeCas']['ID']
+            params = tuple(new_exam_data.values())
+            cursor.execute(sql_query, params)
+            conn.commit()
+            session['examen_ID'] = cursor.lastrowid
+        cursor.close()
+        conn.close()
+        session['confirmation_message'] = {"title": "Examen sauvegardée", "text": f"L'examen en cours a été sauvegardé avec succès."}
+        if form.ID.data: #Existing exam
+            return redirect(url_for("examens.details",examen_id=f"{form.ID.data}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+        else: #New exam
+            return redirect(url_for("examens.details", examen_id=f"{session['examen_ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+    else:
+        session["error_message"] = {'title': 'Erreur de validation', 'message': "Une donnée invalide a été soumise dans l'examen, veuillez vérifier."}
+        if form.ID.data: #Existing exam
+            return redirect(url_for("examens.details",examen_id=f"{form.ID.data}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+        else: #New exam
+            return redirect(url_for("examens.details", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
+
+def parse_json_objects(dict):
+    """
+    This function takes a dictionary where some values are stored as JSON strings.
+    It parses these JSON strings and returns a new dictionary where the parsed JSON data is stored as separate key-value pairs.
+
+    Args:
+        dict (dict): The input dictionary containing key-value pairs where some values are stored as JSON strings.
+
+    Returns:
+        dict (dict): A new dictionary where the parsed JSON data is stored as separate key-value pairs.
+
+    Raises:
+        json.JSONDecodeError: If a value in the input dictionary cannot be parsed as a valid JSON string.
+        TypeError: If a value in the input dictionary is not a string.
+        AttributeError: If a value in the input dictionary is not a dictionary.
+
+    Example:
+        >>> parse_json_objects({'conditions': '{"asthma": true, "diabetes": false}'})
+        {'conditions_asthma': True, 'conditions_diabetes': False}
+    """
+    new_dict = {}
+
+    # Iterate over the original dictionary
+    for key, value in dict.items():
+        # Try to parse the value as JSON
+        try:
+            json_data = json.loads(value)
+            # If successful, iterate over the JSON object and add key-value pairs to the new dictionary
+            for json_key, json_value in json_data.items():
+                new_key = f'{key}_{json_key}'  # Creating new keys by concatenating the original key with JSON keys
+                new_dict[new_key] = json_value
+        except (json.JSONDecodeError, TypeError, AttributeError):
+            # If parsing fails, simply copy the key-value pair to the new dictionary
+            new_dict[key] = value
+    
+    return new_dict
+
+def validate_hidden_fields(session, form):
+    if form.patient_ID.data != session['patient']['ID']: return False
+    if form.ID.data != session['examen']['ID']: return False
+    # if form.examen_id.data != session['patient']['ID']: return False
+    return True
+
+def build_histoireDeCas_data(form):
+     return  {
             'conditions': {
                 "asthma": form.conditions_asthma.data, 
                 "diabetes": form.conditions_diabetes.data,
@@ -253,63 +451,9 @@ def submit_histoireDeCas():
             },
             'notes': form.notes.data
         }
-        # Convert each sub-dictionary to JSON strings
-        for key, value in histoireDeCas_data.items():
-            if type(value) == dict:
-                try:
-                    histoireDeCas_data[key] = json.dumps(value)
-                except (json.JSONDecodeError, TypeError):
-                    pass
-        if form.ID.data: #Existing hdc
-            # cursor.execute(f'SELECT * FROM histoireDeCas WHERE ID = {form.ID.data}')
-            # hdc = cursor.fetchone()
-            # modified_fields = {}
-            # for field in form: 
-            #     if field.name != 'csrf_token' and field.data != hdc[field.name]:
-            #         modified_fields[field.name] = field.data
 
-            # if modified_fields:
-            #     sql_update_query = "UPDATE histoireDeCas SET "
-            #     sql_update_query += ", ".join([f"{field} = %s" for field in modified_fields.keys()])
-            #     sql_update_query += " WHERE id = %s"
-                
-            #     # Create a tuple of parameter values in the same order as placeholders
-            sql_query = "UPDATE histoireDeCas SET conditions = %s, allergies = %s, medications = %s, trouble_vision = %s, antecedants_familiaux = %s, antecedants_oculaires = %s, notes = %s WHERE ID = %s"
-            params = tuple(histoireDeCas_data.values()) + (form.ID.data,)
-        else: #New hdc
-            sql_query = "INSERT INTO histoireDeCas (conditions, allergies, medications, trouble_vision, antecedants_familiaux, antecedants_oculaires, notes) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            params = tuple(histoireDeCas_data.values())
-        cursor.execute(sql_query, params)
-        conn.commit()
-        cursor.close()
-        conn.close()
-        session['confirmation_message'] = {"title": "Histoire de cas sauvegardée", "text": f"L'histoire de cas de l'examen en cours a été sauvegardée avec succès."}
-    return redirect(url_for("examens.details",examen_id=f"{session['examen']['ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
-
-@examens_bp.route("/submit_examen", methods=['POST'])
-def submit_examen():
-    """
-    This function handles the submission of an exam. It validates the form data,
-    converts the conditions, allergies, medications, and troubles into JSON objects,
-    updates or inserts the exam data into the database, and redirects the user to the appropriate page.
-
-    Args:
-        form (Flask_WTF.Form): The form object containing the user's input data.
-
-    Returns:
-        Flask.Response: A response object that redirects the user to the appropriate page after the exam data has been saved.
-
-    Raises:
-        Error: If there is an error while connecting to the database or executing the SQL query.
-
-    """
-    form = ExamForm()
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    # clinique_id = request.args.get('clinique_id')
-    patient_id = request.args.get('patient_id')
-    if request.method == 'POST' and form.validate_on_submit():
-        new_exam_data = {
+def build_exam_data(form):
+    return {
             'RX_objective': {
                 "Add_LE": form.RX_objective_Add_LE.data, 
                 "Add_RE": form.RX_objective_Add_RE.data, 
@@ -334,87 +478,31 @@ def submit_examen():
                 "Sphere_LE": form.RX_subjective_Sphere_LE.data, 
                 "Sphere_RE": form.RX_subjective_Sphere_RE.data
             },
-            'contact_lens_type': {"multifocal_contact_lenses": form.contact_lens_type_multifocal_contact_lenses.data, 
-                                "mono_vision_contact_lenses": form.contact_lens_type_mono_vision_contact_lenses.data, 
-                                "single_vision_contact_lenses": form.contact_lens_type_single_vision_contact_lenses.data},
-            'lens_type': {"office_lenses": form.lens_type_office_lenses.data, 
-                        "bifocal_lenses": form.lens_type_bifocal_lenses.data, 
-                        "progressive_lenses": form.lens_type_progressive_lenses.data, 
-                        "single_vision_lenses": form.lens_type_single_vision_lenses.data},
+            'contact_lens_type': {
+                "multifocal_contact_lenses": form.contact_lens_type_multifocal_contact_lenses.data, 
+                "mono_vision_contact_lenses": form.contact_lens_type_mono_vision_contact_lenses.data, 
+                "single_vision_contact_lenses": form.contact_lens_type_single_vision_contact_lenses.data
+            },
+            'lens_type': {
+                "office_lenses": form.lens_type_office_lenses.data, 
+                "bifocal_lenses": form.lens_type_bifocal_lenses.data, 
+                "progressive_lenses": form.lens_type_progressive_lenses.data, 
+                "single_vision_lenses": form.lens_type_single_vision_lenses.data
+            },
+            'old_RX': {
+                "Add_LE": form.old_RX_Add_LE.data, 
+                "Add_RE": form.old_RX_Add_RE.data, 
+                "Ast_LE": form.old_RX_Ast_LE.data, 
+                "Ast_RE": form.old_RX_Ast_RE.data, 
+                "Axis_LE": form.old_RX_Axis_LE.data, 
+                "Axis_RE": form.old_RX_Axis_RE.data, 
+                "Acuity_LE": form.old_RX_Acuity_LE.data, 
+                "Acuity_RE": form.old_RX_Acuity_RE.data, 
+                "Sphere_LE": form.old_RX_Sphere_LE.data, 
+                "Sphere_RE": form.old_RX_Sphere_RE.data
+            },
             'periode_validite': form.periode_validite.data,
             'patient_ID': form.patient_ID.data,
             'optometriste_ID': form.optometriste_ID.data,
             'histoireDeCas_ID': form.histoireDeCas_ID.data,
         }
-        cursor.execute(f'SELECT RX_subjective FROM examens e WHERE patient_ID = {form.patient_ID.data} ORDER BY created_at DESC LIMIT 1;')
-        old_rx = cursor.fetchone()
-        if old_rx:
-            old_rx = parse_json_objects(old_rx) 
-            new_exam_data['old_RX'] = {}
-            for key, value in old_rx.items():
-                # Replace the key name
-                new_key = key.replace("RX_subjective_", "")
-                new_exam_data['old_RX'][new_key] = value
-        for key, value in new_exam_data.items():
-            if type(value) == dict:
-                try:
-                    new_exam_data[key] = json.dumps(value)
-                except (json.JSONDecodeError, TypeError):
-                    pass
-        if form.ID.data: #Existing exam
-            if old_rx:
-                sql_query = "UPDATE examens SET RX_objective = %s, RX_subjective = %s, contact_lens_type = %s, lens_type = %s, periode_validite = %s, patient_ID = %s, optometriste_ID = %s, histoireDeCas_ID = %s, old_RX = %s WHERE ID = %s"
-            else:
-                sql_query = "UPDATE examens SET RX_objective = %s, RX_subjective = %s, contact_lens_type = %s, lens_type = %s, periode_validite = %s, patient_ID = %s, optometriste_ID = %s, histoireDeCas_ID = %s WHERE ID = %s"
-            params = tuple(new_exam_data.values()) + (form.ID.data,)
-        else: #New exam
-            sql_query = "INSERT INTO examens (RX_objective, RX_subjective, contact_lens_type, lens_type, old_RX, periode_validite, patient_ID, optometriste_ID, histoireDeCas_ID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            params = tuple(new_exam_data.values())
-        cursor.execute(sql_query, params)
-        conn.commit()
-        cursor.close()
-        conn.close()
-        session['confirmation_message'] = {"title": "Examen sauvegardée", "text": f"L'examen en cours a été sauvegardé avec succès."}
-        if form.ID.data: #Existing exam
-            return redirect(url_for("examens.details",examen_id=f"{session['examen']['ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
-        else: #New exam
-            return redirect(url_for("examens.new",examen_id=f"{session['examen']['ID']}", clinique_id=f"{session['clinique']['ID']}", patient_id=f"{session['patient']['ID']}"))
-        
-
-def parse_json_objects(dict):
-    """
-    This function takes a dictionary where some values are stored as JSON strings.
-    It parses these JSON strings and returns a new dictionary where the parsed JSON data is stored as separate key-value pairs.
-
-    Args:
-        dict (dict): The input dictionary containing key-value pairs where some values are stored as JSON strings.
-
-    Returns:
-        dict (dict): A new dictionary where the parsed JSON data is stored as separate key-value pairs.
-
-    Raises:
-        json.JSONDecodeError: If a value in the input dictionary cannot be parsed as a valid JSON string.
-        TypeError: If a value in the input dictionary is not a string.
-        AttributeError: If a value in the input dictionary is not a dictionary.
-
-    Example:
-        >>> parse_json_objects({'conditions': '{"asthma": true, "diabetes": false}'})
-        {'conditions_asthma': True, 'conditions_diabetes': False}
-    """
-    # Initialize a new dictionary to store extracted key-value pairs
-    new_dict = {}
-
-    # Iterate over the original dictionary
-    for key, value in dict.items():
-        # Try to parse the value as JSON
-        try:
-            json_data = json.loads(value)
-            # If successful, iterate over the JSON object and add key-value pairs to the new dictionary
-            for json_key, json_value in json_data.items():
-                new_key = f'{key}_{json_key}'  # Creating new keys by concatenating the original key with JSON keys
-                new_dict[new_key] = json_value
-        except (json.JSONDecodeError, TypeError, AttributeError):
-            # If parsing fails, simply copy the key-value pair to the new dictionary
-            new_dict[key] = value
-    
-    return new_dict

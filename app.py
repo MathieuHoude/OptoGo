@@ -46,6 +46,15 @@ def require_login():
         if not request.path.startswith(app.static_url_path):
             return redirect(url_for('auth.login'))
 
+@app.after_request
+def after_request(response):
+    # Clear the session data when the request is not from the specific blueprint
+    if request.blueprint not in ['examens', None] :
+        session.pop('histoireDeCas_ID', None)
+        session.pop('histoireDeCas', None)
+        session.pop('examen', None)
+    return response
+
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/index", methods=['GET', 'POST'])
 def index(index=1):
