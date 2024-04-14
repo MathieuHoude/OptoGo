@@ -17,10 +17,11 @@ from routes.patients_routes import patients_bp
 from routes.examens_routes import examens_bp
 from routes.clinique_routes import cliniques_bp
 
-app = Flask(__name__)
-app.secret_key = 'optogo' #TODO CHANGER!!
 # Load environment variables from .env file
 load_dotenv()
+
+app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(patients_bp)
