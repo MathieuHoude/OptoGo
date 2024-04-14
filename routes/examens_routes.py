@@ -198,7 +198,7 @@ def prescription(examen_id):
 
         update_session(cursor, "clinique", f"SELECT * FROM cliniques WHERE ID = {clinique_id}")
         update_session(cursor, "patient", f"SELECT * FROM patients WHERE ID = {patient_id}")
-        update_session(cursor, "examen", f"SELECT * FROM examens e LEFT JOIN histoireDeCas h ON e.ID = h.examen_ID WHERE e.ID = {examen_id}" )
+        update_session(cursor, "examen", f"SELECT * FROM examens e WHERE e.ID = {examen_id}" )
 
         cursor.close()
         conn.close()
@@ -337,6 +337,8 @@ def submit_examen():
             cursor.execute(sql_query, params)
             conn.commit()
             session['examen_ID'] = cursor.lastrowid
+            cursor.execute(f"UPDATE histoireDeCas SET examen_ID = {session['examen_ID']} WHERE ID = {session['histoireDeCas']['ID']}")
+            conn.commit()
         cursor.close()
         conn.close()
         session['confirmation_message'] = {"title": "Examen sauvegardée", "text": f"L'examen en cours a été sauvegardé avec succès."}
